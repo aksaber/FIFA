@@ -1,0 +1,105 @@
+body
+  background-color #4b5765
+.home
+  .center
+    width 400px
+    position fixed
+    left 50%
+    margin-left -200px
+    top 50%
+    margin-top -150px
+    cursor pointer
+    .logo
+      width 164px
+      position absolute
+      top -8px
+      left -8px
+    h1
+      color #fafafa
+      text-align center
+      font-size: 32px
+      text-shadow 2px 2px 2px rgba(0, 0, 0, .3)
+.center
+  .logo-box
+    width 150px
+    height 150px
+    margin 0 auto
+    display block
+    overflow hidden
+    border-radius 50%
+    position relative
+    &:before
+      animation bounce 14s infinite;
+      animation-fill-mode both;
+      animation-timing-function	ease-in-out;
+      background-color: rgba(255, 255, 255, 1)
+      width 100%
+      height 6px
+      display block
+      content ''
+      z-index 9
+      border-radius 50%
+      position relative
+@keyframes bounce {
+  0% {
+    opacity 0
+    transform translate3d(-90px, -20px, 0px) rotate3d(0, 0, 1, -45deg)
+
+  }
+  30% {
+    opacity .2
+
+  }
+  40% {
+    opacity .4
+    height 10px
+  }
+  55% {
+    opacity 0
+    transform translate3d(130px, 200px, 40px) rotate3d(0, 0, 1, -45deg)
+  }
+  60% {
+    opacity 0
+  }
+  65% {
+    opacity 0
+  }
+  100% {
+    transform translate3d(130px, 200px, 40px) rotate3d(0, 0, 1, -45deg)
+  }
+}
+.logo-move
+  left -40px !important
+  top 0 !important
+  margin 0px !important
+  transition all 0.8s ease-in-out
+  zoom 0.4
+.documentation-item
+  background-color #eee
+  padding 10px
+  border-radius 5px
+  box-shadow 2px 2px 2px rgba(0, 0, 0, 0)
+  position relative
+  overflow hidden
+  margin-bottom 20px
+  &:before
+    content ''
+    display block
+    height 100%
+    width 12px
+    background-color #ccc
+    position absolute
+    left 0px
+    top 0px
+  a
+    display block
+    text-decoration none
+    color #333333
+    span
+      margin-left 10px
+  &:hover
+    box-shadow 2px 2px 2px rgba(0, 0, 0, .1)
+    transform translate3d(0px, -4px, 40px)
+    transition: all 0.3s ease-in-out
+    a
+      color #00a2d4 !important
