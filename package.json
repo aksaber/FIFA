@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "anti": "^0.1.7",
+    "antd": "^3.15.2",
     "axios": "^0.17.1",
     "bootstrap": "^3.3.7",
     "jquery": "^3.3.1",

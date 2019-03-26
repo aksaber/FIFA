@@ -11,5 +11,6 @@ import './style/less.less';
 import './style/sass.sass';
 import './style/scss.scss';
 import './style/home/banner.scss';
+import './style/home/fifaheader.css';
 
 ReactDOM.render(<Root />, document.getElementById('app'));

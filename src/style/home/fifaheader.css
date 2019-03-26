@@ -1,0 +1,29 @@
+.fifaheader {
+  width: 100%;
+  height: 90px; 
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+}
+   .leftheader {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    width: 70%; }
+    .tab{
+      display:flex;
+      flex-direction:row;
+      justify-content:center;
+      align-items:center;
+    }
+    .fifaheader .leftheader li {
+      width: 100px;
+    }
+  .fifaheader .rightheader {
+    width:30%
+  }
+    
+
+/*# sourceMappingURL=banner.css.map */

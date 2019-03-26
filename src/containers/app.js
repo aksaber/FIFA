@@ -5,6 +5,8 @@ import logo from '~/assets/logo.png';
 import Banner from '~/components/banner';
 import HomeSwiper from '~/components/homeSwiper';
 import * as homeActions from '../redux/reduces/home';
+import Fifaheader from '../components/Fifaheader';
+import Fifafooter from '../components/Fifafooter';
 /*
 使用注解的方式修改state和组件之间的传值 @connect()
 state => ({home: state.home})  你需要state当中的什么参数，取出来就会放到props相对的参数当中
@@ -40,14 +42,16 @@ class App extends Component {
   // }
   render() {
     /* 相当于const movelogo = this.props.home.movelogo */
+    // <Banner />
+    // <HomeSwiper />
     const {home: {movelogo}} = this.props;
     return (
       <div className="home">
-        <Banner />
-        <HomeSwiper />
+        <Fifaheader />
         <div style={{width: '1000px', margin: '0 auto'}}>
           {this.props.children}
         </div>
+        <Fifafooter />
       </div>
     );
   }

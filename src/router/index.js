@@ -6,6 +6,7 @@ import Store from '../redux';
 import DevTools from '../redux/DevTools';
 import App from '../containers/app';
 import Docs from '../containers/docs';
+import Informations from '../containers/informations';
 
 const Router = ({component: Component, children, ...rest}) => (
   <Route
@@ -26,6 +27,7 @@ const Root = () => (
           <Router path="/" component={App} >
             {/* exact要求路径与location.pathname必须完全匹配 */}
             <Router exact path="/docs" component={Docs} />
+            <Router exact path="/informations" component={Informations} />
           </Router>
         </Switch>
       </div>
