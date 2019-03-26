@@ -9,17 +9,56 @@
     "__DEVELOPMENT__": false
   },
   "rules": {
-    "import/no-named-as-default": ["off"],
-    "react/jsx-closing-tag-location": ["off"],
-    "comma-dangle": ["off", "never"],
-    "spaced-comment": ["off", "always"],
-    "func-names": ["off"],
-    "react/jsx-quotes": ["off"],
-    "jsx-quotes": ["error"],
-    "indent": ["error", 2, {"SwitchCase": 1}],
-    "no-unused-expressions": ["off"],
-    "max-len": ["warn", 100, 2, {"ignoreComments": true}],
-    "object-curly-spacing": ["warn", "never"],
+    "import/no-named-as-default": [
+      "off"
+    ],
+    "linebreak-style": [
+      0,
+      "error",
+      "windows"
+    ],
+    "react/jsx-closing-tag-location": [
+      "off"
+    ],
+    "comma-dangle": [
+      "off",
+      "never"
+    ],
+    "spaced-comment": [
+      "off",
+      "always"
+    ],
+    "func-names": [
+      "off"
+    ],
+    "react/jsx-quotes": [
+      "off"
+    ],
+    "jsx-quotes": [
+      "error"
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-unused-expressions": [
+      "off"
+    ],
+    "max-len": [
+      "warn",
+      100,
+      2,
+      {
+        "ignoreComments": true
+      }
+    ],
+    "object-curly-spacing": [
+      "warn",
+      "never"
+    ],
     /* close */
     "react/no-danger": 0,
     "arrow-parens": 0,
@@ -35,7 +74,9 @@
     "jsx-a11y/label-has-for": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/alt-text": 0,
-    "jsx-a11y/click-events-have-key-events": ["off"],
+    "jsx-a11y/click-events-have-key-events": [
+      "off"
+    ],
     "no-bitwise": 0,
     "no-case-declarations": 0,
     "no-confusing-arrow": 0,
