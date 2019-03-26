@@ -47,7 +47,7 @@ class App extends Component {
     const {home: {movelogo}} = this.props;
     return (
       <div className="home">
-        <Fifaheader />
+        <Fifaheader history={this.props.history} />
         <div style={{width: '1000px', margin: '0 auto'}}>
           {this.props.children}
         </div>

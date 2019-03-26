@@ -10,6 +10,14 @@ import * as homeActions from '../redux/reduces/home';
 )
 
 class Fifaheader extends Component {
+  gotoFIFA = () => {
+    console.log(this.props);
+    const {history, changeRoute} = this.props;
+    changeRoute();
+    history.push('/informations');
+    // this.props.history.push('/informations');
+  }
+
   render() {
     return (
       <div className="fifaheader">
@@ -17,7 +25,9 @@ class Fifaheader extends Component {
           <img src={logo} height="70" />
           <ul className="tab">
             <li>首页</li>
-            <li>FIFA资讯</li>
+            <div onClick={this.gotoFIFA}>
+              <li >FIFA资讯</li>
+            </div>
             <li>电竞赛事</li>
             <li>原生音乐</li>
           </ul>
