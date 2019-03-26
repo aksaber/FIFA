@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import logo from '~/assets/logo.png';
 import Banner from '~/components/banner';
+import HomeSwiper from '~/components/homeSwiper';
 import * as homeActions from '../redux/reduces/home';
 /*
 使用注解的方式修改state和组件之间的传值 @connect()
@@ -27,22 +28,23 @@ class App extends Component {
     const {history, changeRoute} = this.props;
     changeRoute();
     history.push('/docs');
+    // this.count();
   }
+
+  // count = async () => {
+  //   console.log(this.state.count, 'A');
+  //   await this.setState({count: this.state.count + 1});
+  //   await this.setState({count: this.state.count + 1});
+  //   await this.setState({count: this.state.count + 1});
+  //   console.log(this.state.count, 'A');
+  // }
   render() {
     /* 相当于const movelogo = this.props.home.movelogo */
     const {home: {movelogo}} = this.props;
-    const demoStyle = {
-      color: '#FF0000'
-    };
     return (
-      <div className="home" style={{paddingTop: 100}}>
-        <div className={`center ${movelogo ? 'logo-move' : ''}`} onClick={this.handleBrowserChange}>
-          <div className="logo-box">
-            {/*<img src={logo} className="logo" />*/}
-            <Banner />
-          </div>
-          <h1 style={demoStyle}>React Project</h1>
-        </div>
+      <div className="home">
+        <Banner />
+        <HomeSwiper />
         <div style={{width: '1000px', margin: '0 auto'}}>
           {this.props.children}
         </div>

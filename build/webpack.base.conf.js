@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const resolve = utils.resolve;
+const webpack = require('webpack')
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -19,6 +20,12 @@ module.exports = {
       '~': resolve('src')
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   performance: {
     maxEntrypointSize: 1200000,
     maxAssetSize: 400000,

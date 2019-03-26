@@ -11,27 +11,16 @@ import * as homeActions from '../redux/reduces/home';
 
 class Banner extends Component {
   render() {
-    const banner = {
-      width: '100%',
-      height: 70
-    };
-    const leftBanner = {
-      float: 'left',
-      width: 70
-    };
-    const rightBanner = {
-      float: 'right'
-    };
     return (
-      <div style={banner}>
-        <div style={leftBanner}>
+      <div className="banner">
+        <div className="leftBanner">
           <img src={logo} height="70" />
         </div>
-        <ul style={rightBanner}>
-          <li>原生音乐</li>
-          <li>电竞赛事</li>
-          <li>FIFA资讯</li>
+        <ul className="rightBanner">
           <li>首页</li>
+          <li>FIFA资讯</li>
+          <li>电竞赛事</li>
+          <li>原生音乐</li>
         </ul>
       </div>
     );
