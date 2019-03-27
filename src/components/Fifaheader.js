@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Avatar} from 'antd';
+import {Avatar, Input} from 'antd';
 
-import logo from '~/assets/logo.png';
+import logo from '~/assets/img/logo.svg';
 import * as homeActions from '../redux/reduces/home';
 
 @connect(
@@ -18,14 +18,19 @@ class Fifaheader extends Component {
     changeRoute();
     history.push('/informations');
     // this.props.history.push('/informations');
-  }
+  };
+
+  //搜索框输入
+  searchInfo = () => {
+    alert('搜索内容');
+  };
 
   render() {
     return (
       <div className="fifaheader">
         <div className="leftheader">
-          <img src={logo} height="70" />
-          <ul className="tab">
+          <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />
+          <ul>
             <li>首页</li>
             <div onClick={this.gotoFIFA}>
               <li>FIFA资讯</li>
@@ -34,12 +39,9 @@ class Fifaheader extends Component {
           </ul>
         </div>
         <div className="rightheader">
-          <div>
-            <Avatar shape="circle" icon="user" />
-
-          </div>
+          <Input placeholder="搜索" onPressEnter={this.searchInfo} />
+          <Avatar shape="circle" icon="user" />
         </div>
-
       </div>
     );
   }
