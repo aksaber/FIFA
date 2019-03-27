@@ -11,7 +11,7 @@
     flex-direction:row;
     justify-content:center;
     align-items:center;
-    width: 70%; }
+    width: 80%; }
     .tab{
       display:flex;
       flex-direction:row;
@@ -20,10 +20,14 @@
     }
     .fifaheader .leftheader li {
       width: 100px;
+      color: #fff;
+      font-size: 18px;
     }
   .fifaheader .rightheader {
     width:30%
   }
-    
+  .home{
+    background-color: skyblue;
+  }  
 
 /*# sourceMappingURL=banner.css.map */

@@ -12,5 +12,6 @@ import './style/sass.sass';
 import './style/scss.scss';
 import './style/home/banner.scss';
 import './style/home/fifaheader.css';
+import './style/home/common.css';
 
 ReactDOM.render(<Root />, document.getElementById('app'));

@@ -1,0 +1,16 @@
+.commonCard{
+  width:442px;
+  height:434px;
+  background:rgba(255,255,255,1);
+  box-shadow:20px 20px 60px rgba(0,0,0,0.1);
+  opacity:1;
+  border-radius:5px;
+  text-align: center;
+  padding-top: 10px;
+}
+.commonCardImg{
+  width:421px;
+height:239px;
+background:rgba(0,0,0,0);
+opacity:1;
+}

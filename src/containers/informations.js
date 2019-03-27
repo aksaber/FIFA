@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {List, Card, Avatar} from 'antd';
+import {List, Card, Avatar, Row, Col} from 'antd';
 import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
+import CommonCard from '../components/CommonCard';
 
 @connect(
   state => ({home: state.home}),
@@ -29,13 +30,11 @@ class Informations extends Component {
       },
     ];
     return (
-      <List
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={item => (
-          <Card title="卡片标题">{item.title}</Card>
-        )}
-      />
+      <Row gutter={32}>
+        <Col span={6}><CommonCard data={data[0]} /></Col>
+        <Col span={6}><CommonCard data={data[1]} /></Col>
+        <Col xpan={6}><CommonCard data={data[2]} /></Col>
+      </Row>
     );
   }
 }
