@@ -10,7 +10,7 @@ import CommonCard from '../components/CommonCard';
   state => ({home: state.home}),
   dispatch => bindActionCreators(homeActions, dispatch)
 )
-class Informations extends Component {
+class Match extends Component {
   state = {
   };
 
@@ -52,4 +52,4 @@ class Informations extends Component {
   }
 }
 
-export default Informations;
+export default Match;
