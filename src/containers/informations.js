@@ -30,11 +30,13 @@ class Informations extends Component {
       },
     ];
     return (
-      <Row gutter={32}>
-        <Col span={6}><CommonCard data={data[0]} /></Col>
-        <Col span={6}><CommonCard data={data[1]} /></Col>
-        <Col xpan={6}><CommonCard data={data[2]} /></Col>
-      </Row>
+      <div>
+        <Row>
+          <Col span={8}><CommonCard data={data[0]} /></Col>
+          <Col span={8}><CommonCard data={data[1]} /></Col>
+          <Col span={8}><CommonCard data={data[2]} /></Col>
+        </Row>
+      </div>
     );
   }
 }

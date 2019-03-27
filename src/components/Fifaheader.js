@@ -28,7 +28,7 @@ class Fifaheader extends Component {
           <ul className="tab">
             <li>首页</li>
             <div onClick={this.gotoFIFA}>
-              <li >FIFA资讯</li>
+              <li>FIFA资讯</li>
             </div>
             <li>电竞赛事</li>
           </ul>
