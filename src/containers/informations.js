@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {List, Card, Avatar, Row, Col} from 'antd';
+import {List, Card, Avatar, Row, Col, message} from 'antd';
 import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
+import urlConfig from '../config';
+import axios from '../axios';
+
 
 @connect(
   state => ({home: state.home}),
@@ -12,39 +15,47 @@ import CommonCard from '../components/CommonCard';
 )
 class Informations extends Component {
   state = {
+    data: []
   };
 
+
+  componentDidMount() {
+    console.log(urlConfig, 'aaaaaaaaaaaaaaaaaaaa');
+    axios.post(
+      '/news/newsList',
+      {
+        asc: true,
+        map: {},
+        nowPage: 1,
+        pageSize: 9,
+        sort: 'string'
+      }
+    ).then((response) => {
+      if (response.data.code === '0') {
+        this.setState({data: response.data.data.records});
+      } else {
+        message.warning(response.data.msg);
+      }
+    }).catch((err) => {
+      message.error(err);
+    });
+  }
+
+  renderList = () => {
+    const {data} = this.state;
+    const list = [];
+    data.map((item) => {
+      list.push(<Col span={8} key={item.id}><CommonCard data={item} /></Col>);
+    });
+    return list;
+  }
+
   render() {
-    const data = [
-      {
-        title: 'Ant Design Title 1',
-      },
-      {
-        title: 'Ant Design Title 2',
-      },
-      {
-        title: 'Ant Design Title 3',
-      },
-      {
-        title: 'Ant Design Title 4',
-      },
-    ];
     return (
       <div>
         <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
-        </Row>
-        <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
-        </Row>
-        <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
+          {this.renderList()}
+
         </Row>
 
       </div>
