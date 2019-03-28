@@ -22,13 +22,14 @@ class CommonCard extends Component {
         cover={<img
           alt="example"
           src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+          // src={this.props.data.coverUrl}
           className="commonCardImg"
         />}
         bordered
       >
         <Meta
           title={this.props.data.title}
-          description="www.instagram.com"
+          description={this.props.data.summary}
         />
       </Card>
     );
