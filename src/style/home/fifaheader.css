@@ -10,6 +10,7 @@
   display: flex;
   flex: 1;
   align-items: center;
+  height: 90px;
 }
 .leftheader ul {
   display: flex;
@@ -20,6 +21,8 @@
   font-size: 18px;
   margin: 0 23px;
   cursor: pointer;
+  height: 90px;
+  line-height: 90px;
 }
 .rightheader {
   width: 250px;
@@ -57,5 +60,12 @@
 .home {
   background-color: skyblue;
 }
-
-/*# sourceMappingURL=banner.css.map */
+.leftheader .childrenList{
+  height: 200px;
+  width: 100%;
+  background: #fff;
+  opacity: 0.8;
+}
+.leftheader .childrenList li{
+  color: #414141;
+}

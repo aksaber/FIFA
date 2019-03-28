@@ -27,3 +27,5 @@
   display: block;
   clear: both;
 }
+.show{ display: block; }
+.hidden{ display: none; }
