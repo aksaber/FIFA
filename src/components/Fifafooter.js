@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import logo from '~/assets/img/logo.svg';
+import sina from '~/assets/img/sina.svg';
+import wechat from '~/assets/img/wechat.svg';
+import qq from '~/assets/img/qq.svg';
 import * as homeActions from '../redux/reduces/home';
 
 @connect(
@@ -36,10 +39,15 @@ class Fifafooter extends Component {
             <p style={grayColor}>ESWC</p>
             <p style={grayColor}>非凡赛事</p>
           </div>
+          <div className="flex_1" style={{'text-align': 'right'}}>
+            <img src={sina} width={20} height={16} style={{'margin-right': '30px'}} />
+            <img src={wechat} width={20} height={16} style={{'margin-right': '30px'}} />
+            <img src={qq} width={20} height={16} />
+          </div>
         </div>
         <div className="footer-bottom flex">
           <div className="flex_1">© 2019 all rights reserved</div>
-          <img src={logo} width={45} height={35} className="flex_1" style={{'margin-top': '-5px'}} />
+          <img src={logo} width={45} height={35} className="flex_1" style={{'margin-top': '22px'}} />
           <div>沪ICP备14031707 | 广播电视节目制作经营许可证（泸）字第2467号</div>
         </div>
       </div>
