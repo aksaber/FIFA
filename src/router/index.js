@@ -8,6 +8,7 @@ import App from '../containers/app';
 import Docs from '../containers/docs';
 import Informations from '../containers/informations';
 import Match from '../containers/Match';
+import Details from '../containers/details';
 
 const Router = ({component: Component, children, ...rest}) => (
   <Route
@@ -30,6 +31,7 @@ const Root = () => (
             <Router exact path="/docs" component={Docs} />
             <Router exact path="/informations" component={Informations} />
             <Router exact path="/match" component={Match} />
+            <Router exact path="/details" component={Details} />
           </Router>
         </Switch>
       </div>

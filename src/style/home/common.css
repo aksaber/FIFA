@@ -29,3 +29,9 @@
 }
 .show{ display: block; }
 .hidden{ display: none; }
+.dashedLine{
+  width:100%;
+  height:0px;
+  border:1px solid rgba(214,221,240,1);
+  opacity:1;
+}
