@@ -12,6 +12,14 @@ import * as homeActions from '../redux/reduces/home';
 
 
 class CommonCard extends Component {
+  gotoDetails = () => {
+    // console.log(this.props, 'commonCard');
+    const {history, changeRoute, data} = this.props;
+    changeRoute();
+    history.push(`/details?id=${data.id}`);
+  }
+
+
   render() {
     const {Meta} = Card;
 
@@ -26,6 +34,7 @@ class CommonCard extends Component {
           className="commonCardImg"
         />}
         bordered
+        onClick={this.gotoDetails}
       >
         <Meta
           title={this.props.data.title}

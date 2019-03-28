@@ -25,7 +25,7 @@ class Informations extends Component {
       '/news/newsList',
       {
         asc: true,
-        map: {},
+        map: {id: 1, type: 0},
         nowPage: 1,
         pageSize: 9,
         sort: 'string'
@@ -45,7 +45,7 @@ class Informations extends Component {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
-      list.push(<Col span={8} key={item.id}><CommonCard data={item} /></Col>);
+      list.push(<Col span={8} key={item.id}><CommonCard data={item} history={this.props.history} /></Col>);
     });
     return list;
   }
