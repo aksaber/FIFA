@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA,OAAO;EACL,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,KAAK;EACb,KAAK,EAAE,IAAI;EACX,mBAAW;IACT,MAAM,EAAE,KAAK;IACb,UAAU,EAAE,OAAO;IACnB,OAAO,EAAE,cAAc;IAErB,6BAAC;MACC,aAAa,EAAE,eAAc;MAC7B,MAAM,EAAE,OAAO;EAIrB,sBAAc;IACZ,MAAM,EAAE,IAAI;IACZ,UAAU,EAAE,IAAI;IAChB,SAAS,EAAE,IAAI;IACf,OAAO,EAAE,QAAQ",
+"sources": ["fifafooter.scss"],
 "names": [],
 "file": "fifafooter.css"
 }
