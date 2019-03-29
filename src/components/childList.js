@@ -33,7 +33,8 @@ class childList extends Component {
       transition: 'all 0.5s',
       position: 'absolute',
       top: '70px',
-      left: 0
+      left: 0,
+      zIndex: 1
     };
 
     return (

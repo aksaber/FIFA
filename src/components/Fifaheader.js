@@ -7,9 +7,6 @@ import logo from '~/assets/img/logo.svg';
 import ChildList from '../components/childList';
 import * as homeActions from '../redux/reduces/home';
 
-let timer = '';
-let timer2 = '';
-
 @connect(
   state => ({home: state.home}),
   dispatch => bindActionCreators(homeActions, dispatch)
@@ -52,31 +49,17 @@ class Fifaheader extends Component {
   };
 
   //鼠标hover出现子资讯列表
-  showChildList = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    clearTimeout(timer);
-    clearTimeout(timer2);
-    timer = setTimeout(() => {
-      this.setState({
-        isShow: true
-      });
-      console.log('true');
-    }, 1000);
+  showChildList = () => {
+    this.setState({
+      isShow: true
+    });
   };
 
   //鼠标移出
-  hideChildList = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    clearTimeout(timer);
-    clearTimeout(timer2);
-    timer2 = setTimeout(() => {
-      this.setState({
-        isShow: false
-      });
-      console.log('false');
-    }, 1000);
+  hideChildList = () => {
+    this.setState({
+      isShow: false
+    });
   };
 
   render() {
