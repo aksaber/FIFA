@@ -97,7 +97,7 @@ class Fifaheader extends Component {
           </div>
           <div className="rightheader">
             <Input placeholder="搜索" onPressEnter={this.searchInfo} />
-            <Avatar shape="circle" icon="user" />
+            <Avatar shape="circle" icon="user" style={{height: 40, width: 40, lineHeight: '40px'}} />
           </div>
           <ChildList
             data={list}

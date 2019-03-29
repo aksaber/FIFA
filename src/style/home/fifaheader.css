@@ -31,11 +31,13 @@
 .rightheader input{
   background: transparent;
   color: #fff;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   border-radius: 20px;
   display: inline-block;
   width: 75%;
-  margin-right: 30px;
+  margin-right: 20px;
+  padding: 8px 19px;
+  height: 40px;
 }
 .rightheader>span{
   width: calc(25% - 30px);
