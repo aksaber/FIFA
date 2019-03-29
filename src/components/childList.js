@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import Swiper from 'swiper/dist/js/swiper.js';
 import * as homeActions from '../redux/reduces/home';
+import defaultPhoto from '../assets/img/defaultPhoto.png';
 
 @connect(
   state => ({home: state.home}),
@@ -9,28 +11,33 @@ import * as homeActions from '../redux/reduces/home';
 )
 
 class childList extends Component {
+  componentDidMount() {
+    this.swiper = new Swiper('.swiperHeader', {
+      loop: false,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      slidesPerView: 4
+    });
+  }
+
   renderList = () => {
-    const liStyle = {
-      color: '#414141',
-      fontSize: '18px'
-    };
     const {data} = this.props;
     const list = [];
     data.map((item) => {
-      list.push(<li style={liStyle}>{item.name}</li>);
+      list.push(<li className="swiper-slide">
+        <img src={defaultPhoto} width={320} height={130} style={{'margin-bottom': '11px'}} />
+        <div>{item.name}</div>
+      </li>);
     });
     return list;
   };
 
   render() {
     const ulStyle = {
-      display: 'none',
       height: '200px',
       width: '100%',
       background: '#fff',
-      opacity: 0.8,
       padding: '17px 10%',
-      transition: 'all 0.5s',
       position: 'absolute',
       top: '70px',
       left: 0,
@@ -40,10 +47,18 @@ class childList extends Component {
     return (
       <ul
         style={ulStyle}
-        className={this.props.isShow ? 'show' : ''}
+        className={this.props.isShow ? 'show' : 'hidden'}
         onMouseEnter={this.props.onMouseEnter}
         onMouseLeave={this.props.onMouseLeave}
-      >{this.renderList()}</ul>
+      >
+        <div className="swiperHeader">
+          <div className="swiper-wrapper">{this.renderList()}</div>
+          <div className="swiper-button-prev" />
+          <div className="swiperNextDiv">
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </ul>
     );
   }
 }

@@ -57,9 +57,6 @@
   /* Internet Explorer 10+ */
   color: #fff!important;
 }
-.home {
-  background-color: skyblue;
-}
 .leftheader .childrenList{
   height: 200px;
   width: 100%;
@@ -68,4 +65,74 @@
 }
 .leftheader .childrenList li{
   color: #414141;
+}
+.swiperHeader{
+  width: 110%;
+  overflow: hidden;
+}
+.swiperHeader .swiper-slide{
+  color: #414141;
+  font-size: 18px;
+  width: 320px!important;
+  float: left;
+  margin-right: 30px;
+}
+.swiperHeader .swiperNextDiv{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 121px;
+  background: linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
+}
+.swiperHeader .swiper-button-next{
+  width: 40px;
+  height: 40px;
+  background-image: url('../../assets/img/nextBtn.png');
+}
+.header{
+  background: linear-gradient(180deg,rgba(18,48,117,1) 0%,rgba(9,32,86,1) 100%);
+}
+.header .headerLine{
+  display: inline-block;
+  height: 0.5px;
+}
+.headerContent{
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 29px;
+  color: #fff;
+}
+.headerContent .title_1{
+  margin-bottom: 26px;
+}
+.headerContent .title_2{
+  font-size: 60px;
+  width: 60%;
+  margin-bottom: 20px;
+}
+.headerContent .title_3{
+  font-size: 18px;
+  margin-bottom: 49px;
+  width: 40%;
+}
+.headerContent .title_4{
+  font-size: 18px;
+  color: #709BE7;
+  width: 60%;
+}
+.headerContent .titleFooter{
+  margin-right: 30px;
+}
+.headerContent .titleFooter::before{
+  content: '';
+  display: block;
+  margin-bottom: 20px;
+  height: 1px;
+  width: 100%;
+  background: #709BE7;
+}
+.ant-carousel-vertical .slick-dots{
+  left: -6%!important;
+  right: unset!important;
 }
