@@ -24,6 +24,7 @@ class childList extends Component {
 
   render() {
     const ulStyle = {
+      display: 'none',
       height: '200px',
       width: '100%',
       background: '#fff',
@@ -38,7 +39,7 @@ class childList extends Component {
     return (
       <ul
         style={ulStyle}
-        className={this.props.isShow ? 'show' : 'hidden'}
+        className={this.props.isShow ? 'show' : ''}
         onMouseEnter={this.props.onMouseEnter}
         onMouseLeave={this.props.onMouseLeave}
       >{this.renderList()}</ul>

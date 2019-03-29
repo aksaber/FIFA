@@ -7,6 +7,9 @@ import logo from '~/assets/img/logo.svg';
 import ChildList from '../components/childList';
 import * as homeActions from '../redux/reduces/home';
 
+let timer = '';
+let timer2 = '';
+
 @connect(
   state => ({home: state.home}),
   dispatch => bindActionCreators(homeActions, dispatch)
@@ -26,7 +29,7 @@ class Fifaheader extends Component {
           url: ''
         }
       ],
-      isShow: false
+      isShow: false,
     };
   }
 
@@ -49,18 +52,30 @@ class Fifaheader extends Component {
   };
 
   //鼠标hover出现子资讯列表
-  showChildList = () => {
-    this.setState({
-      isShow: true
-    });
+  showChildList = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    clearTimeout(timer);
+    clearTimeout(timer2);
+    timer = setTimeout(() => {
+      this.setState({
+        isShow: true
+      });
+      console.log('true');
+    }, 1000);
   };
 
   //鼠标移出
-  hideChildList = () => {
-    setTimeout(() => {
+  hideChildList = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    clearTimeout(timer);
+    clearTimeout(timer2);
+    timer2 = setTimeout(() => {
       this.setState({
         isShow: false
       });
+      console.log('false');
     }, 1000);
   };
 
@@ -78,7 +93,7 @@ class Fifaheader extends Component {
                 onMouseEnter={this.showChildList}
                 onMouseLeave={this.hideChildList}
               >
-                <li>FIFA资</li>
+                <li>FIFA资讯</li>
               </div>
               <div onClick={this.gotoMatch}>
                 <li>电竞赛事</li>
