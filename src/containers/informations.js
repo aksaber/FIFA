@@ -45,7 +45,9 @@ class Informations extends Component {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
-      list.push(<Col span={8} key={item.id}><CommonCard data={item} history={this.props.history} /></Col>);
+      list.push(<Col span={8} key={item.id}>
+        <CommonCard data={item} history={this.props.history} />
+      </Col>);
     });
     return list;
   }
