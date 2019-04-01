@@ -96,7 +96,7 @@ class Fifaheader extends Component {
     const {list, isShow, carouselData} = this.state;
     return (
       <div className="header">
-        <div className="fifaheader">
+        <div className="fifaheader container">
           <div className="leftheader">
             <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />
             <ul>
@@ -124,11 +124,11 @@ class Fifaheader extends Component {
             onMouseLeave={this.hideChildList}
           />
         </div>
-        <div style={{width: '80%', margin: '0 auto', 'margin-bottom': '31px'}}>
+        <div className="container" style={{marginBottom: '31px'}}>
           <span className="headerLine" style={{background: '#fff', width: '113px'}} />
           <span className="headerLine" style={{background: '#709BE7', width: '67px'}} />
         </div>
-        <Carousel vertical className="headerContent" autoplay>
+        <Carousel className="headerContent container" autoplay>
           {carouselData.map((item, index) => (
             <div>
               <div className="title_1">FIFA</div>

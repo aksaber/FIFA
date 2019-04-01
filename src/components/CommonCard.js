@@ -8,7 +8,7 @@ import * as homeActions from '../redux/reduces/home';
 const stylesheet = {
   commonCard: {
     padding: '10px 18px 18px',
-    margin: '10%',
+    margin: '20px',
     height: '434px',
     background: 'rgba(255,255,255,1)',
     boxShadow: '20px 20px 60px rgba(0,0,0,0.1)',

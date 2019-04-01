@@ -24,8 +24,9 @@ const stylesheet = {
     left: 20
   },
   textarea: {
-    padding: '51px 95px',
-    borderRadius: 0
+    padding: '51px 20px 20px 95px',
+    borderRadius: 0,
+    resize: 'none'
   },
   btn: {
     fontSize: 16,
@@ -93,23 +94,28 @@ class Details extends Component {
           <div style={stylesheet.words}>留言</div>
           <div className="dashedLine flex_1" />
         </div>
-        <div>
+        <div style={{marginBottom: 80}}>
           <div style={{position: 'relative'}}>
             <Avatar size={48} icon="user" style={stylesheet.avater} />
-            <TextArea rows={4} placeholder="发布您的留言" style={stylesheet.textarea} />
+            <TextArea rows={3} placeholder="发布您的留言" style={stylesheet.textarea} />
           </div>
           <div style={stylesheet.textFooter}>
             <Icon type="smile" style={{fontSize: 20, marginRight: 41}} />
             <button style={stylesheet.btn}>发布</button>
           </div>
         </div>
-        <div>
+        <div style={{marginBottom: 129}}>
           <MultiComment>
             <MultiComment>
               <MultiComment />
               <MultiComment />
             </MultiComment>
           </MultiComment>
+        </div>
+        <div className="flex" style={{marginBottom: 58}}>
+          <div className="dashedLine flex_1" />
+          <div style={stylesheet.words}>不能错过的内容</div>
+          <div className="dashedLine flex_1" />
         </div>
       </div>
     );

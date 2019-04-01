@@ -19,7 +19,7 @@ class Fifafooter extends Component {
     };
     return (
       <div className="footer">
-        <div className="footer_top flex">
+        <div className="footer_top flex container">
           <div className="flex_1">
             <p>关于我们</p>
             <p>版权信息</p>

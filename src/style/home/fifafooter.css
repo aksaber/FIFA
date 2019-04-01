@@ -1,11 +1,11 @@
 .footer {
   width: 100%;
   height: 397px;
-  color: #fff; }
+  color: #fff;
+  background: #191919; }
   .footer .footer_top {
     height: 313px;
-    background: #191919;
-    padding: 57px 10% 0 10%; }
+    padding-top: 57px; }
     .footer .footer_top .flex_1 p {
       margin-bottom: 25px !important;
       cursor: pointer; }

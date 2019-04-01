@@ -48,7 +48,7 @@ class App extends Component {
     return (
       <div className="home">
         <Fifaheader history={this.props.history} />
-        <div style={{width: '80%', margin: '0 auto'}}>
+        <div className="container">
           {this.props.children}
         </div>
         <Fifafooter />

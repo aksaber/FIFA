@@ -1,5 +1,4 @@
 .fifaheader {
-  width: 80%;
   height: 90px;
   margin: 0 auto;
   color: #fff;
@@ -100,8 +99,6 @@
   height: 0.5px;
 }
 .headerContent{
-  width: 80%;
-  margin: 0 auto;
   padding-bottom: 29px;
   color: #fff;
 }
