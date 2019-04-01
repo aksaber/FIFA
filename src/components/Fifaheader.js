@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Avatar, Input, Carousel} from 'antd';
+import {Avatar, Input, Carousel, message} from 'antd';
 
 import logo from '~/assets/img/logo.svg';
 import ChildList from '../components/childList';
 import * as homeActions from '../redux/reduces/home';
+import axios from '../axios';
 
 @connect(
   state => ({home: state.home}),
@@ -38,6 +39,7 @@ class Fifaheader extends Component {
           url: ''
         }
       ],
+      carouselData: [],
       isShow: false,
     };
   }
@@ -74,8 +76,24 @@ class Fifaheader extends Component {
     });
   };
 
+  componentDidMount() {
+    axios.get('/news/newsTopList?type=0&typeId=1').then((response) => {
+      const {data} = response;
+      console.log(data);
+      if (data.code === '0') {
+        this.setState({carouselData: data.data});
+        // , content: data.data.info.content
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  }
+
+
   render() {
-    const {list, isShow} = this.state;
+    const {list, isShow, carouselData} = this.state;
     return (
       <div className="header">
         <div className="fifaheader">
@@ -110,52 +128,24 @@ class Fifaheader extends Component {
           <span className="headerLine" style={{background: '#fff', width: '113px'}} />
           <span className="headerLine" style={{background: '#709BE7', width: '67px'}} />
         </div>
-        <Carousel vertical className="headerContent">
-          <div>
-            <div className="title_1">FIFA</div>
-            <div className="title_2">Pitch Note:FIFA 19FUT Champions 周末联赛详解</div>
-            <div className="title_3">更新补丁已在Origin平台进行推送。主要针对一些bug进行了修正。另外更新了几名球员的肖像。</div>
-            <div className="title_4 flex">
-              <div className="titleFooter">
-                <div>Pitch Note:FIFA 19FUT Champions 周末联赛…</div>
-                <div>FIFA</div>
-              </div>
-              <div className="titleFooter">
-                <div>36个各级别联赛，FIFA 19包含联赛及俱乐部…</div>
-                <div>FIFA Online</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="title_1">FIFA</div>
-            <div className="title_2">Pitch Note:FIFA 19FUT Champions 周末联赛详解</div>
-            <div className="title_3">更新补丁已在Origin平台进行推送。主要针对一些bug进行了修正。另外更新了几名球员的肖像。</div>
-            <div className="title_4 flex">
-              <div className="titleFooter">
-                <div>Pitch Note:FIFA 19FUT Champions 周末联赛…</div>
-                <div>FIFA</div>
-              </div>
-              <div className="titleFooter">
-                <div>36个各级别联赛，FIFA 19包含联赛及俱乐部…</div>
-                <div>FIFA Online</div>
+        <Carousel vertical className="headerContent" autoplay>
+          {carouselData.map((item, index) => (
+            <div>
+              <div className="title_1">FIFA</div>
+              <div className="title_2">{item.title}</div>
+              <div className="title_3">{item.summary}</div>
+              <div className="title_4 flex">
+                <div className="titleFooter">
+                  <div>{carouselData[index === 2 ? 0 : 1 - index].title}</div>
+                  <div>FIFA</div>
+                </div>
+                <div className="titleFooter">
+                  <div>{carouselData[index === 2 ? 1 : 2].title}</div>
+                  <div>FIFA Online</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="title_1">FIFA</div>
-            <div className="title_2">Pitch Note:FIFA 19FUT Champions 周末联赛详解</div>
-            <div className="title_3">更新补丁已在Origin平台进行推送。主要针对一些bug进行了修正。另外更新了几名球员的肖像。</div>
-            <div className="title_4 flex">
-              <div className="titleFooter">
-                <div>Pitch Note:FIFA 19FUT Champions 周末联赛…</div>
-                <div>FIFA</div>
-              </div>
-              <div className="titleFooter">
-                <div>36个各级别联赛，FIFA 19包含联赛及俱乐部…</div>
-                <div>FIFA Online</div>
-              </div>
-            </div>
-          </div>
+          ))}
         </Carousel>
       </div>
     );
