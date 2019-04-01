@@ -15,24 +15,30 @@ import axios from '../axios';
 )
 class Informations extends Component {
   state = {
-    data: []
+    data: [],
+    pageNo: 1,
+    total: 0,
   };
 
 
   componentDidMount() {
     console.log(urlConfig, 'aaaaaaaaaaaaaaaaaaaa');
+    this.fetchData(this.state.pageNo);
+  }
+
+  fetchData = (pageNo) => {
     axios.post(
       '/news/newsList',
       {
         asc: true,
         map: {id: 1, type: 0},
-        nowPage: 1,
+        nowPage: pageNo,
         pageSize: 9,
         sort: 'string'
       }
     ).then((response) => {
       if (response.data.code === '0') {
-        this.setState({data: response.data.data.records});
+        this.setState({data: response.data.data.records, total: response.data.data.total});
       } else {
         message.warning(response.data.msg);
       }
@@ -40,6 +46,29 @@ class Informations extends Component {
       message.error(`${err}`);
     });
   }
+
+  loadMore = async () => {
+    await this.setState({pageNo: this.state.pageNo + 1});
+    axios.post(
+      '/news/newsList',
+      {
+        asc: true,
+        map: {id: 1, type: 0},
+        nowPage: this.state.pageNo,
+        pageSize: 9,
+        sort: 'string'
+      }
+    ).then((response) => {
+      if (response.data.code === '0') {
+        this.setState({data: this.state.data.concat(response.data.data.records)});
+      } else {
+        message.warning(response.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  }
+
 
   renderList = () => {
     const {data} = this.state;
@@ -53,12 +82,15 @@ class Informations extends Component {
   }
 
   render() {
+    const {data, total} = this.state;
     return (
       <div style={{padding: '60px 0 93px 0'}}>
         <Row>
           {this.renderList()}
         </Row>
-        <div style={{textAlign: 'center'}}><button className="loadMoreBtn">加载更多</button></div>
+        {data.length < total ?
+          <div style={{textAlign: 'center'}}><button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button></div>
+          : <div style={{textAlign: 'center'}}><button className="loadMoreBtn" >没有更多</button></div>}
       </div>
     );
   }
