@@ -37,7 +37,7 @@ class Informations extends Component {
         message.warning(response.data.msg);
       }
     }).catch((err) => {
-      message.error(err);
+      message.error(`${err}`);
     });
   }
 
