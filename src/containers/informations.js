@@ -54,12 +54,11 @@ class Informations extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{padding: '60px 0 93px 0'}}>
         <Row>
           {this.renderList()}
-
         </Row>
-
+        <div style={{textAlign: 'center'}}><button className="loadMoreBtn">加载更多</button></div>
       </div>
     );
   }

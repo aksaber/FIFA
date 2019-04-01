@@ -14,14 +14,14 @@ const stylesheet = {
     boxShadow: '20px 20px 60px rgba(0,0,0,0.1)',
     opacity: 1,
     borderRadius: '5px',
-    textAlign: 'center',
     border: '1px solid #fff'
   },
   commonCardImg: {
     width: '100%',
-    height: 239,
-    background: '#000',
-    opacity: 1
+    height: 220
+  },
+  commonCardBody: {
+    padding: '22px 20px',
   }
 };
 
@@ -52,8 +52,8 @@ class CommonCard extends Component {
           // src={this.props.data.coverUrl}
           style={stylesheet.commonCardImg}
         />}
-        bordered
         onClick={this.gotoDetails}
+        bodyStyle={stylesheet.commonCardBody}
       >
         <Meta
           title={this.props.data.title}

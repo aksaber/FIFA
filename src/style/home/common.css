@@ -15,7 +15,24 @@
 .dashedLine{
   width:100%;
   height:0px;
-  border:1px solid rgba(214,221,240,1);
+  border:1px dashed rgba(214,221,240,1);
   opacity:1;
-
+}
+/*----------CommonCard样式----------*/
+.ant-card-meta-title{
+  color: #1A47B0;
+  font-size: 18px;
+  margin-bottom: 17px!important;
+  white-space: unset!important;
+}
+.ant-card-meta-description{
+  color: #595F6F;
+  font-size: 14px;
+}
+/*------------加载更多按钮------------*/
+.loadMoreBtn{
+  padding: 10px 17px;
+  border: 1px solid #1A47B0;
+  color: #1A47B0;
+  background: #fff;
 }
