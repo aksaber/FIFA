@@ -44,7 +44,6 @@ class Details extends Component {
     const {TextArea} = Input;
     return (
       <div>
-        <img />
         <div dangerouslySetInnerHTML={{
           __html: content
         }}
