@@ -9,6 +9,7 @@ import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
 import MultiComment from '../components/MultiComment';
 import axios from '../axios';
+import CommentList from '../components/CommentList';
 
 const stylesheet = {
   words: {
@@ -114,12 +115,9 @@ class Details extends Component {
           </div>
         </div>
         <div style={{marginBottom: 129}}>
-          <MultiComment>
-            <MultiComment>
-              <MultiComment />
-              <MultiComment />
-            </MultiComment>
-          </MultiComment>
+          <CommentList
+            articleId={this.props.history.location.state.id}
+          />
         </div>
         <div className="flex" style={{marginBottom: 38}}>
           <div className="dashedLine flex_1" />

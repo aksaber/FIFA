@@ -6,10 +6,10 @@ import ReplyInput from './ReplyInput';
 class MultiComment extends Component {
   state = {
     showReply: false,
-    data: {
-      name: '张三',
-      comment: '这个球进的好，角度刁钻',
-    }
+    // data: {
+    //   name: '张三',
+    //   comment: '这个球进的好，角度刁钻',
+    // }
   }
 
   showReply = () => {
@@ -18,11 +18,12 @@ class MultiComment extends Component {
   }
 
   render() {
-    const {showReply, data} = this.state;
+    const {showReply} = this.state;
+    const {data} = this.props;
     return (
       <Comment
         actions={[<span onClick={this.showReply}>Reply to</span>]}
-        author={<a >{data.name}     2019年4月1日</a>}
+        author={<a >{data.userName}     {data.messageTime}</a>}
         avatar={(
           <Avatar
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -30,9 +31,9 @@ class MultiComment extends Component {
           />
         )}
         content={
-          <p> {data.comment}</p>}
+          <p>{data.content}</p>}
       >
-        {showReply ? <ReplyInput name={data.name} /> : null}
+        {showReply ? <ReplyInput name={data.userName} /> : null}
         {this.props.children}
       </Comment>
     );
