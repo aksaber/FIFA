@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
-import urlConfig from '../config';
 import axios from '../axios';
 
 
@@ -22,7 +21,6 @@ class Informations extends Component {
 
 
   componentDidMount() {
-    console.log(urlConfig, 'aaaaaaaaaaaaaaaaaaaa');
     this.fetchData(this.state.pageNo);
   }
 

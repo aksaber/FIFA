@@ -36,7 +36,7 @@ class CommonCard extends Component {
     // console.log(this.props, 'commonCard');
     const {history, changeRoute, data} = this.props;
     changeRoute();
-    history.push(`/details?id=${data.id}`);
+    history.push({pathname: `/details?id=${data.id}`, state: {id: data.id}});
   }
 
 
