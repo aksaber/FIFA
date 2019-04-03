@@ -44,17 +44,23 @@ class Fifaheader extends Component {
     };
   }
 
-  gotoFIFA = () => {
+  //banner切换路由
+  gotoNav = (type) => {
     const {history, changeRoute} = this.props;
     changeRoute();
-    history.push('/informations');
-    // this.props.history.push('/informations');
-  };
-
-  gotoMatch = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute();
-    history.push('/match');
+    switch (type) {
+      case 'home':
+        history.push('/home');
+        break;
+      case 'information':
+        history.push('informations');
+        break;
+      case 'match':
+        history.push('/match');
+        break;
+      default:
+        break;
+    }
   };
 
   //搜索框输入
@@ -100,17 +106,15 @@ class Fifaheader extends Component {
           <div className="leftheader">
             <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />
             <ul>
-              <li>首页</li>
+              <div onClick={() => this.gotoNav('home')}><li>首页</li></div>
               <div
-                onClick={this.gotoFIFA}
+                onClick={() => this.gotoNav('information')}
                 onMouseEnter={this.showChildList}
                 onMouseLeave={this.hideChildList}
               >
                 <li>FIFA资讯</li>
               </div>
-              <div onClick={this.gotoMatch}>
-                <li>电竞赛事</li>
-              </div>
+              <div onClick={() => this.gotoNav('match')}><li>电竞赛事</li></div>
             </ul>
           </div>
           <div className="rightheader">

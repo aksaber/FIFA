@@ -53,16 +53,20 @@ class Details extends Component {
     tagArray: [],
     comment: '',
     content: '',
+    tagInfo: []
   };
 
 
   componentDidMount() {
-    console.log(this.props);
     axios.get(`/news/findById${this.props.location.search}&type=0`).then((response) => {
       const {data} = response;
       console.log(data);
       if (data.code === '0') {
-        this.setState({tagArray: data.data.tags, content: data.data.info.content});
+        this.setState({
+          tagArray: data.data.tags,
+          content: data.data.info.content,
+          tagInfo: data.data.tagInfo
+        });
         // , content: data.data.info.content
       } else {
         message.warning(response.data.msg);
@@ -74,10 +78,15 @@ class Details extends Component {
 
 
   render() {
-    const {tagArray, comment, content} = this.state;
+    const {
+      tagArray,
+      tagInfo,
+      comment,
+      content
+    } = this.state;
     const {TextArea} = Input;
     return (
-      <div className="detailDiv">
+      <div className="detailDiv container">
         <div className="detailContent" dangerouslySetInnerHTML={{__html: content}} />
         <div className="dashedLine" />
         <div className="flex" style={{padding: '28px 0 68px 0'}}>
@@ -91,7 +100,7 @@ class Details extends Component {
         </div>
         <div className="flex" style={{marginBottom: 83}}>
           <div className="dashedLine flex_1" />
-          <div style={stylesheet.words}>留言</div>
+          <div style={stylesheet.words}>评论</div>
           <div className="dashedLine flex_1" />
         </div>
         <div style={{marginBottom: 80}}>
@@ -112,10 +121,13 @@ class Details extends Component {
             </MultiComment>
           </MultiComment>
         </div>
-        <div className="flex" style={{marginBottom: 58}}>
+        <div className="flex" style={{marginBottom: 38}}>
           <div className="dashedLine flex_1" />
           <div style={stylesheet.words}>不能错过的内容</div>
           <div className="dashedLine flex_1" />
+        </div>
+        <div>
+          <Row>{tagInfo.map((item) => <Col span={8} key={item.id}><CommonCard data={item} history={this.props.history} /></Col>)}</Row>
         </div>
       </div>
     );

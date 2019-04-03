@@ -6,6 +6,7 @@ import Store from '../redux';
 import DevTools from '../redux/DevTools';
 import App from '../containers/app';
 import Docs from '../containers/docs';
+import Home from '../containers/home';
 import Informations from '../containers/informations';
 import Match from '../containers/Match';
 import Details from '../containers/details';
@@ -24,11 +25,12 @@ const Root = () => (
   <BrowserRouter>
     <Provider store={Store}>
       <div className="router-content">
-        {__DEVELOPMENT__ && <DevTools />}
+        {/*{__DEVELOPMENT__ && <DevTools />}*/}
         <Switch>
           <Router path="/" component={App} >
             {/* exact要求路径与location.pathname必须完全匹配 */}
             <Router exact path="/docs" component={Docs} />
+            <Router exact path="/home" component={Home} />
             <Router exact path="/informations" component={Informations} />
             <Router exact path="/match" component={Match} />
             <Router exact path="/details" component={Details} />

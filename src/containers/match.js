@@ -30,7 +30,7 @@ class Match extends Component {
       },
     ];
     return (
-      <div>
+      <div className="container">
         <Row>
           <Col span={8}><CommonCard data={data[0]} /></Col>
           <Col span={8}><CommonCard data={data[1]} /></Col>

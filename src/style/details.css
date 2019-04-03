@@ -1,17 +1,20 @@
-.detailDiv .detailContent {
-  padding: 68px 0 79px 0;
-  color: #2F2F2F;
-  font-size: 16px;
-  line-height: 2; }
-  .detailDiv .detailContent img {
-    max-width: 100%;
-    margin: 42px 0; }
-.detailDiv .tagColor {
-  border: 1px solid #1A47B0;
-  margin-right: 27px;
-  padding: 8px 29px;
-  color: #1A47B0;
-  border-radius: 2px !important;
-  background: #fff !important; }
+.detailDiv {
+  margin: 68px 0 119px 0; }
+  .detailDiv .detailContent {
+    padding-bottom: 79px;
+    color: #363636;
+    font-size: 16px;
+    line-height: 35px;
+    font-weight: 300; }
+    .detailDiv .detailContent img {
+      max-width: 100%;
+      margin: 42px 0; }
+  .detailDiv .tagColor {
+    border: 1px solid #1A47B0;
+    margin-right: 27px;
+    padding: 8px 29px;
+    color: #1A47B0;
+    border-radius: 2px !important;
+    background: #fff !important; }
 
 /*# sourceMappingURL=details.css.map */

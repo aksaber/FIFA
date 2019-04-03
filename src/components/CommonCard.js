@@ -48,8 +48,7 @@ class CommonCard extends Component {
         style={stylesheet.commonCard}
         cover={<img
           alt="example"
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-          // src={this.props.data.coverUrl}
+          src={this.props.data.coverUrl}
           style={stylesheet.commonCardImg}
         />}
         onClick={this.gotoDetails}

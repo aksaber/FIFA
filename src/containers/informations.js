@@ -22,7 +22,6 @@ class Informations extends Component {
 
 
   componentDidMount() {
-    console.log(urlConfig, 'aaaaaaaaaaaaaaaaaaaa');
     this.fetchData(this.state.pageNo);
   }
 
@@ -45,7 +44,7 @@ class Informations extends Component {
     }).catch((err) => {
       message.error(`${err}`);
     });
-  }
+  };
 
   loadMore = async () => {
     await this.setState({pageNo: this.state.pageNo + 1});
@@ -84,8 +83,8 @@ class Informations extends Component {
   render() {
     const {data, total} = this.state;
     return (
-      <div style={{padding: '60px 0 93px 0'}}>
-        <Row>
+      <div style={{padding: '60px 0 93px 0'}} className="container">
+        <Row style={{marginBottom: 80}}>
           {this.renderList()}
         </Row>
         {data.length < total ?
