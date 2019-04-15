@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Card} from 'antd';
-import logo from '~/assets/logo.png';
 import * as homeActions from '../redux/reduces/home';
 
 const stylesheet = {
@@ -30,15 +29,18 @@ const stylesheet = {
   dispatch => bindActionCreators(homeActions, dispatch)
 )
 
-
 class CommonCard extends Component {
   gotoDetails = () => {
-    // console.log(this.props, 'commonCard');
-    const {history, changeRoute, data} = this.props;
+    const {
+      history,
+      changeRoute,
+      data,
+      location
+    } = this.props;
     changeRoute();
-    history.push({pathname: `/details?id=${data.id}`, state: {id: data.id}});
-  }
-
+    history.push(`/${location}?id=${data.id}&state=${data.id}`);
+    // history.push({pathname: '/details', state: {id: data.id}});
+  };
 
   render() {
     const {Meta} = Card;
@@ -47,7 +49,6 @@ class CommonCard extends Component {
         hoverable
         style={stylesheet.commonCard}
         cover={<img
-          alt="example"
           src={this.props.data.coverUrl}
           style={stylesheet.commonCardImg}
         />}

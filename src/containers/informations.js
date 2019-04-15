@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Card, Avatar, Row, Col, message} from 'antd';
+import {Row, Col, message} from 'antd';
 import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -19,7 +19,6 @@ class Informations extends Component {
     total: 0,
   };
 
-
   componentDidMount() {
     this.fetchData(this.state.pageNo);
   }
@@ -34,11 +33,11 @@ class Informations extends Component {
         pageSize: 9,
         sort: 'string'
       }
-    ).then((response) => {
-      if (response.data.code === '0') {
-        this.setState({data: response.data.data.records, total: response.data.data.total});
+    ).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({data: res.data.data.records, total: res.data.data.total});
       } else {
-        message.warning(response.data.msg);
+        message.warning(res.data.msg);
       }
     }).catch((err) => {
       message.error(`${err}`);
@@ -56,28 +55,27 @@ class Informations extends Component {
         pageSize: 9,
         sort: 'string'
       }
-    ).then((response) => {
-      if (response.data.code === '0') {
-        this.setState({data: this.state.data.concat(response.data.data.records)});
+    ).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({data: this.state.data.concat(res.data.data.records)});
       } else {
-        message.warning(response.data.msg);
+        message.warning(res.data.msg);
       }
     }).catch((err) => {
       message.error(`${err}`);
     });
-  }
-
+  };
 
   renderList = () => {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
       list.push(<Col span={8} key={item.id}>
-        <CommonCard data={item} history={this.props.history} />
+        <CommonCard data={item} history={this.props.history} location="details" />
       </Col>);
     });
     return list;
-  }
+  };
 
   render() {
     const {data, total} = this.state;

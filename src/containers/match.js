@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {List, Card, Avatar, Row, Col} from 'antd';
+import {Row, Col, message} from 'antd';
 import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
+import axios from '../axios';
 
 @connect(
   state => ({home: state.home}),
@@ -12,41 +13,76 @@ import CommonCard from '../components/CommonCard';
 )
 class Match extends Component {
   state = {
+    data: [],
+    pageNo: 1,
+    total: 0,
+  };
+
+  componentDidMount() {
+    this.fetchData(this.state.pageNo);
+  }
+
+  fetchData = (pageNo) => {
+    axios.post('/news/newsList', {
+      asc: true,
+      map: {id: 1, type: 1},
+      nowPage: pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({
+          data: res.data.data.records,
+          total: res.data.data.total
+        });
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  loadMore = async () => {
+    await this.setState({pageNo: this.state.pageNo + 1});
+    axios.post('/news/newsList', {
+      asc: true,
+      map: {id: 1, type: 1},
+      nowPage: this.state.pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({data: this.state.data.concat(res.data.data.records)});
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  renderList = () => {
+    const {data} = this.state;
+    const list = [];
+    data.map((item) => {
+      list.push(<Col span={8} key={item.id}>
+        <CommonCard data={item} history={this.props.history} location="matchDetails" />
+      </Col>);
+    });
+    return list;
   };
 
   render() {
-    const data = [
-      {
-        title: 'Ant Design Title 1',
-      },
-      {
-        title: 'Ant Design Title 2',
-      },
-      {
-        title: 'Ant Design Title 3',
-      },
-      {
-        title: 'Ant Design Title 4',
-      },
-    ];
+    const {data, total} = this.state;
     return (
-      <div className="container">
-        <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
+      <div style={{padding: '60px 0 93px 0'}} className="container">
+        <Row style={{marginBottom: 80}}>
+          {this.renderList()}
         </Row>
-        <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
-        </Row>
-        <Row>
-          <Col span={8}><CommonCard data={data[0]} /></Col>
-          <Col span={8}><CommonCard data={data[1]} /></Col>
-          <Col span={8}><CommonCard data={data[2]} /></Col>
-        </Row>
-
+        {data.length < total ?
+          <div style={{textAlign: 'center'}}><button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button></div>
+          : <div style={{textAlign: 'center'}}><button className="loadMoreBtn" >没有更多</button></div>}
       </div>
     );
   }

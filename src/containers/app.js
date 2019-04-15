@@ -21,8 +21,8 @@ class App extends Component {
   componentWillMount() {
     const {history, changeRoute, initalLogo} = this.props;
     initalLogo();
-    changeRoute();
-    history.push('/home');
+    // changeRoute();
+    // history.push('/home');
   }
   //点击logo时触发changeRoute方法，movelogo = true，跳转/docs路由
   handleBrowserChange = () => {

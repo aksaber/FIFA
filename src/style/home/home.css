@@ -1,4 +1,16 @@
 .homes {
   padding-top: 60px; }
+  .homes .swiperGuidance {
+    padding-right: 15px;
+    padding-left: 15px; }
+    @media (min-width: 768px) {
+      .homes .swiperGuidance {
+        width: 750px; } }
+    @media (min-width: 992px) {
+      .homes .swiperGuidance {
+        width: 970px; } }
+    @media (min-width: 1200px) {
+      .homes .swiperGuidance {
+        width: 1170px; } }
 
 /*# sourceMappingURL=home.css.map */

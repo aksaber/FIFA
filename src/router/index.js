@@ -5,11 +5,13 @@ import {hot} from 'react-hot-loader';
 import Store from '../redux';
 import DevTools from '../redux/DevTools';
 import App from '../containers/app';
+import Login from '../containers/login';
 import Docs from '../containers/docs';
 import Home from '../containers/home';
 import Informations from '../containers/informations';
 import Match from '../containers/Match';
 import Details from '../containers/details';
+import MatchDetails from '../containers/matchDetails';
 
 const Router = ({component: Component, children, ...rest}) => (
   <Route
@@ -27,6 +29,7 @@ const Root = () => (
       <div className="router-content">
         {/*{__DEVELOPMENT__ && <DevTools />}*/}
         <Switch>
+          <Router path="/login" component={Login} />
           <Router path="/" component={App} >
             {/* exact要求路径与location.pathname必须完全匹配 */}
             <Router exact path="/docs" component={Docs} />
@@ -34,6 +37,7 @@ const Root = () => (
             <Router exact path="/informations" component={Informations} />
             <Router exact path="/match" component={Match} />
             <Router exact path="/details" component={Details} />
+            <Router exact path="/matchDetails" component={MatchDetails} />
           </Router>
         </Switch>
       </div>

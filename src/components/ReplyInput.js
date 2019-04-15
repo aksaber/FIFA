@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Input, message, Button} from 'antd';
-import logo from '~/assets/logo.png';
+import {Input, Button} from 'antd';
 import * as homeActions from '../redux/reduces/home';
 
 const stylesheet = {

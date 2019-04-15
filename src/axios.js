@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-urlencoded';
-axios.defaults.baseURL = 'http://192.168.1.111:8083';
+axios.defaults.baseURL = 'http://119.23.201.55:8083';
 axios.defaults.timeout = 60000;
 
 //添加请求拦截器(請求回來前)

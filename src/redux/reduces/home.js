@@ -1,8 +1,10 @@
 const INITALLOGO = 'home/INITALLOGO';
 const CHANGEHISTORY = 'home/CHANGEHISTORY';
+const CURRENTROUTE = 'home';
 
 const initialState = {
-  movelogo: false
+  movelogo: false,
+  currentRoute: ''
 };
 
 /*触发action: store.dispatch({ type: '请求增援', gun: '100' })*/
@@ -21,6 +23,11 @@ export default function reducer(state = initialState, action = {}) {
         movelogo: true,
         text: action.text
       };
+    case CURRENTROUTE:
+      return {
+        ...state,
+        currentRoute: action.text
+      };
     default:
       return state;
   }
@@ -36,5 +43,12 @@ export function changeRoute() {
   return {
     type: CHANGEHISTORY,
     text: 'showDocs'
+  };
+}
+
+export function getRoute(route) {
+  return {
+    type: CURRENTROUTE,
+    text: route
   };
 }

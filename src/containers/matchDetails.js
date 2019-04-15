@@ -2,14 +2,11 @@ import React, {Component} from 'react';
 import {Avatar, Row, Col, Tag, Input, message, Icon} from 'antd';
 import sina from '~/assets/img/sina-blue.svg';
 import wechat from '~/assets/img/wechat-blue.svg';
-import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
-import MultiComment from '../components/MultiComment';
 import axios from '../axios';
-import CommentList from '../components/CommentList';
 
 const stylesheet = {
   words: {
@@ -50,7 +47,7 @@ const stylesheet = {
   dispatch => bindActionCreators(homeActions, dispatch)
 )
 
-class Details extends Component {
+class MatchDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,7 +60,7 @@ class Details extends Component {
   }
 
   componentDidMount() {
-    axios.get(`/news/findById?id=${this.state.urlParams.id}&type=0`).then((res) => {
+    axios.get(`/news/findById?id=${this.state.urlParams.id}&type=1`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
@@ -107,7 +104,7 @@ class Details extends Component {
     const {TextArea} = Input;
     return (
       <div className="detailDiv container">
-        <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
+        <div className="detailContent" dangerouslySetInnerHTML={{__html: content}} />
         <div className="dashedLine" />
         <div className="flex" style={{padding: '28px 0 68px 0'}}>
           <div className="flex_1">
@@ -146,4 +143,4 @@ class Details extends Component {
   }
 }
 
-export default Details;
+export default MatchDetails;

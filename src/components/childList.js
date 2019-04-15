@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Swiper from 'swiper/dist/js/swiper.js';
 import * as homeActions from '../redux/reduces/home';
-import defaultPhoto from '../assets/img/defaultPhoto.png';
+import axios from '../axios';
 
 @connect(
   state => ({home: state.home}),
@@ -11,25 +11,39 @@ import defaultPhoto from '../assets/img/defaultPhoto.png';
 )
 
 class childList extends Component {
-  componentDidMount() {
-    this.swiper = new Swiper('.swiperHeader', {
-      loop: false,
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-      slidesPerView: 4
-    });
+  componentWillReceiveProps(nextProps) {
+    const {data} = nextProps;
+    if (data.length > 0) {
+      this.swiper = new Swiper('.swiperHeader', {
+        loop: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 4
+      });
+    }
   }
 
   renderList = () => {
-    const {data} = this.props;
+    const {data, type} = this.props;
     const list = [];
     data.map((item) => {
-      list.push(<li className="swiper-slide">
-        <img src={defaultPhoto} width={320} height={130} style={{'margin-bottom': '11px'}} />
+      list.push(<div onClick={() => this.gotoDetail(type, item.id)} key={item.id}><li className="swiper-slide">
+        <img src={item.coverUrl} width={320} height={130} style={{'margin-bottom': '11px'}} />
         <div>{item.name}</div>
-      </li>);
+      </li></div>);
     });
     return list;
+  };
+
+  gotoDetail = (type, id) => {
+    //跳转到相应资讯/赛事列表
+    const {history, changeRoute} = this.props;
+    changeRoute();
+    if (type === 0) {
+      history.push('/informations');
+    } else {
+      history.push('/match');
+    }
   };
 
   render() {
@@ -54,9 +68,10 @@ class childList extends Component {
         <div className="swiperHeader">
           <div className="swiper-wrapper">{this.renderList()}</div>
           <div className="swiper-button-prev" />
-          <div className="swiperNextDiv">
-            <div className="swiper-button-next" />
-          </div>
+          <div className="swiper-button-next" />
+          {/*<div className="swiperNextDiv">*/}
+          {/*<div className="swiper-button-next" />*/}
+          {/*</div>*/}
         </div>
       </ul>
     );

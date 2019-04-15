@@ -86,11 +86,11 @@
   width: 121px;
   background: linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
 }
-.swiperHeader .swiper-button-next{
-  width: 40px;
-  height: 40px;
-  background-image: url('../../assets/img/nextBtn.png');
-}
+/*.swiperHeader .swiper-button-next{*/
+  /*width: 40px;*/
+  /*height: 40px;*/
+  /*background-image: url('../../assets/img/nextBtn.png');*/
+/*}*/
 .header{
   background: linear-gradient(180deg,rgba(18,48,117,1) 0%,rgba(9,32,86,1) 100%);
 }

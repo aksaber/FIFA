@@ -1,0 +1,54 @@
+.loginPage {
+  width: 100%;
+  height: 100vh;
+  background: #707070; }
+  .loginPage .loginModule {
+    position: absolute;
+    right: 200px;
+    top: 50%;
+    margin-top: -220px; }
+    .loginPage .loginModule .titleBox {
+      float: left;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      padding: 30px 50px; }
+      .loginPage .loginModule .titleBox .subTitle {
+        border-top: 2px solid rgba(255, 255, 255, 0.3);
+        padding-top: 20px;
+        margin-bottom: 50px; }
+    .loginPage .loginModule .loginFrame {
+      float: left;
+      margin-left: 57px;
+      color: #1F1F1F;
+      background: #fff;
+      border-radius: 5px;
+      padding: 30px 70px; }
+      .loginPage .loginModule .loginFrame .title {
+        text-align: center;
+        font-size: 23px; }
+      .loginPage .loginModule .loginFrame ul {
+        width: 80%;
+        margin: 20px auto;
+        text-align: center;
+        padding: 0 !important; }
+        .loginPage .loginModule .loginFrame ul .flex_1 {
+          cursor: pointer; }
+          .loginPage .loginModule .loginFrame ul .flex_1:first-child {
+            margin-right: 10px; }
+        .loginPage .loginModule .loginFrame ul .liStyle {
+          padding-bottom: 10px;
+          border-bottom: 2px solid #414141; }
+      .loginPage .loginModule .loginFrame .ant-row {
+        width: 250px; }
+        .loginPage .loginModule .loginFrame .ant-row > div {
+          margin: 5px 0; }
+      .loginPage .loginModule .loginFrame button {
+        width: 100%;
+        height: unset;
+        background: #1F1F1F;
+        color: #fff;
+        padding: 6px;
+        margin-top: 20px; }
+
+/*# sourceMappingURL=login.css.map */

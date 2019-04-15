@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Comment, Avatar, message} from 'antd';
+import {message} from 'antd';
 import ReplyInput from './ReplyInput';
 import axios from '../axios';
 import MultiComment from './MultiComment';
