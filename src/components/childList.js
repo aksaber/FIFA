@@ -38,11 +38,12 @@ class childList extends Component {
   gotoDetail = (type, id) => {
     //跳转到相应资讯/赛事列表
     const {history, changeRoute} = this.props;
-    changeRoute();
     if (type === 0) {
-      history.push('/informations');
+      changeRoute('informations');
+      history.push(`/informations?id=${id}`);
     } else {
-      history.push('/match');
+      changeRoute('match');
+      history.push(`/match?id=${id}`);
     }
   };
 

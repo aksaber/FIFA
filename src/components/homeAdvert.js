@@ -14,13 +14,15 @@ class HomeAdvert extends Component {
   render() {
     const {data} = this.props;
     return (
-      <Carousel vertical className="headerContent container" autoplay>
-        {data.map((item, index) => (
-          <div key={item.id}>
-            <div className="title_2">{item.title}</div>
-          </div>
-        ))}
-      </Carousel>
+      <div style={{padding: '40px 0'}}>
+        <Carousel vertical className="headerContent container" autoplay>
+          {data.map((item, index) => (
+            <div key={item.id}>
+              <div className="title_2">{item.title}</div>
+            </div>
+          ))}
+        </Carousel>
+      </div>
     );
   }
 }

@@ -60,6 +60,8 @@ class MatchDetails extends Component {
   }
 
   componentDidMount() {
+    const {changeRoute, getDetailData} = this.props;
+    changeRoute('details');
     axios.get(`/news/findById?id=${this.state.urlParams.id}&type=1`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
@@ -68,6 +70,7 @@ class MatchDetails extends Component {
           content: data.data.info.content,
           tagInfo: data.data.tagInfo
         });
+        getDetailData(data.data.info);
         // , content: data.data.info.content
       } else {
         message.warning(data.msg);

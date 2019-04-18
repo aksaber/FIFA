@@ -19,21 +19,15 @@ class App extends Component {
   };
   //将要装载，在render之前调用
   componentWillMount() {
-    const {history, changeRoute, initalLogo} = this.props;
-    initalLogo();
-    // changeRoute();
-    // history.push('/home');
+    const {history, changeRoute, home: {currentRoute}} = this.props;
+    //当前路由为'/'时跳转到home首页
+    if (currentRoute === '/') {
+      changeRoute('home');
+      history.push('/home');
+    }
   }
-  //点击logo时触发changeRoute方法，movelogo = true，跳转/docs路由
-  handleBrowserChange = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute();
-    history.push('/docs');
-  };
 
   render() {
-    /* 相当于const movelogo = this.props.home.movelogo */
-    const {home: {movelogo}} = this.props;
     return (
       <div className="home">
         <Fifaheader history={this.props.history} />

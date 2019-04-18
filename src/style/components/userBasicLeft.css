@@ -1,0 +1,20 @@
+.userBasicLeft {
+  width: 340px;
+  height: 100%;
+  background: linear-gradient(217deg, #123075 0%, #092056 100%);
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  float: left; }
+  .userBasicLeft .centerLine {
+    height: 2px;
+    background: #fff;
+    width: 20px;
+    margin: 25px auto; }
+  .userBasicLeft .userList {
+    padding: 25px 0;
+    cursor: pointer; }
+  .userBasicLeft .selList {
+    background: rgba(255, 255, 255, 0.2); }
+
+/*# sourceMappingURL=userBasicLeft.css.map */

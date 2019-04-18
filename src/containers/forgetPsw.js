@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Row, Col, Input, Button, Checkbox, message} from 'antd';
+import {Row, Col, Input, Button, message} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
-import '../style/register.scss';
+import '../style/forgetPsw.scss';
 import axios from '../axios';
 
 @connect(
@@ -11,18 +11,19 @@ import axios from '../axios';
   dispatch => bindActionCreators(homeActions, dispatch)
 )
 
-class Register extends Component {
+class ForgetPsw extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loginWay: 0,
       phone: '',
+      email: '',
       password: '',
       rePassword: '',
       phoneCode: '',
       code: '',
       imgSrc: '',
       cToken: '',
-      isAllow: false
     };
   }
 
@@ -36,6 +37,26 @@ class Register extends Component {
     const o = {};
     o[event.target.name] = event.target.value;
     this.setState(o);
+  };
+
+  //获取手机验证码
+  getPhoneCode = () => {
+    const {phone} = this.state;
+    axios.get(`/member/sendSms?phone=${phone}`).then(res => {
+      const {data} = res;
+      if (data.code === '0') {
+        message.success('手机验证码已发送');
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  //切换手机、邮箱登录
+  toggleLogin = (type) => {
+    type === 0 ? this.setState({loginWay: 0}) : this.setState({loginWay: 1});
   };
 
   //获取图片验证码
@@ -55,32 +76,15 @@ class Register extends Component {
     });
   };
 
-  //获取手机验证码
-  getPhoneCode = () => {
-    const {phone} = this.state;
-    axios.get(`/member/sendSms?phone=${phone}`).then(res => {
-      const {data} = res;
-      if (data.code === '0') {
-        message.success('手机验证码已发送');
-      } else {
-        message.warning(data.msg);
-      }
-    }).catch((err) => {
-      message.error(`${err}`);
-    });
-  };
-
-  //是否同意注册条款
-  allowCheckbox = (e) => {
-    this.setState({
-      isAllow: e.target.checked
-    });
-  };
-
-  //注册
-  registerFun = () => {
+  //忘记密码提交
+  saveFun = () => {
     const {history, changeRoute} = this.props;
-    const {password, rePassword, isAllow} = this.state;
+    const {
+      loginWay,
+      password,
+      rePassword,
+      email
+    } = this.state;
     if (password.length < 6) {
       message.warning('密码长度不应小于6位');
       return false;
@@ -89,34 +93,38 @@ class Register extends Component {
       message.warning('密码不一致');
       return false;
     }
-    if (!isAllow) {
-      message.warning('请同意接受条款');
+    if (loginWay === 0) {
+      //手机忘记密码
+      axios.post('/member/phoneForgot', {
+        phone: this.state.phone,
+        phoneCode: this.state.phoneCode,
+        password: this.state.password,
+        captachCode: this.state.code,
+        captachToken: this.state.cToken
+      }).then(res => {
+        const {data} = res;
+        if (data.code === '0') {
+          message.success('密码修改成功');
+          changeRoute('login');
+          history.push('/login');
+        } else {
+          message.warning(data.msg);
+          this.getCode();
+        }
+      });
+    } else {
+      console.log(11);
+      //邮箱忘记密码
+      // axios.post(`/member/sendEmailFindPassword?email=${email}`)
+      //   .then(res => {
+      //
+      //   })
     }
-    axios.post('/auth/register', {
-      phone: this.state.phone,
-      phoneCode: this.state.phoneCode,
-      password: this.state.password,
-      captachCode: this.state.code,
-      captachToken: this.state.cToken,
-      type: 2
-    }).then(res => {
-      const {data} = res;
-      if (data.code === '0') {
-        message.success('注册成功');
-        changeRoute('login');
-        history.push('/login');
-      } else {
-        message.warning(data.msg);
-        this.getCode();
-      }
-    }).catch((err) => {
-      message.error(`${err}`);
-    });
   };
-
   render() {
     const {Password} = Input;
     const {
+      loginWay,
       phone,
       password,
       rePassword,
@@ -126,9 +134,17 @@ class Register extends Component {
       cToken
     } = this.state;
     return (
-      <div className="registerPage">
-        <div className="registerModule">
-          <div className="title">注册用户</div>
+      <div className="forgetPswPage">
+        <div className="forgetPswModule">
+          <div className="title">忘记密码</div>
+          <div className="clearAfter" style={{width: 200, margin: '15px auto 10px'}}>
+            <div className="left" onClick={() => this.toggleLogin(0)}>
+              <li className={loginWay === 0 ? 'liStyle' : ''}>手机号码登录</li>
+            </div>
+            <div className="right" onClick={() => this.toggleLogin(1)}>
+              <li className={loginWay === 1 ? 'liStyle' : ''}>邮箱登录</li>
+            </div>
+          </div>
           <Row>
             <Col span={12}>
               <Col span={24}>
@@ -200,10 +216,8 @@ class Register extends Component {
               </Col>
             </Col>
           </Row>
-          <div className="registerFooter">
-            <Checkbox onChange={this.allowCheckbox}>点击注册，即表示您同意接受我们的条款、数据使用政策和Cookie政策。</Checkbox>
-            <br />
-            <Button className="registerBtn" onClick={this.registerFun}>注册</Button>
+          <div style={{textAlign: 'center', marginTop: 44}}>
+            <Button style={{padding: '8px 109px', height: 'unset'}} onClick={this.saveFun}>提交</Button>
           </div>
         </div>
       </div>
@@ -211,4 +225,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ForgetPsw;

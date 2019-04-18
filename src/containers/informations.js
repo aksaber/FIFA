@@ -13,22 +13,36 @@ import axios from '../axios';
   dispatch => bindActionCreators(homeActions, dispatch)
 )
 class Informations extends Component {
-  state = {
-    data: [],
-    pageNo: 1,
-    total: 0,
-  };
-
-  componentDidMount() {
-    this.fetchData(this.state.pageNo);
+  constructor(props) {
+    super(props);
+    this.state = {
+      urlParams: this.formatSearch(props.location.search),
+      data: [],
+      pageNo: 1,
+      total: 0,
+    };
   }
 
-  fetchData = (pageNo) => {
+  componentDidMount() {
+    const {urlParams, pageNo} = this.state;
+    this.fetchData(pageNo, parseInt(urlParams.id, 10));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    //每次更换不同id时重新渲染页面，如：informations?id=5 => informations?id=19
+    this.setState({
+      urlParams: this.formatSearch(nextProps.location.search)
+    }, () => {
+      this.fetchData(this.state.pageNo, parseInt(this.state.urlParams.id, 10));
+    });
+  }
+
+  fetchData = (pageNo, urlId) => {
     axios.post(
       '/news/newsList',
       {
         asc: true,
-        map: {id: 1, type: 0},
+        map: {id: urlId, type: 0},
         nowPage: pageNo,
         pageSize: 9,
         sort: 'string'
@@ -50,7 +64,7 @@ class Informations extends Component {
       '/news/newsList',
       {
         asc: true,
-        map: {id: 1, type: 0},
+        map: {id: parseInt(this.state.urlParams.id, 10), type: 0},
         nowPage: this.state.pageNo,
         pageSize: 9,
         sort: 'string'
@@ -64,6 +78,23 @@ class Informations extends Component {
     }).catch((err) => {
       message.error(`${err}`);
     });
+  };
+
+  formatSearch = (url) => {
+    if (typeof url !== 'undefined') {
+      url = url.substr(1);
+      //把字符串分割为字符串数组
+      const arr = url.split('&');
+      let obj = {};
+      const objAssign = {};
+      let newarr = [];
+      arr.forEach((item) => {
+        newarr = item.split('=');
+        obj = {[newarr[0]]: newarr[1]};
+        Object.assign(objAssign, obj);
+      });
+      return objAssign;
+    }
   };
 
   renderList = () => {

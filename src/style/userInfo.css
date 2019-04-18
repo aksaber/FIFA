@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.userInfo {
+  height: 800px; }
+  .userInfo .rightContent {
+    float: left;
+    padding: 60px;
+    height: 100%;
+    position: relative; }
+    .userInfo .rightContent .title {
+      color: #1A47B0;
+      font-size: 24px;
+      padding-bottom: 29px;
+      border-bottom: 1px dashed #D6DDF0; }
+    .userInfo .rightContent .subTitle {
+      color: #414141;
+      font-size: 18px;
+      margin: 45px 0; }
+    .userInfo .rightContent .upload:after {
+      content: '请选择jpg、gif格式，小于2M的图片（使用高质量图片，可生成高清头像）';
+      display: block;
+      margin-top: 19px; }
+    .userInfo .rightContent .clearAfter {
+      padding-bottom: 45px;
+      border-bottom: 1px solid #D6DDF0; }
+    .userInfo .rightContent .userBtn {
+      background: #414141;
+      color: #fff; }
+    .userInfo .rightContent .labelInput {
+      display: inline-block;
+      width: 100px; }
+    .userInfo .rightContent .msgFlame {
+      background: #fff;
+      border: 1px solid #F0F0F0;
+      padding: 15px 24px;
+      margin: 20px 0;
+      border-radius: 5px; }
+
+/*# sourceMappingURL=userInfo.css.map */

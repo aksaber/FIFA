@@ -36,3 +36,8 @@
   color: #1A47B0;
   background: #fff;
 }
+.clearAfter:after{
+  content: '';
+  display: block;
+  clear: both;
+}

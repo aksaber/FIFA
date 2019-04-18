@@ -130,7 +130,7 @@ class Home extends Component {
   //热门资讯查看更多
   findMore = () => {
     const {history, changeRoute} = this.props;
-    changeRoute();
+    changeRoute('informations');
     history.push('/informations');
   };
 
@@ -175,8 +175,11 @@ class Home extends Component {
             <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>
             : <button className="loadMoreBtn" onClick={this.findMore}>查看更多</button>}</div>
         </div>
-        <div onClick={() => this.jumpUrl(advert.jumpUrl)}>
-          <img src={advert.pictureUrl} style={{width: '100%', height: 'auto', margin: '70px 0 109px 0'}} />
+        <div
+          onClick={() => this.jumpUrl(advert.jumpUrl)}
+          style={{margin: '70px 0 109px 0'}}
+        >
+          <img src={advert.pictureUrl} style={{width: '100%', height: 'auto', cursor: 'pointer'}} />
         </div>
         <div className="container">
           <div className="flex" style={{marginBottom: 49}}>

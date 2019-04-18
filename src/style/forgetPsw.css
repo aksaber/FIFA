@@ -1,0 +1,33 @@
+.forgetPswPage {
+  width: 100%;
+  height: 100vh;
+  background: #707070; }
+  .forgetPswPage .forgetPswModule {
+    width: 700px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -256px;
+    margin-left: -350px;
+    background: #fff;
+    color: #1F1F1F;
+    padding: 30px 40px;
+    border-radius: 5px; }
+    .forgetPswPage .forgetPswModule .title {
+      text-align: center;
+      width: 100%;
+      font-size: 28px; }
+    .forgetPswPage .forgetPswModule button {
+      background: #1F1F1F;
+      color: #fff; }
+    .forgetPswPage .forgetPswModule .ant-row > div {
+      margin: 5px 0; }
+    .forgetPswPage .forgetPswModule .ant-row > .ant-col-12 {
+      padding: 0 15px; }
+    .forgetPswPage .forgetPswModule .liStyle {
+      padding-bottom: 10px;
+      border-bottom: 2px solid #414141; }
+    .forgetPswPage .forgetPswModule li {
+      cursor: pointer; }
+
+/*# sourceMappingURL=forgetPsw.css.map */

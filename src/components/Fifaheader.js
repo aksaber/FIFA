@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Avatar, Input, Carousel, message} from 'antd';
+import {Avatar, Input, message} from 'antd';
+import $ from 'jquery';
 
 import logo from '~/assets/img/logo.svg';
 import ChildList from '../components/childList';
@@ -25,23 +26,24 @@ class Fifaheader extends Component {
       carouselData: [],
       isShow: false,
       isShow2: false,
-      route: ''
+      isFixed: false
     };
   }
 
   //banner切换路由
   gotoNav = (type) => {
-    const {history, changeRoute, getRoute} = this.props;
-    changeRoute();
-    getRoute(history.location.pathname);
+    const {history, changeRoute} = this.props;
     switch (type) {
       case 'home':
+        changeRoute('home');
         history.push('/home');
         break;
       case 'information':
+        changeRoute('informations');
         history.push('/informations');
         break;
       case 'match':
+        changeRoute('match');
         history.push('/match');
         break;
       default:
@@ -76,28 +78,16 @@ class Fifaheader extends Component {
     }
   };
 
-  componentWillReceiveProps(newProps) {
-    //判断当前页面路由
-    const {history: {location: {pathname}}} = newProps;
-    if (pathname.indexOf('/home') > -1) {
-      this.setState({route: 'home'});
-    } else if (pathname.indexOf('/informations') > -1) {
-      this.setState({route: 'informations'});
-    } else if (pathname.indexOf('/match') > -1) {
-      this.setState({route: 'match'});
-    }
-  }
-
   componentDidMount() {
-    //判断当前页面路由
-    const {history: {location: {pathname}}} = this.props;
-    if (pathname.indexOf('/home') > -1) {
-      this.state.route = 'home';
-    } else if (pathname.indexOf('/informations') > -1) {
-      this.state.route = 'informations';
-    } else if (pathname.indexOf('/match') > -1) {
-      this.state.route = 'match';
-    }
+    //监听滚动条高度
+    window.addEventListener('scroll', (e) => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 90) {
+        this.setState({isFixed: true});
+      } else {
+        this.setState({isFixed: false});
+      }
+    });
 
     //首页置顶广告
     axios.get('/news/firstNews').then((res) => {
@@ -152,7 +142,7 @@ class Fifaheader extends Component {
   //跳转登录页面
   gotoLogin = () => {
     const {history, changeRoute} = this.props;
-    changeRoute();
+    changeRoute('login');
     history.push('/login');
   };
 
@@ -161,60 +151,75 @@ class Fifaheader extends Component {
       infoList,
       homeList,
       matchList,
-      route,
       isShow,
       isShow2,
-      carouselData
+      carouselData,
+      isFixed
     } = this.state;
+    const {home: {currentRoute, detailData}} = this.props;
+    const styleFixed = {
+      position: 'fixed'
+    };
+    //顶部广告轮播
+    const getAdvert = () => {
+      let DOM = '';
+      if (currentRoute.indexOf('home') > -1) {
+        DOM = <HomeAdvert data={homeList} />;
+      } else if (currentRoute.indexOf('userInfo') > -1) {
+        DOM = '';
+      } else if (currentRoute.indexOf('detail') > -1) {
+        DOM = <InfoAdvert data={detailData} />;
+      } else {
+        DOM = <InfoAdvert data={carouselData} />;
+      }
+      return DOM;
+    };
+
     return (
       <div className="header">
-        <div className="fifaheader container">
-          <div className="leftheader">
-            <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />
-            <ul>
-              <div onClick={() => this.gotoNav('home')}><li>首页</li></div>
-              <div
-                onClick={() => this.gotoNav('information')}
-                onMouseEnter={() => this.showChildList(0)}
-                onMouseLeave={() => this.hideChildList(0)}
-              >
-                <li>FIFA资讯</li>
-              </div>
-              <div
-                onClick={() => this.gotoNav('match')}
-                onMouseEnter={() => this.showChildList(1)}
-                onMouseLeave={() => this.hideChildList(1)}
-              >
-                <li>电竞赛事</li>
-              </div>
-            </ul>
+        <div className={isFixed ? 'fixedFlame' : ''}>
+          <div className="fifaheader container">
+            <div className="leftheader">
+              <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />
+              <ul>
+                <div onClick={() => this.gotoNav('home')}><li>首页</li></div>
+                <div
+                  onMouseEnter={() => this.showChildList(0)}
+                  onMouseLeave={() => this.hideChildList(0)}
+                >
+                  <li>FIFA资讯</li>
+                </div>
+                <div
+                  onMouseEnter={() => this.showChildList(1)}
+                  onMouseLeave={() => this.hideChildList(1)}
+                >
+                  <li>电竞赛事</li>
+                </div>
+              </ul>
+            </div>
+            <div className="rightheader">
+              <Input placeholder="搜索" onPressEnter={this.searchInfo} />
+              <Avatar onClick={this.gotoLogin} shape="circle" icon="user" style={{height: 40, width: 40, lineHeight: '40px'}} />
+            </div>
+            <ChildList
+              data={infoList}
+              type={0}
+              history={this.props.history}
+              isShow={isShow}
+              onMouseEnter={() => this.showChildList(0)}
+              onMouseLeave={() => this.hideChildList(0)}
+            />
+            <ChildList
+              data={matchList}
+              type={1}
+              history={this.props.history}
+              isShow={isShow2}
+              onMouseEnter={() => this.showChildList(1)}
+              onMouseLeave={() => this.hideChildList(1)}
+            />
           </div>
-          <div className="rightheader">
-            <Input placeholder="搜索" onPressEnter={this.searchInfo} />
-            <Avatar onClick={this.gotoLogin} shape="circle" icon="user" style={{height: 40, width: 40, lineHeight: '40px'}} />
-          </div>
-          <ChildList
-            data={infoList}
-            type={0}
-            history={this.props.history}
-            isShow={isShow}
-            onMouseEnter={() => this.showChildList(0)}
-            onMouseLeave={() => this.hideChildList(0)}
-          />
-          <ChildList
-            data={matchList}
-            type={1}
-            history={this.props.history}
-            isShow={isShow2}
-            onMouseEnter={() => this.showChildList(1)}
-            onMouseLeave={() => this.hideChildList(1)}
-          />
         </div>
-        <div className="container" style={{marginBottom: '31px'}}>
-          <span className="headerLine" style={{background: '#fff', width: '113px'}} />
-          <span className="headerLine" style={{background: '#709BE7', width: '67px'}} />
-        </div>
-        {route === 'home' ? <HomeAdvert data={homeList} /> : <InfoAdvert data={carouselData} />}
+        {getAdvert()}
       </div>
     );
   }

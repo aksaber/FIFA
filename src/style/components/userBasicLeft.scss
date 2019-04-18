@@ -1,0 +1,22 @@
+.userBasicLeft{
+  width: 340px;
+  height: 100%;
+  background: linear-gradient(217deg, rgba(18, 48, 117, 1) 0%, rgba(9, 32, 86, 1) 100%);
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  float: left;
+  .centerLine{
+    height: 2px;
+    background: #fff;
+    width: 20px;
+    margin: 25px auto;
+  }
+  .userList{
+    padding: 25px 0;
+    cursor: pointer;
+  }
+  .selList{
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
