@@ -22,13 +22,25 @@ class Login extends Component {
       password: '',
       code: '',
       imgSrc: '',
-      cToken: ''
+      cToken: '',
+      adLogin: {}
     };
   }
 
   componentDidMount() {
     //获取图片验证码
     this.getCode();
+    //登录页广告图
+    axios.get('/news/news/firstNews').then((res) => {
+      const {data} = res;
+      if (data.code === '0') {
+        this.setState({adLogin: data.data.adLogin});
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
   }
 
   //切换手机、邮箱登录
@@ -53,7 +65,7 @@ class Login extends Component {
   //登录
   loginFun = () => {
     const {history, changeRoute, saveToken} = this.props;
-    axios.post('/auth/login', {
+    axios.post('/user/auth/login', {
       phone: this.state.phone,
       email: this.state.email,
       password: this.state.password,
@@ -75,12 +87,13 @@ class Login extends Component {
       }
     }).catch((err) => {
       message.error(`${err}`);
+      this.getCode();
     });
   };
 
   //获取图片验证码
   getCode = () => {
-    axios.get('/auth/getCaptcha').then(res => {
+    axios.get('/user/auth/getCaptcha').then(res => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
@@ -100,10 +113,12 @@ class Login extends Component {
     const {
       loginWay,
       phone,
+      email,
       password,
       code,
       imgSrc,
-      cToken
+      cToken,
+      adLogin
     } = this.state;
     return (
       <div className="loginPage">
@@ -116,15 +131,19 @@ class Login extends Component {
             </div>
             <div className="subTitle">
               <p>中国最好的FIFA游戏资讯站</p>
-              <p>China’s Beast FIFA Game Information</p>
+              <p>China Best FIFA Game Information Station.</p>
             </div>
-            <div style={{
-              background: '#ff0099',
-              borderRadius: 5,
-              width: '100%',
-              height: 100
-            }}
-            />
+            <div
+              style={{textAlign: 'center'}}
+              onClick={() => { window.open(adLogin.jumpUrl); }}
+            >
+              <img
+                src={adLogin.pictureUrl}
+                width={260}
+                height={100}
+                style={{borderRadius: 5, cursor: 'pointer'}}
+              />
+            </div>
           </div>
           <div className="loginFrame">
             <div className="title">用户登录</div>
@@ -137,13 +156,22 @@ class Login extends Component {
               </div>
             </ul>
             <Row>
-              <Col span={24}>
-                <p>{loginWay === 0 ? '手机号码' : '邮箱'}</p>
+              <Col span={24} style={{display: (loginWay === 0) ? 'block' : 'none'}}>
+                <p>手机号码</p>
                 <Input
                   value={phone}
                   onChange={this._changeValue}
                   name="phone"
-                  placeholder={loginWay === 0 ? '您的手机号码' : '您的邮箱号码'}
+                  placeholder="您的手机号码"
+                />
+              </Col>
+              <Col span={24} style={{display: (loginWay === 1) ? 'block' : 'none'}}>
+                <p>邮箱</p>
+                <Input
+                  value={email}
+                  onChange={this._changeValue}
+                  name="email"
+                  placeholder="您的邮箱号码"
                 />
               </Col>
               <Col span={24}>
@@ -184,8 +212,14 @@ class Login extends Component {
               </Col>
             </Row>
             <div style={{marginTop: 10}}>
-              <span style={{cursor: 'pointer'}} onClick={() => this.gotoRoute('forgetPsw')}>忘记密码</span>
-              <span style={{float: 'right', cursor: 'pointer'}} onClick={() => this.gotoRoute('register')}>注册账号</span>
+              <span
+                style={{cursor: 'pointer'}}
+                onClick={() => this.gotoRoute('forgetPsw')}
+              >忘记密码</span>
+              <span
+                style={{float: 'right', cursor: 'pointer'}}
+                onClick={() => this.gotoRoute('register')}
+              >注册账号</span>
             </div>
           </div>
         </div>

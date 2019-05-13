@@ -8,69 +8,62 @@ import MultiComment from './MultiComment';
 class CommentList extends Component {
   state = {
     showReply: false,
-    data: [],
-    pageNo: 1,
-    total: 0,
-  }
+  };
 
-  componentDidMount() {
-    this.fetchData(this.state.pageNo);
-  }
+  // componentDidMount() {
+  //   this.fetchData(this.state.pageNo);
+  // }
+  //
+  // //获取当篇文章的一级评论
+  // fetchData = (pageNo) => {
+  //   axios.post('/news/member/messageList', {
+  //     asc: true,
+  //     map: {id: this.props.articleId},
+  //     nowPage: pageNo,
+  //     pageSize: 9,
+  //     sort: 'string'
+  //   }).then((res) => {
+  //     if (res.data.code === '0') {
+  //       this.setState({data: res.data.data.records, total: res.data.data.total});
+  //     } else {
+  //       message.warning(res.data.msg);
+  //     }
+  //   }).catch((err) => {
+  //     message.error(`${err}`);
+  //   });
+  // };
 
-  fetchData = (pageNo) => {
-    axios.post(
-      '/member/messageList',
-      {
-        asc: true,
-        map: {id: this.props.articleId},
-        nowPage: pageNo,
-        pageSize: 9,
-        sort: 'string'
-      }
-    ).then((response) => {
-      if (response.data.code === '0') {
-        this.setState({data: response.data.data.records, total: response.data.data.total});
-      } else {
-        message.warning(response.data.msg);
-      }
-    }).catch((err) => {
-      message.error(`${err}`);
-    });
-  }
-
-  loadMore = async () => {
-    await this.setState({pageNo: this.state.pageNo + 1});
-    axios.post(
-      '/member/messageList',
-      {
-        asc: true,
-        map: {id: this.props.articleId},
-        nowPage: this.state.pageNo,
-        pageSize: 9,
-        sort: 'string'
-      }
-    ).then((response) => {
-      if (response.data.code === '0') {
-        this.setState({data: this.state.data.concat(response.data.data.records), total: response.data.data.total});
-      } else {
-        message.warning(response.data.msg);
-      }
-    }).catch((err) => {
-      message.error(`${err}`);
-    });
-  }
-
+  //加载更多
+  // loadMore = async () => {
+  //   await this.setState({pageNo: this.state.pageNo + 1});
+  //   axios.post('/news/member/messageList', {
+  //     asc: true,
+  //     map: {id: this.props.articleId},
+  //     nowPage: this.state.pageNo,
+  //     pageSize: 9,
+  //     sort: 'string'
+  //   }).then((res) => {
+  //     if (res.data.code === '0') {
+  //       this.setState({
+  //         data: this.state.data.concat(res.data.data.records),
+  //         total: res.data.data.total
+  //       });
+  //     } else {
+  //       message.warning(res.data.msg);
+  //     }
+  //   }).catch((err) => {
+  //     message.error(`${err}`);
+  //   });
+  // };
 
   render() {
-    const {showReply, data, total} = this.state;
+    const {showReply} = this.state;
+    const {data, openComment} = this.props;
     return (
-      <div style={{padding: '60px 0 93px 0'}}>
+      <div>
         {data.map((item) => (
-          <MultiComment data={item} key={item.id} />
+          <MultiComment data={item} key={item.id} openComment={openComment} />
         ))}
-        {data.length < total ?
-          <div style={{textAlign: 'center'}}><button className="loadMoreBtn" onClick={this.loadMore}>查看更多评论</button></div>
-          : <div style={{textAlign: 'center'}}><button className="loadMoreBtn" >没有更多评论</button></div>}
       </div>
     );
   }

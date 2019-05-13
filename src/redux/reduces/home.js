@@ -3,13 +3,22 @@ const CHANGEHISTORY = 'home/CHANGEHISTORY';
 const CURRENTROUTE = 'home';
 const DETAILDATA = 'home/DETAILDATA';
 const SAVETOKEN = 'login/SAVETOKEN';
+const GETTOKEN = 'home/TOKEN';
+const SETFIXED = 'homeFIXED';
+const GETUSERINFO = 'userInfo';
+const INFOCLASSIFY = 'infoclassify';
+const MATCHCLASSIFY = 'matchclassify';
 
 const initialState = {
   movelogo: false,
-  currentRoute: window.location.pathname,
+  currentRoute: window.location.hash,
   detailData: {},
   token: '',
-  isLogin: false
+  isFixed: '',
+  isLogin: false,
+  userInfo: {},
+  infoClassify: [],
+  matchClassify: []
 };
 
 /*触发action: store.dispatch({ type: '请求增援', gun: '100' })*/
@@ -45,6 +54,31 @@ export default function reducer(state = initialState, action = {}) {
         token: action.text,
         isLogin: true
       };
+    case GETTOKEN:
+      return {
+        ...state,
+        token: action.text
+      };
+    case SETFIXED:
+      return {
+        ...state,
+        isFixed: action.text
+      };
+    case GETUSERINFO:
+      return {
+        ...state,
+        userInfo: action.text
+      };
+    case INFOCLASSIFY:
+      return {
+        ...state,
+        infoClassify: action.text
+      };
+    case MATCHCLASSIFY:
+      return {
+        ...state,
+        matchClassify: action.text
+      };
     default:
       return state;
   }
@@ -77,5 +111,44 @@ export function getDetailData(data) {
   return {
     type: DETAILDATA,
     text: data
+  };
+}
+
+//获取token
+export function getToken() {
+  const cookieArr = document.cookie.split(';');
+  let cookie = '';
+  for (let i = 0; i < cookieArr.length; i++) {
+    if (cookieArr[i].split('=')[0].trim() === 'fifaToken') {
+      [, cookie] = cookieArr[i].split('=');
+    }
+  }
+  return {
+    type: GETTOKEN,
+    text: cookie
+  };
+}
+
+//是否固定banner
+export function isFixFun(data) {
+  return {
+    type: SETFIXED,
+    text: data
+  };
+}
+
+//获取用户个人信息
+export function getUserInfo(data) {
+  return {
+    type: GETUSERINFO,
+    text: data
+  };
+}
+
+//存放fifa资讯或赛事分类
+export function saveClassify(index, data) {
+  return {
+    type: index === 0 ? INFOCLASSIFY : MATCHCLASSIFY,
+    text: data.slice(0, 4)
   };
 }

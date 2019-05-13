@@ -15,34 +15,54 @@ import axios from '../axios';
 )
 
 class Reviews extends Component {
+  state = {
+    reviewInfo: [],
+    total: 0
+    // pageNo: 1
+  };
+
+  componentDidMount() {
+    axios.post('/user/message/selectByPage', {
+      asc: true,
+      map: {},
+      nowPage: 1,
+      pageSize: 5
+    }).then(res => {
+      const {data} = res;
+      if (data.code === '0') {
+        this.setState({
+          reviewInfo: data.data.records,
+          total: data.data.total
+        });
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  }
+
+  reviewInfoMap = () => {
+    const {reviewInfo} = this.state;
+    const list = [];
+    reviewInfo.map((item) => {
+      list.push(<div className="msgFlame">
+        <p style={{color: '#414141', fontSize: 18}}>{item.title}</p>
+        <p style={{color: '#1A47B0'}}>{item.content}</p>
+        <div style={{color: '#414141', fontWeight: 'bold'}}>
+          <span style={{marginRight: 20}}>{item.createTime}</span>
+        </div>
+      </div>);
+    });
+    return list;
+  };
+
   render() {
+    const {reviewInfo, total} = this.state;
     return (
       <div>
         <div className="title">评论管理</div>
-        <div className="msgFlame">
-          <p style={{color: '#414141', fontSize: 18}}>我觉得这个活动举办的很好！！！！</p>
-          <p style={{color: '#1A47B0'}}>文章:FUT Champions世界总决赛决赛实况录像Rockyy vs Shellzz</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
-        <div className="msgFlame">
-          <p style={{color: '#414141', fontSize: 18}}>我觉得这个活动举办的很好！！！！</p>
-          <p style={{color: '#1A47B0'}}>文章:FUT Champions世界总决赛决赛实况录像Rockyy vs Shellzz</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
-        <div className="msgFlame">
-          <p style={{color: '#414141', fontSize: 18}}>我觉得这个活动举办的很好！！！！</p>
-          <p style={{color: '#1A47B0'}}>文章:FUT Champions世界总决赛决赛实况录像Rockyy vs Shellzz</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
+        <div>{this.reviewInfoMap()}</div>
       </div>
     );
   }

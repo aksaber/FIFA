@@ -30,18 +30,20 @@ class Informations extends Component {
 
   componentWillReceiveProps(nextProps) {
     //每次更换不同id时重新渲染页面，如：informations?id=5 => informations?id=19
-    this.setState({
-      urlParams: this.formatSearch(nextProps.location.search)
-    }, () => {
-      this.fetchData(this.state.pageNo, parseInt(this.state.urlParams.id, 10));
-    });
+    if (this.props.location.search !== nextProps.location.search) {
+      this.setState({
+        urlParams: this.formatSearch(nextProps.location.search)
+      }, () => {
+        this.fetchData(this.state.pageNo, parseInt(this.state.urlParams.id, 10));
+      });
+    }
   }
 
   fetchData = (pageNo, urlId) => {
     axios.post(
-      '/news/newsList',
+      '/news/news/newsList',
       {
-        asc: true,
+        asc: false,
         map: {id: urlId, type: 0},
         nowPage: pageNo,
         pageSize: 9,
@@ -61,7 +63,7 @@ class Informations extends Component {
   loadMore = async () => {
     await this.setState({pageNo: this.state.pageNo + 1});
     axios.post(
-      '/news/newsList',
+      '/news/news/newsList',
       {
         asc: true,
         map: {id: parseInt(this.state.urlParams.id, 10), type: 0},
@@ -116,8 +118,12 @@ class Informations extends Component {
           {this.renderList()}
         </Row>
         {data.length < total ?
-          <div style={{textAlign: 'center'}}><button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button></div>
-          : <div style={{textAlign: 'center'}}><button className="loadMoreBtn" >没有更多</button></div>}
+          <div style={{textAlign: 'center'}}>
+            <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>
+          </div>
+          : <div style={{textAlign: 'center'}}>
+            <button className="loadMoreBtn" >没有更多</button>
+          </div>}
       </div>
     );
   }

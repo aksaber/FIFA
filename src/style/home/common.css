@@ -41,3 +41,36 @@
   display: block;
   clear: both;
 }
+@media (min-width: 1200px){
+  .container{
+    width: 1400px;
+  }
+}
+/*---------------返回到登录界面箭头-----------------*/
+.goBackLogin{
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  cursor: pointer;
+  font-size: 25px;
+}
+/*-------------------CommonCard组件样式----------------------*/
+.commonCardImg{
+  transition: all 1s;
+}
+.commonCardImg:hover{
+  transform: scale(1.2);
+}
+.ant-card-cover{
+  overflow: hidden;
+}
+.ant-card-meta-title:hover{
+  color: #000489;
+}
+.ant-card-meta-description{
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

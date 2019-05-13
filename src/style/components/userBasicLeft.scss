@@ -1,11 +1,12 @@
 .userBasicLeft{
   width: 340px;
-  height: 100%;
+  height: calc(100% + 1px);
   background: linear-gradient(217deg, rgba(18, 48, 117, 1) 0%, rgba(9, 32, 86, 1) 100%);
   color: #fff;
   text-align: center;
   font-size: 16px;
   float: left;
+  margin-top: -1px;
   .centerLine{
     height: 2px;
     background: #fff;

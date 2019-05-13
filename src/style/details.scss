@@ -1,7 +1,8 @@
 .detailDiv{
   margin: 68px auto 119px auto;
   .detailContent{
-    padding-bottom: 79px;
+    padding: 0 100px 79px 100px;
+    //padding-bottom: 79px;
     color: #363636;
     font-size: 16px;
     line-height: 35px;
@@ -18,5 +19,19 @@
     color: #1A47B0;
     border-radius: 2px!important;
     background: #fff!important;
+  }
+  .submitComment{
+    font-size: 16px;
+    padding: 12px 31px;
+    font-weight: bold;
+    background: #fff;
+    border: 2px solid #ccc;
+    color: #ccc;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    &:hover{
+      background: #0065E0;
+      border: 2px solid #0065E0;
+      color: #fff;
+    }
   }
 }

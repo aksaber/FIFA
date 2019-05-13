@@ -35,10 +35,10 @@ class Home extends Component {
 
   componentDidMount() {
     //中间广告图
-    axios.get('/news/firstNews').then((res) => {
+    axios.get('/news/news/firstNews').then((res) => {
       const {data} = res;
       if (data.code === '0') {
-        this.setState({advert: data.data.ad1[0]});
+        this.setState({advert: data.data.adMid});
       } else {
         message.warning(data.msg);
       }
@@ -47,10 +47,9 @@ class Home extends Component {
     });
 
     //首页热门资讯
-    axios.post('/news/newsList', {
+    axios.post('/news/news/newsList', {
       asc: true,
       map: {
-        id: 1,
         type: 0
       },
       nowPage: this.state.pageNo,
@@ -70,7 +69,7 @@ class Home extends Component {
     });
 
     //首页电竞赛事
-    axios.get('/news/firstEvent').then((res) => {
+    axios.get('/news/news/firstEvent').then((res) => {
       if (res.data.code === '0') {
         this.setState({
           matchData: res.data.data,
@@ -83,7 +82,7 @@ class Home extends Component {
     });
 
     //首页新手入门
-    axios.get('/about/getGuidance').then((res) => {
+    axios.get('/news/about/getGuidance').then((res) => {
       if (res.data.code === '0') {
         this.setState({guidance: res.data.data}, () => {
           this.swiper = new Swiper('.swiperGuidance', {
@@ -105,7 +104,7 @@ class Home extends Component {
   loadMore = async () => {
     //setState异步
     await this.setState({pageNo: this.state.pageNo + 1});
-    axios.post('/news/newsList', {
+    axios.post('/news/news/newsList', {
       asc: true,
       map: {
         id: 1,
@@ -140,7 +139,7 @@ class Home extends Component {
     const list = [];
     guidance.map((item) => {
       list.push(<div className="swiper-slide">
-        <CommonCard data={item} />
+        <CommonCard data={item} history={this.props.history} location="guidanceDetails" />
       </div>);
     });
     return list;
@@ -176,7 +175,7 @@ class Home extends Component {
             : <button className="loadMoreBtn" onClick={this.findMore}>查看更多</button>}</div>
         </div>
         <div
-          onClick={() => this.jumpUrl(advert.jumpUrl)}
+          onClick={() => { window.open(advert.jumpUrl); }}
           style={{margin: '70px 0 109px 0'}}
         >
           <img src={advert.pictureUrl} style={{width: '100%', height: 'auto', cursor: 'pointer'}} />
@@ -189,7 +188,7 @@ class Home extends Component {
           </div>
           <Row>{matchData ? matchData.map((item) =>
             (<Col span={12} key={item.id}>
-              <HomeMatchs data={item} />
+              <HomeMatchs data={item} history={this.props.history} />
             </Col>)) : ''}
           </Row>
         </div>

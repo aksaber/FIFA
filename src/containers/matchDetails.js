@@ -55,23 +55,26 @@ class MatchDetails extends Component {
       tagArray: [],
       comment: '',
       content: '',
-      tagInfo: []
+      tagInfo: [],
+      data: ''
     };
   }
 
   componentDidMount() {
     const {changeRoute, getDetailData} = this.props;
     changeRoute('details');
-    axios.get(`/news/findById?id=${this.state.urlParams.id}&type=1`).then((res) => {
+    axios.get(`/news/news/${this.state.urlParams.majorKey}`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
           tagArray: data.data.tags,
           content: data.data.info.content,
-          tagInfo: data.data.tagInfo
+          tagInfo: data.data.tagInfo,
+          data: data.data.info
         });
+        //设置网页title
+        document.title = data.data.info.title;
         getDetailData(data.data.info);
-        // , content: data.data.info.content
       } else {
         message.warning(data.msg);
       }
@@ -102,7 +105,8 @@ class MatchDetails extends Component {
       tagArray,
       tagInfo,
       comment,
-      content
+      content,
+      data
     } = this.state;
     const {TextArea} = Input;
     return (
@@ -111,7 +115,11 @@ class MatchDetails extends Component {
         <div className="dashedLine" />
         <div className="flex" style={{padding: '28px 0 68px 0'}}>
           <div className="flex_1">
-            {tagArray ? tagArray.map((item) => <Tag className="tagColor" key={item.id}>{item.name}</Tag>) : ''}
+            {tagArray ? tagArray.map((item) => (<Tag
+              className="tagColor"
+              style={{display: item.name !== '' ? 'inline' : 'none'}}
+              key={item.id}
+            >{item.name}</Tag>)) : ''}
           </div>
           <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
             <img src={sina} width={29} height={24} style={{'margin-right': '30px'}} />
@@ -123,7 +131,7 @@ class MatchDetails extends Component {
           <div style={stylesheet.words}>评论</div>
           <div className="dashedLine flex_1" />
         </div>
-        <div style={{marginBottom: 80}}>
+        <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
           <div style={{position: 'relative'}}>
             <Avatar size={48} icon="user" style={stylesheet.avater} />
             <TextArea rows={3} placeholder="发布您的留言" style={stylesheet.textarea} />
@@ -139,7 +147,12 @@ class MatchDetails extends Component {
           <div className="dashedLine flex_1" />
         </div>
         <div>
-          <Row>{tagInfo ? tagInfo.map((item) => <Col span={8} key={item.id}><CommonCard data={item} history={this.props.history} /></Col>) : ''}</Row>
+          <Row>
+            {tagInfo ? tagInfo.map((item) => (<Col
+              span={8}
+              key={item.id}
+            ><CommonCard data={item} history={this.props.history} /></Col>)) : ''}
+          </Row>
         </div>
       </div>
     );

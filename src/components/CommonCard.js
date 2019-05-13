@@ -6,9 +6,9 @@ import * as homeActions from '../redux/reduces/home';
 
 const stylesheet = {
   commonCard: {
-    padding: '10px 18px 18px',
+    padding: 18,
     margin: '20px',
-    height: '434px',
+    height: '437px',
     background: 'rgba(255,255,255,1)',
     boxShadow: '20px 20px 60px rgba(0,0,0,0.1)',
     opacity: 1,
@@ -17,10 +17,11 @@ const stylesheet = {
   },
   commonCardImg: {
     width: '100%',
-    height: 220
+    height: 220,
+    borderRadius: 5
   },
   commonCardBody: {
-    padding: '22px 20px',
+    padding: '21px 19px 0 19px',
   }
 };
 
@@ -38,26 +39,35 @@ class CommonCard extends Component {
       location
     } = this.props;
     changeRoute('details');
-    history.push(`/${location}?id=${data.id}&state=${data.id}`);
+    history.push(`/${location}?id=${data.id}&state=${data.id}&majorKey=${data.customizeUrl}`);
     // history.push({pathname: '/details', state: {id: data.id}});
   };
 
   render() {
     const {Meta} = Card;
+    const {data} = this.props;
     return (
       <Card
         hoverable
         style={stylesheet.commonCard}
         cover={<img
-          src={this.props.data.coverUrl}
+          src={data.coverUrl}
           style={stylesheet.commonCardImg}
+          className="commonCardImg"
         />}
         onClick={this.gotoDetails}
         bodyStyle={stylesheet.commonCardBody}
       >
+        <div
+          style={{
+            color: '#595F6F',
+            fontSize: 16,
+            marginBottom: 17
+          }}
+        >{data.categoryName}</div>
         <Meta
-          title={this.props.data.title}
-          description={this.props.data.summary}
+          title={data.title}
+          description={data.summary}
         />
       </Card>
     );

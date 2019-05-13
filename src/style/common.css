@@ -1,8 +1,5 @@
 @charset "UTF-8";
 /*------详情页恢复默认样式------*/
-.recoveryCss ul {
-  margin-left: unset !important;
-  padding-left: unset !important; }
 .recoveryCss li {
   list-style: unset !important; }
 

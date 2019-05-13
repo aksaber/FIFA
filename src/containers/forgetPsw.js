@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Row, Col, Input, Button, message} from 'antd';
+import {Row, Col, Input, Button, message, Icon} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
@@ -42,7 +42,7 @@ class ForgetPsw extends Component {
   //获取手机验证码
   getPhoneCode = () => {
     const {phone} = this.state;
-    axios.get(`/member/sendSms?phone=${phone}`).then(res => {
+    axios.get(`/user/member/sendPhoneCodeFindPassword?phone=${phone}`).then(res => {
       const {data} = res;
       if (data.code === '0') {
         message.success('手机验证码已发送');
@@ -61,7 +61,7 @@ class ForgetPsw extends Component {
 
   //获取图片验证码
   getCode = () => {
-    axios.get('/auth/getCaptcha').then(res => {
+    axios.get('/user/auth/getCaptcha').then(res => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
@@ -82,20 +82,19 @@ class ForgetPsw extends Component {
     const {
       loginWay,
       password,
-      rePassword,
-      email
+      rePassword
     } = this.state;
-    if (password.length < 6) {
-      message.warning('密码长度不应小于6位');
-      return false;
-    }
-    if (password !== rePassword) {
-      message.warning('密码不一致');
-      return false;
-    }
     if (loginWay === 0) {
       //手机忘记密码
-      axios.post('/member/phoneForgot', {
+      if (password.length < 6) {
+        message.warning('密码长度不应小于6位');
+        return false;
+      }
+      if (password !== rePassword) {
+        message.warning('密码不一致');
+        return false;
+      }
+      axios.post('/user/member/phoneForgot', {
         phone: this.state.phone,
         phoneCode: this.state.phoneCode,
         password: this.state.password,
@@ -113,19 +112,36 @@ class ForgetPsw extends Component {
         }
       });
     } else {
-      console.log(11);
       //邮箱忘记密码
-      // axios.post(`/member/sendEmailFindPassword?email=${email}`)
-      //   .then(res => {
-      //
-      //   })
+      axios.post('/user/member/sendEmailFindPassword', {
+        email: this.state.email,
+        captachCode: this.state.code,
+        captachToken: this.state.cToken
+      })
+        .then(res => {
+          const {data} = res;
+          if (data.code === '0') {
+            message.success('请打开邮箱查看');
+          } else {
+            message.warning(data.msg);
+            this.getCode();
+          }
+        });
     }
+  };
+
+  //返回登录页
+  goBack = () => {
+    const {history, changeRoute} = this.props;
+    changeRoute('login');
+    history.push('/login');
   };
   render() {
     const {Password} = Input;
     const {
       loginWay,
       phone,
+      email,
       password,
       rePassword,
       phoneCode,
@@ -137,16 +153,17 @@ class ForgetPsw extends Component {
       <div className="forgetPswPage">
         <div className="forgetPswModule">
           <div className="title">忘记密码</div>
+          <Icon type="swap-left" className="goBackLogin" onClick={this.goBack} />
           <div className="clearAfter" style={{width: 200, margin: '15px auto 10px'}}>
             <div className="left" onClick={() => this.toggleLogin(0)}>
-              <li className={loginWay === 0 ? 'liStyle' : ''}>手机号码登录</li>
+              <li className={loginWay === 0 ? 'liStyle' : ''}>通过手机找回</li>
             </div>
             <div className="right" onClick={() => this.toggleLogin(1)}>
-              <li className={loginWay === 1 ? 'liStyle' : ''}>邮箱登录</li>
+              <li className={loginWay === 1 ? 'liStyle' : ''}>通过邮箱找回</li>
             </div>
           </div>
           <Row>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <Col span={24}>
                 <Col span={16}>
                   <p>手机号码</p>
@@ -166,7 +183,7 @@ class ForgetPsw extends Component {
                 </Col>
               </Col>
             </Col>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>手机验证码</p>
               <Input
                 value={phoneCode}
@@ -174,7 +191,7 @@ class ForgetPsw extends Component {
                 name="phoneCode"
               />
             </Col>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>密码</p>
               <Password
                 value={password}
@@ -183,12 +200,20 @@ class ForgetPsw extends Component {
                 placeholder="您的密码"
               />
             </Col>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>确认密码</p>
               <Password
                 value={rePassword}
                 onChange={this._changeValue}
                 name="rePassword"
+              />
+            </Col>
+            <Col span={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
+              <p>请输入注册邮箱</p>
+              <Input
+                value={email}
+                onChange={this._changeValue}
+                name="email"
               />
             </Col>
             <Col span={12}>
@@ -217,7 +242,10 @@ class ForgetPsw extends Component {
             </Col>
           </Row>
           <div style={{textAlign: 'center', marginTop: 44}}>
-            <Button style={{padding: '8px 109px', height: 'unset'}} onClick={this.saveFun}>提交</Button>
+            <Button
+              style={{padding: '8px 109px', height: 'unset'}}
+              onClick={this.saveFun}
+            >提交</Button>
           </div>
         </div>
       </div>

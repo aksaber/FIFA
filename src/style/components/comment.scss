@@ -1,0 +1,49 @@
+.comment{
+  display: flex;
+  padding: 23px 0;
+  border-bottom: 2px solid #f6f6f6;
+  .comment_left{
+    margin-right: 30px;
+  }
+  .comment_right{
+    flex: 1;
+    .titleInfo{
+      color: #2F2F2F;
+      margin-bottom: 36px;
+      width: 400px;
+    }
+    .commentContent{
+      position: relative;
+      color: #999;
+      padding-right: 25px;
+    }
+    .commentReply{
+      position: absolute;
+      bottom: 0px;
+      right: 0;
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+  .reply{
+    margin-top: 25px;
+    textarea{
+      padding: 22px;
+    }
+    button{
+      float: right;
+      margin-top: 12px;
+      border-radius: 0;
+      border: 2px solid #ccc;
+      color: #ccc;
+      font-size: 16px;
+      padding: 12px 31px;
+      height: unset;
+      &:hover{
+        background: #0065E0;
+        color: #fff;
+        border: 2px solid #0065E0;
+      }
+    }
+  }
+}

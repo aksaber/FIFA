@@ -13,9 +13,15 @@ import '../style/userInfo.scss';
 )
 
 class UserInfo extends Component {
+  // componentDidMount() {
+  //   const {history} = this.props;
+  //   history.push('/userInfo/userInformation');
+  // }
+
   render() {
+    const {home: {isFixed}} = this.props;
     return (
-      <div className="userInfo clearAfter">
+      <div className="userInfo clearAfter" style={{marginTop: isFixed ? 90 : 0}}>
         <UserBasicLeft history={this.props.history} />
         <div className="rightContent">
           {this.props.children}

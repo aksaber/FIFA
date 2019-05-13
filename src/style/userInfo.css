@@ -5,7 +5,9 @@
     float: left;
     padding: 60px;
     height: 100%;
-    position: relative; }
+    position: relative;
+    background: url("../assets/img/userInfoBg.jpg") no-repeat right top;
+    width: calc(100% - 340px); }
     .userInfo .rightContent .title {
       color: #1A47B0;
       font-size: 24px;
@@ -33,6 +35,7 @@
       border: 1px solid #F0F0F0;
       padding: 15px 24px;
       margin: 20px 0;
-      border-radius: 5px; }
+      border-radius: 5px;
+      width: 500px; }
 
 /*# sourceMappingURL=userInfo.css.map */

@@ -3,9 +3,11 @@
   .rightContent{
     float: left;
     padding: 60px;
+    //width: 800px;
     height: 100%;
     position: relative;
-    //width: calc(100% - 340px);
+    background: url('../assets/img/userInfoBg.jpg') no-repeat right top;
+    width: calc(100% - 340px);
     .title{
       color: #1A47B0;
       font-size: 24px;
@@ -42,6 +44,7 @@
       padding: 15px 24px;
       margin: 20px 0;
       border-radius: 5px;
+      width: 500px;
     }
   }
 }

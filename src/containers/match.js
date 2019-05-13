@@ -37,7 +37,7 @@ class Match extends Component {
   }
 
   fetchData = (pageNo, urlId) => {
-    axios.post('/news/newsList', {
+    axios.post('/news/news/newsList', {
       asc: true,
       map: {id: urlId, type: 1},
       nowPage: pageNo,
@@ -59,7 +59,7 @@ class Match extends Component {
 
   loadMore = async () => {
     await this.setState({pageNo: this.state.pageNo + 1});
-    axios.post('/news/newsList', {
+    axios.post('/news/news/newsList', {
       asc: true,
       map: {id: parseInt(this.state.urlParams.id, 10), type: 1},
       nowPage: this.state.pageNo,
@@ -112,8 +112,12 @@ class Match extends Component {
           {this.renderList()}
         </Row>
         {data.length < total ?
-          <div style={{textAlign: 'center'}}><button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button></div>
-          : <div style={{textAlign: 'center'}}><button className="loadMoreBtn" >没有更多</button></div>}
+          <div style={{textAlign: 'center'}}>
+            <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>
+          </div>
+          : <div style={{textAlign: 'center'}}>
+            <button className="loadMoreBtn" >没有更多</button>
+          </div>}
       </div>
     );
   }

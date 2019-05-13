@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,aAAa;EACX,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,eAAe;EACvB,gBAAE;IACA,aAAa,EAAE,IAAI;EAErB,eAAC;IACC,SAAS,EAAE,IAAI",
+"sources": ["illustration.scss"],
+"names": [],
+"file": "illustration.css"
+}

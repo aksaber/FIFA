@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {message} from 'antd';
 import * as homeActions from '../redux/reduces/home';
 import Fifaheader from '../components/Fifaheader';
 import Fifafooter from '../components/Fifafooter';
+import axios from '../axios';
 /*
 使用注解的方式修改state和组件之间的传值 @connect()
 state => ({home: state.home})  你需要state当中的什么参数，取出来就会放到props相对的参数当中
@@ -19,22 +21,57 @@ class App extends Component {
   };
   //将要装载，在render之前调用
   componentWillMount() {
-    const {history, changeRoute, home: {currentRoute}} = this.props;
+    const {
+      history,
+      changeRoute,
+      getToken,
+      isFixFun,
+      home: {currentRoute}
+    } = this.props;
+    //根据cookie获取token
+    getToken();
+    //监听滚动条高度
+    window.addEventListener('scroll', (e) => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 90) {
+        isFixFun(true);
+      } else {
+        isFixFun(false);
+      }
+    });
     //当前路由为'/'时跳转到home首页
-    if (currentRoute === '/') {
+    if (currentRoute === '#/') {
       changeRoute('home');
       history.push('/home');
     }
   }
 
+  //获取用户信息
+  componentDidMount() {
+    const {getUserInfo, getToken} = this.props;
+    getToken();
+    //获取用户个人信息
+    axios.get('/user/member/getUserInfo').then(res => {
+      const {data} = res;
+      if (data.code === '0') {
+        getUserInfo(data.data);
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  }
+
   render() {
+    const {home: {isFixed}} = this.props;
     return (
       <div className="home">
-        <Fifaheader history={this.props.history} />
+        <Fifaheader history={this.props.history} location={this.props.location} />
         <div>
           {this.props.children}
         </div>
-        <Fifafooter />
+        <Fifafooter history={this.props.history} location={this.props.location} />
       </div>
     );
   }

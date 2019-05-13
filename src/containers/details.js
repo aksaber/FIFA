@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar, Row, Col, Tag, Input, message, Icon} from 'antd';
+import {Avatar, Row, Col, Tag, Input, message} from 'antd';
 import sina from '~/assets/img/sina-blue.svg';
 import wechat from '~/assets/img/wechat-blue.svg';
 import Documentation from '~/components/documentation';
@@ -29,14 +29,6 @@ const stylesheet = {
     borderRadius: 0,
     resize: 'none'
   },
-  btn: {
-    fontSize: 16,
-    padding: '12px 31px',
-    fontWeight: 'bold',
-    background: '#0065E0',
-    border: '1px solid transparent',
-    color: '#fff'
-  },
   textFooter: {
     border: '1px solid #d9d9d9',
     padding: '9px 30px',
@@ -56,32 +48,121 @@ class Details extends Component {
     this.state = {
       urlParams: this.formatSearch(props.location.search),
       tagArray: [],
-      comment: '',
       content: '',
-      tagInfo: []
+      tagInfo: [],
+      words: '',
+      messageData: [],
+      pageNo: 1,
+      total: 0,
+      data: ''
     };
   }
 
   componentDidMount() {
-    const {changeRoute, getDetailData} = this.props;
+    const {changeRoute} = this.props;
     changeRoute('details');
-    axios.get(`/news/findById?id=${this.state.urlParams.id}&type=0`).then((res) => {
+    this.getDetail();
+    //获取文章一级评论
+    this.getMessage();
+  }
+
+  //点击不可错过内容重新渲染页面数据
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.search !== nextProps.location.search) {
+      this.setState({
+        urlParams: this.formatSearch(nextProps.location.search)
+      }, () => {
+        //获取文章详情
+        this.getDetail();
+        //获取文章一级评论
+        this.getMessage();
+      });
+    }
+  }
+
+  //获取文章详情
+  getDetail = () => {
+    const {getDetailData, history} = this.props;
+    axios.get(`/news/news/${this.state.urlParams.majorKey}`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
           tagArray: data.data.tags,
           content: data.data.info.content,
-          tagInfo: data.data.tagInfo
+          tagInfo: data.data.tagInfo,
+          data: data.data.info
+        }, () => {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
         });
+        //设置网页title
+        document.title = data.data.info.title;
         getDetailData(data.data.info);
-        // , content: data.data.info.content
+      } else {
+        message.warning(data.msg);
+        history.goBack();
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  //获取当篇文章的一级评论
+  getMessage = () => {
+    const {urlParams, pageNo} = this.state;
+    axios.post('/news/member/messageList', {
+      asc: true,
+      map: {id: urlParams.id},
+      nowPage: pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({
+          messageData: res.data.data.records,
+          total: res.data.data.total
+        });
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  //发布留言（一级评论）
+  postMessage = () => {
+    const {words, urlParams} = this.state;
+    const {home: {userInfo}} = this.props;
+    if (Object.keys(userInfo).length === 0) {
+      message.warning('请先登录再回复');
+      return false;
+    }
+    if (words === '') {
+      message.warning('请输入内容');
+      return false;
+    }
+    axios.post('/news/member/save', {
+      content: words,
+      memId: userInfo.id,
+      infoId: urlParams.id
+    }).then((res) => {
+      const {data} = res;
+      if (data.code === '0') {
+        //更新一级评论并清空输入框，将分页重置为1
+        this.setState({
+          words: '',
+          pageNo: 1
+        }, () => {
+          this.getMessage();
+        });
       } else {
         message.warning(data.msg);
       }
     }).catch((err) => {
       message.error(`${err}`);
     });
-  }
+  };
 
   formatSearch = (url) => {
     if (typeof url !== 'undefined') {
@@ -100,21 +181,61 @@ class Details extends Component {
     }
   };
 
+  //绑定input值
+  _changeValue = (event) => {
+    const o = {};
+    o[event.target.name] = event.target.value;
+    this.setState(o);
+  };
+
+  //加载更多
+  loadMore = async () => {
+    const {urlParams} = this.state;
+    await this.setState({pageNo: this.state.pageNo + 1});
+    axios.post('/news/member/messageList', {
+      asc: true,
+      map: {id: urlParams.id},
+      nowPage: this.state.pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({
+          messageData: this.state.messageData.concat(res.data.data.records),
+          total: res.data.data.total
+        });
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
   render() {
     const {
       tagArray,
       tagInfo,
-      comment,
-      content
+      content,
+      words,
+      urlParams,
+      messageData,
+      total,
+      data
     } = this.state;
     const {TextArea} = Input;
+    const {home: {userInfo}} = this.props;
     return (
       <div className="detailDiv container">
         <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
         <div className="dashedLine" />
         <div className="flex" style={{padding: '28px 0 68px 0'}}>
           <div className="flex_1">
-            {tagArray ? tagArray.map((item) => <Tag className="tagColor" key={item.id}>{item.name}</Tag>) : ''}
+            {tagArray ? tagArray.map((item) => (<Tag
+              className="tagColor"
+              style={{display: item.name !== '' ? 'inline' : 'none'}}
+              key={item.id}
+            >{item.name}</Tag>)) : ''}
           </div>
           <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
             <img src={sina} width={29} height={24} style={{'margin-right': '30px'}} />
@@ -126,23 +247,46 @@ class Details extends Component {
           <div style={stylesheet.words}>评论</div>
           <div className="dashedLine flex_1" />
         </div>
-        <div style={{marginBottom: 80}}>
+        <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
           <div style={{position: 'relative'}}>
-            <Avatar size={48} icon="user" style={stylesheet.avater} />
-            <TextArea rows={3} placeholder="发布您的留言" style={stylesheet.textarea} />
+            <Avatar
+              size={48}
+              icon={userInfo.headPortraitUrl ? '' : 'user'}
+              src={userInfo.headPortraitUrl}
+              style={stylesheet.avater}
+            />
+            <TextArea
+              rows={3}
+              value={words}
+              placeholder="发布您的留言"
+              onChange={this._changeValue}
+              name="words"
+              style={stylesheet.textarea}
+            />
           </div>
           <div style={stylesheet.textFooter}>
-            <Icon type="smile" style={{fontSize: 20, marginRight: 41}} />
-            <button style={stylesheet.btn}>发布</button>
+            <button className="submitComment" onClick={this.postMessage}>发布</button>
           </div>
         </div>
-        <div className="flex" style={{marginBottom: 38}}>
+        <CommentList data={messageData} openComment={data.openComment} />
+        {messageData.length < total ?
+          <div style={{textAlign: 'center', marginTop: 20}}>
+            <button className="loadMoreBtn" onClick={this.loadMore}>查看更多评论</button>
+          </div>
+          : <div style={{textAlign: 'center', marginTop: 20}}>
+            <button className="loadMoreBtn" >没有更多评论</button>
+          </div>}
+        <div className="flex" style={{margin: '129px 0 38px 0'}}>
           <div className="dashedLine flex_1" />
           <div style={stylesheet.words}>不能错过的内容</div>
           <div className="dashedLine flex_1" />
         </div>
         <div>
-          <Row>{tagInfo ? tagInfo.map((item) => <Col span={8} key={item.id}><CommonCard data={item} history={this.props.history} /></Col>) : ''}</Row>
+          <Row>{tagInfo ? tagInfo.map(item => (<Col
+            span={8}
+            key={item.id}
+          ><CommonCard data={item} history={this.props.history} location="details" /></Col>)) : ''}
+          </Row>
         </div>
       </div>
     );

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import {
   message,
   Button,
-  Input
+  Input, Col
 } from 'antd';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
@@ -15,34 +16,55 @@ import axios from '../axios';
 )
 
 class MessageCenter extends Component {
+  state = {
+    messageInfo: [],
+    total: 0
+    // pageNo: 1
+  };
+  componentDidMount() {
+    axios.post('/user/message/getNoticeList', {
+      asc: true,
+      map: {},
+      nowPage: 1,
+      pageSize: 5
+    }).then(res => {
+      const {data} = res;
+      if (data.code === '0') {
+        this.setState({
+          messageInfo: data.data.records,
+          total: data.data.total
+        });
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  }
+
+  msgInfoMap = () => {
+    const {messageInfo} = this.state;
+    const list = [];
+    messageInfo.map((item) => {
+      list.push(<div className="msgFlame">
+        <p style={{color: '#1A47B0', fontSize: 18}}>{item.title}</p>
+        <p style={{color: '#606060'}}>{item.content}</p>
+        <div style={{color: '#414141', fontWeight: 'bold'}}>
+          <span style={{marginRight: 20}}>
+            {moment(item.createTime).format('YYYY-MM-DD hh:mm:ss')}
+          </span>
+        </div>
+      </div>);
+    });
+    return list;
+  };
+
   render() {
+    const {messageInfo, total} = this.state;
     return (
       <div>
         <div className="title">消息中心</div>
-        <div className="msgFlame">
-          <p style={{color: '#1A47B0', fontSize: 18}}>关于非凡赛事报名详情通知</p>
-          <p style={{color: '#606060'}}>阿迪达斯夏练国度 数字金球争霸赛 将于北京时间8月11日拉开帷幕，华北、华东、华南、港澳台四个…</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
-        <div className="msgFlame">
-          <p style={{color: '#1A47B0', fontSize: 18}}>关于非凡赛事报名详情通知</p>
-          <p style={{color: '#606060'}}>阿迪达斯夏练国度 数字金球争霸赛 将于北京时间8月11日拉开帷幕，华北、华东、华南、港澳台四个…</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
-        <div className="msgFlame">
-          <p style={{color: '#1A47B0', fontSize: 18}}>关于非凡赛事报名详情通知</p>
-          <p style={{color: '#606060'}}>阿迪达斯夏练国度 数字金球争霸赛 将于北京时间8月11日拉开帷幕，华北、华东、华南、港澳台四个…</p>
-          <div style={{color: '#414141', fontWeight: 'bold'}}>
-            <span style={{marginRight: 20}}>2019-03-26</span>
-            <span>12:33</span>
-          </div>
-        </div>
+        <div>{this.msgInfoMap()}</div>
       </div>
     );
   }

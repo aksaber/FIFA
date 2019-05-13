@@ -1,5 +1,14 @@
 import React, {Component} from 'react';
-import {Row, Col, Input, Button, Checkbox, message} from 'antd';
+import {
+  Row,
+  Col,
+  Input,
+  Button,
+  Checkbox,
+  message,
+  Icon,
+  Modal
+} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
@@ -15,6 +24,8 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loginWay: 0,
+      email: '',
       phone: '',
       password: '',
       rePassword: '',
@@ -40,7 +51,7 @@ class Register extends Component {
 
   //获取图片验证码
   getCode = () => {
-    axios.get('/auth/getCaptcha').then(res => {
+    axios.get('/user/auth/getCaptcha').then(res => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
@@ -58,7 +69,7 @@ class Register extends Component {
   //获取手机验证码
   getPhoneCode = () => {
     const {phone} = this.state;
-    axios.get(`/member/sendSms?phone=${phone}`).then(res => {
+    axios.get(`/user/member/sendPhoneRegister?phone=${phone}`).then(res => {
       const {data} = res;
       if (data.code === '0') {
         message.success('手机验证码已发送');
@@ -80,7 +91,12 @@ class Register extends Component {
   //注册
   registerFun = () => {
     const {history, changeRoute} = this.props;
-    const {password, rePassword, isAllow} = this.state;
+    const {
+      password,
+      rePassword,
+      isAllow,
+      loginWay
+    } = this.state;
     if (password.length < 6) {
       message.warning('密码长度不应小于6位');
       return false;
@@ -91,18 +107,22 @@ class Register extends Component {
     }
     if (!isAllow) {
       message.warning('请同意接受条款');
+      return false;
     }
-    axios.post('/auth/register', {
-      phone: this.state.phone,
-      phoneCode: this.state.phoneCode,
+    axios.post('/user/auth/register', {
+      email: loginWay === 0 ? null : this.state.email,
+      phone: loginWay === 0 ? this.state.phone : null,
+      phoneCode: loginWay === 0 ? this.state.phoneCode : null,
       password: this.state.password,
       captachCode: this.state.code,
       captachToken: this.state.cToken,
-      type: 2
+      type: loginWay === 0 ? 2 : 1
     }).then(res => {
       const {data} = res;
       if (data.code === '0') {
-        message.success('注册成功');
+        if (loginWay === 0) {
+          message.success('注册成功');
+        }
         changeRoute('login');
         history.push('/login');
       } else {
@@ -111,26 +131,63 @@ class Register extends Component {
       }
     }).catch((err) => {
       message.error(`${err}`);
+      this.getCode();
     });
+  };
+
+  //切换手机、邮箱注册
+  toggleLogin = (type) => {
+    type === 0 ? this.setState({loginWay: 0}) : this.setState({loginWay: 1});
+  };
+
+  //返回登录页
+  goBack = () => {
+    const {history, changeRoute} = this.props;
+    changeRoute('login');
+    history.push('/login');
+  };
+
+  //打开隐私声明
+  gotoClause = () => {
+    window.open('#/clause');
   };
 
   render() {
     const {Password} = Input;
     const {
+      email,
       phone,
       password,
       rePassword,
       phoneCode,
       code,
       imgSrc,
+      loginWay,
       cToken
     } = this.state;
     return (
       <div className="registerPage">
         <div className="registerModule">
           <div className="title">注册用户</div>
+          <Icon type="swap-left" className="goBackLogin" onClick={this.goBack} />
+          <div className="clearAfter" style={{width: 200, margin: '15px auto 10px'}}>
+            <div className="left" onClick={() => this.toggleLogin(0)}>
+              <li className={loginWay === 0 ? 'liStyle' : ''}>手机号码注册</li>
+            </div>
+            <div className="right" onClick={() => this.toggleLogin(1)}>
+              <li className={loginWay === 1 ? 'liStyle' : ''}>邮箱注册</li>
+            </div>
+          </div>
           <Row>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
+              <p>请输入注册邮箱</p>
+              <Input
+                value={email}
+                onChange={this._changeValue}
+                name="email"
+              />
+            </Col>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <Col span={24}>
                 <Col span={16}>
                   <p>手机号码</p>
@@ -150,7 +207,7 @@ class Register extends Component {
                 </Col>
               </Col>
             </Col>
-            <Col span={12}>
+            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>手机验证码</p>
               <Input
                 value={phoneCode}
@@ -201,7 +258,11 @@ class Register extends Component {
             </Col>
           </Row>
           <div className="registerFooter">
-            <Checkbox onChange={this.allowCheckbox}>点击注册，即表示您同意接受我们的条款、数据使用政策和Cookie政策。</Checkbox>
+            <Checkbox onChange={this.allowCheckbox} />
+            <span>点击注册，即表示您同意接受
+              <a onClick={this.gotoClause}>我们的条款</a>
+              、数据使用政策和Cookie政策。
+            </span>
             <br />
             <Button className="registerBtn" onClick={this.registerFun}>注册</Button>
           </div>
