@@ -21,7 +21,10 @@ class ResetPsw extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('resetPsw');
+  }
 
   //绑定input值
   _changeValue = (event) => {
@@ -32,8 +35,7 @@ class ResetPsw extends Component {
 
   //返回登录页
   goBack = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute('login');
+    const {history} = this.props;
     history.push('/login');
   };
 
@@ -56,7 +58,7 @@ class ResetPsw extends Component {
 
   //重置密码提交
   saveFun = () => {
-    const {history, changeRoute} = this.props;
+    const {history} = this.props;
     const {urlParams, password, rePassword} = this.state;
     //若超时则提示超时并返回登录页
     if (urlParams.outTime < new Date().getTime()) {
@@ -72,7 +74,6 @@ class ResetPsw extends Component {
       .then(res => {
         if (res.data.code === '0') {
           message.success('密码已重置');
-          changeRoute('login');
           history.push('/login');
         } else {
           message.warning(res.data.msg);

@@ -34,6 +34,8 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('home');
     //中间广告图
     axios.get('/news/news/firstNews').then((res) => {
       const {data} = res;
@@ -83,14 +85,19 @@ class Home extends Component {
 
     //首页新手入门
     axios.get('/news/about/getGuidance').then((res) => {
+      const {home: {screenW}} = this.props;
       if (res.data.code === '0') {
         this.setState({guidance: res.data.data}, () => {
-          this.swiper = new Swiper('.swiperGuidance', {
-            slidesPerView: 3,
-            slidesPerGroup: 3,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev'
-          });
+          if (screenW < 768) {
+            this.swiper = new Swiper('.swiperGuidance', {});
+          } else {
+            this.swiper = new Swiper('.swiperGuidance', {
+              slidesPerView: 3,
+              slidesPerGroup: 3,
+              nextButton: '.swiper-button-next',
+              prevButton: '.swiper-button-prev'
+            });
+          }
         });
       } else {
         message.warning(res.data.msg);
@@ -107,7 +114,6 @@ class Home extends Component {
     axios.post('/news/news/newsList', {
       asc: true,
       map: {
-        id: 1,
         type: 0
       },
       nowPage: this.state.pageNo,
@@ -128,8 +134,7 @@ class Home extends Component {
 
   //热门资讯查看更多
   findMore = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute('informations');
+    const {history} = this.props;
     history.push('/informations');
   };
 
@@ -157,6 +162,7 @@ class Home extends Component {
       matchData,
       advert
     } = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div className="homes">
         <div className="container">
@@ -166,7 +172,7 @@ class Home extends Component {
             <div className="dashedLine flex_1" />
           </div>
           <Row>{data.map((item) =>
-            (<Col span={8} key={item.id}>
+            (<Col md={12} xl={8} key={item.id}>
               <CommonCard data={item} history={this.props.history} location="details" />
             </Col>))}
           </Row>
@@ -187,7 +193,7 @@ class Home extends Component {
             <div className="dashedLine flex_1" />
           </div>
           <Row>{matchData ? matchData.map((item) =>
-            (<Col span={12} key={item.id}>
+            (<Col md={12} key={item.id}>
               <HomeMatchs data={item} history={this.props.history} />
             </Col>)) : ''}
           </Row>
@@ -201,8 +207,8 @@ class Home extends Component {
           <div className="swiper-container swiperGuidance">
             <div className="swiper-wrapper">{this.guidanceList()}</div>
           </div>
-          <div className="swiper-button-prev" />
-          <div className="swiper-button-next" />
+          <div className="swiper-button-prev" style={{display: screenW < 768 ? 'none' : 'block'}} />
+          <div className="swiper-button-next" style={{display: screenW < 768 ? 'none' : 'block'}} />
         </div>
       </div>
     );

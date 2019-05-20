@@ -1,0 +1,49 @@
+.mobileHeader{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #333333;
+  color: #fff;
+  z-index: 11;
+  .logo{
+    vertical-align: -2px!important;
+    margin-right: 11px;
+  }
+  .iconBar{
+    display: inline-block;
+    position: absolute;
+    top: 25px;
+    right: 17px;
+    .icon-bar{
+      background: #fff;
+      display: block;
+      width: 22px;
+      height: 2px;
+      border-radius: 1px;
+      margin-top: 4px;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+  }
+  .menu{
+    background: #333;
+    color: #fff;
+    opacity: 0.89;
+    padding: 12px 17px 23px 17px;
+    overflow: auto;
+    height: 95vh;
+    input{
+      border-radius: 100px;
+      border: 2px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: #fff;
+    }
+    .title{
+      margin: 17px 0;
+      padding: 0 8px;
+      font-weight: bold;
+    }
+  }
+}

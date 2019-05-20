@@ -8,6 +8,7 @@ const SETFIXED = 'homeFIXED';
 const GETUSERINFO = 'userInfo';
 const INFOCLASSIFY = 'infoclassify';
 const MATCHCLASSIFY = 'matchclassify';
+const SCREENWIDTH = 'screenWidth';
 
 const initialState = {
   movelogo: false,
@@ -18,7 +19,8 @@ const initialState = {
   isLogin: false,
   userInfo: {},
   infoClassify: [],
-  matchClassify: []
+  matchClassify: [],
+  screenW: ''
 };
 
 /*触发action: store.dispatch({ type: '请求增援', gun: '100' })*/
@@ -78,6 +80,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         matchClassify: action.text
+      };
+    case SCREENWIDTH:
+      return {
+        ...state,
+        screenW: action.text
       };
     default:
       return state;
@@ -150,5 +157,13 @@ export function saveClassify(index, data) {
   return {
     type: index === 0 ? INFOCLASSIFY : MATCHCLASSIFY,
     text: data.slice(0, 4)
+  };
+}
+
+//获取屏幕宽度
+export function screenWidth(data) {
+  return {
+    type: SCREENWIDTH,
+    text: data
   };
 }

@@ -24,10 +24,14 @@ class ForgetPsw extends Component {
       code: '',
       imgSrc: '',
       cToken: '',
+      count: 60,
+      liked: true
     };
   }
 
   componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('forgetPsw');
     //获取图片验证码
     this.getCode();
   }
@@ -42,10 +46,32 @@ class ForgetPsw extends Component {
   //获取手机验证码
   getPhoneCode = () => {
     const {phone} = this.state;
+    if (phone === '') {
+      message.warning('请输入手机号');
+      return false;
+    }
+    if (!this.state.liked) {
+      return false;
+    }
     axios.get(`/user/member/sendPhoneCodeFindPassword?phone=${phone}`).then(res => {
       const {data} = res;
       if (data.code === '0') {
         message.success('手机验证码已发送');
+        //设置定时器：60秒倒计时重新发送验证码
+        const timer = setInterval(() => {
+          this.setState({
+            count: --this.state.count,
+            liked: false
+          }, () => {
+            if (this.state.count === 0) {
+              clearInterval(timer);
+              this.setState({
+                liked: true,
+                count: 60
+              });
+            }
+          });
+        }, 1000);
       } else {
         message.warning(data.msg);
       }
@@ -78,7 +104,7 @@ class ForgetPsw extends Component {
 
   //忘记密码提交
   saveFun = () => {
-    const {history, changeRoute} = this.props;
+    const {history} = this.props;
     const {
       loginWay,
       password,
@@ -104,7 +130,6 @@ class ForgetPsw extends Component {
         const {data} = res;
         if (data.code === '0') {
           message.success('密码修改成功');
-          changeRoute('login');
           history.push('/login');
         } else {
           message.warning(data.msg);
@@ -132,8 +157,7 @@ class ForgetPsw extends Component {
 
   //返回登录页
   goBack = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute('login');
+    const {history} = this.props;
     history.push('/login');
   };
   render() {
@@ -147,6 +171,8 @@ class ForgetPsw extends Component {
       phoneCode,
       code,
       imgSrc,
+      liked,
+      count,
       cToken
     } = this.state;
     return (
@@ -165,7 +191,7 @@ class ForgetPsw extends Component {
           <Row>
             <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <Col span={24}>
-                <Col span={16}>
+                <Col span={liked ? 16 : 14}>
                   <p>手机号码</p>
                   <Input
                     value={phone}
@@ -174,12 +200,12 @@ class ForgetPsw extends Component {
                     placeholder="您的手机号码"
                   />
                 </Col>
-                <Col span={8}>
+                <Col span={liked ? 8 : 10}>
                   <p>&nbsp;</p>
                   <Button
                     style={{float: 'right', fontSize: 10}}
                     onClick={this.getPhoneCode}
-                  >发送验证码</Button>
+                  >{liked ? <span>发送验证码</span> : <span>{`${count}s后重新发送`}</span>}</Button>
                 </Col>
               </Col>
             </Col>

@@ -20,8 +20,14 @@ class AccountManagement extends Component {
   state = {
     oldPwd: '',
     newPwd: '',
-    reNewPwd: ''
+    reNewPwd: '',
+    unbindOld: false
   };
+
+  componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('accountManagement');
+  }
 
   //绑定input值
   _changeValue = (event) => {
@@ -51,17 +57,30 @@ class AccountManagement extends Component {
     });
   };
 
+  //点击遮罩层时隐藏模态框
+  hideUnBindOld = () => {
+    this.setState({unbindOld: false});
+  };
+
   render() {
     const {Password} = Input;
     const {home: {userInfo}} = this.props;
-    const {oldPwd, newPwd, reNewPwd} = this.state;
+    const {
+      oldPwd,
+      newPwd,
+      reNewPwd,
+      unbindOld
+    } = this.state;
     return (
       <div>
         <div className="title">账号管理</div>
         <div className="subTitle">您已绑定手机</div>
         <div className="clearAfter">
           <Input disabled value={userInfo.phone} style={{marginRight: 20, width: 300}} />
-          <Button className="userBtn">修改绑定手机</Button>
+          <Button
+            className="userBtn"
+            onClick={() => { this.setState({unbindOld: true}); }}
+          >修改绑定手机</Button>
         </div>
         <div className="subTitle">密码修改</div>
         <div style={{marginBottom: 33}}>
@@ -92,8 +111,12 @@ class AccountManagement extends Component {
           />
         </div>
         <Button type="primary" style={{marginTop: 50}} onClick={this.updateUserInfo}>保存</Button>
-        <MaskLayer />
-        <ModalUpdatePhone phone={userInfo.phone} />
+        {unbindOld ? <div>
+          <MaskLayer onClick={this.hideUnBindOld} />
+          <ModalUpdatePhone
+            phone={userInfo.phone}
+            hide={this.hideUnBindOld}
+          /></div> : ''}
       </div>
     );
   }

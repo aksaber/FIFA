@@ -28,6 +28,8 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('login');
     //获取图片验证码
     this.getCode();
     //登录页广告图
@@ -50,8 +52,7 @@ class Login extends Component {
 
   //注册账号
   gotoRoute = (route) => {
-    const {history, changeRoute} = this.props;
-    changeRoute(route);
+    const {history} = this.props;
     history.push(`/${route}`);
   };
 
@@ -64,7 +65,7 @@ class Login extends Component {
 
   //登录
   loginFun = () => {
-    const {history, changeRoute, saveToken} = this.props;
+    const {history, saveToken} = this.props;
     axios.post('/user/auth/login', {
       phone: this.state.phone,
       email: this.state.email,
@@ -79,7 +80,6 @@ class Login extends Component {
         document.cookie = `fifaToken=${data.data}`;
         //将token存入redux
         saveToken(data.data);
-        changeRoute('home');
         history.push('/home');
       } else {
         message.warning(data.msg);
@@ -108,6 +108,12 @@ class Login extends Component {
     });
   };
 
+  //跳转首页
+  gotoLogin = () => {
+    const {history} = this.props;
+    history.push('/home');
+  };
+
   render() {
     const {Password} = Input;
     const {
@@ -124,7 +130,14 @@ class Login extends Component {
       <div className="loginPage">
         <div className="loginModule">
           <div className="titleBox">
-            <img src={logo} width={62} height={55} style={{marginBottom: 10}} />
+            <div onClick={this.gotoLogin}>
+              <img
+                src={logo}
+                width={62}
+                height={55}
+                style={{marginBottom: 10, cursor: 'pointer'}}
+              />
+            </div>
             <div style={{marginBottom: 20, fontSize: 23}}>
               <div>非凡网</div>
               <div>专业FIFA游戏资讯站</div>

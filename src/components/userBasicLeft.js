@@ -36,8 +36,7 @@ class UserBasicLeft extends Component {
   };
 
   toggleModule = (router, index) => {
-    const {history, changeRoute} = this.props;
-    changeRoute(router);
+    const {history} = this.props;
     switch (router) {
       case 'userInformation':
         history.push('/userInfo/userInformation');

@@ -1,4 +1,5 @@
-// 项目url配置
-const urlConfig = 'http://192.168.1.111:8083';
-
-export default urlConfig;
+window.configurl = {
+  NODE_ENV: '"production"',
+  ENV_CONFIG: '"prod"',
+  BASE_API: 'http://192.168.1.115:9081'
+};

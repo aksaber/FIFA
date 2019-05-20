@@ -21,6 +21,11 @@ class UserInformation extends Component {
     userName: this.props.home.userInfo.name
   };
 
+  componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('userInformation');
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.home.userInfo) {
       this.setState({userName: nextProps.home.userInfo.name});
@@ -66,11 +71,18 @@ class UserInformation extends Component {
     const self = this;
     const props = {
       name: 'file',
-      action: 'http://192.168.1.115:9083/upload/uploadHeadImg',
+      action: 'http://192.168.1.115:9081/zuul/user/upload/uploadHeadImg',
       accept: '.png, .jpg, .jpeg, .gif',
       listType: 'picture',
       headers: {
         authorization: 'authorization-text',
+      },
+      beforeUpload(info) {
+        //限制2M以内
+        if (info.size >= 2048000) {
+          message.warning('上传头像应小于2M');
+          return false;
+        }
       },
       onChange(info) {
         let {fileList} = info;
@@ -86,9 +98,6 @@ class UserInformation extends Component {
         self.setState({
           fileLists: fileList
         });
-        // if (info.file.status !== 'uploading') {
-        //   console.log(info.file, fileList);
-        // }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} 图片上传成功`);
         } else if (info.file.status === 'error') {

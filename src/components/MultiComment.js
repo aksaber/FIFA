@@ -88,6 +88,7 @@ class MultiComment extends Component {
           {showReply ? <ReplyInput
             name={data.userName}
             commentId={data.id}
+            userId={data.memId}
             type={1}
             getSecondaryMsg={() => this.getSecondaryMessage()}
             showReply={() => this.showReply()}

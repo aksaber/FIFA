@@ -79,12 +79,10 @@ class childList extends Component {
 
   gotoDetail = (type, id) => {
     //跳转到相应资讯/赛事列表
-    const {history, changeRoute} = this.props;
+    const {history} = this.props;
     if (type === 0) {
-      changeRoute('informations');
       history.push(`/informations?id=${id}`);
     } else {
-      changeRoute('match');
       history.push(`/match?id=${id}`);
     }
   };
@@ -110,10 +108,15 @@ class childList extends Component {
           onClick={() => this.gotoDetail(type, item.id)}
           key={item.id}
         >
-          <li>
-            <img src={item.coverUrl} width={320} height={130} style={{'margin-bottom': '11px'}} />
-            <div>{item.name}</div>
-          </li></div>);
+          <div style={{overflow: 'hidden', width: 320, height: 130}}>
+            <img
+              src={item.coverUrl}
+              width={320}
+              height={130}
+              style={{'margin-bottom': '11px'}}
+              className="commonCardImg"
+            />
+          </div><div>{item.name}</div></div>);
       });
       return list;
     };

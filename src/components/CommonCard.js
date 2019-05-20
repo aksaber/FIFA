@@ -34,12 +34,10 @@ class CommonCard extends Component {
   gotoDetails = () => {
     const {
       history,
-      changeRoute,
       data,
       location
     } = this.props;
-    changeRoute('details');
-    history.push(`/${location}?id=${data.id}&state=${data.id}&majorKey=${data.customizeUrl}`);
+    history.push(`/${location}?majorKey=${data.customizeUrl}`);
     // history.push({pathname: '/details', state: {id: data.id}});
   };
 

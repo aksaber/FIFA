@@ -35,6 +35,8 @@ class Search extends Component {
 
   componentDidMount() {
     const {urlParams} = this.state;
+    const {changeRoute} = this.props;
+    changeRoute('search');
     this.fetchData(decodeURI(urlParams.content));
   }
 
@@ -73,7 +75,7 @@ class Search extends Component {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
-      list.push(<Col span={8} key={item.id}>
+      list.push(<Col md={12} xl={8} key={item.id}>
         <CommonCard data={item} history={this.props.history} location="details" />
       </Col>);
     });

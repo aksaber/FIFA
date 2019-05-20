@@ -2,10 +2,15 @@
   width: 100%;
   height: 397px;
   color: #fff;
-  background: #191919; }
+  background: #191919;
+  position: relative; }
   .footer .footer_top {
     height: 313px;
     padding-top: 57px; }
+    @media (max-width: 768px) {
+      .footer .footer_top {
+        padding-left: 22px !important;
+        padding-right: 22px !important; } }
     .footer .footer_top .flex_1 p {
       margin-bottom: 25px !important;
       cursor: pointer; }
@@ -14,6 +19,23 @@
     line-height: 84px;
     background: #333;
     font-size: 16px;
-    padding: 0 10%; }
+    padding: 0 10%;
+    position: relative; }
+    @media (max-width: 768px) {
+      .footer .footer-bottom {
+        height: unset;
+        line-height: 40px;
+        padding-top: 63px;
+        text-align: center; } }
+  .footer .moblieShareFooter {
+    position: absolute;
+    top: 17px;
+    left: 50%;
+    margin-left: -60px; }
+  .footer .moblieLogoFooter {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -22.5px; }
 
 /*# sourceMappingURL=fifafooter.css.map */

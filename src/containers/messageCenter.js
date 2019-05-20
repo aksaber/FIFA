@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {
   message,
-  Button,
-  Input, Col
+  Pagination
 } from 'antd';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
@@ -22,11 +21,18 @@ class MessageCenter extends Component {
     // pageNo: 1
   };
   componentDidMount() {
+    const {changeRoute} = this.props;
+    changeRoute('messageCenter');
+    this.getMessage();
+  }
+
+  //获取消息中心
+  getMessage = (pageNo) => {
     axios.post('/user/message/getNoticeList', {
       asc: true,
       map: {},
-      nowPage: 1,
-      pageSize: 5
+      nowPage: pageNo || 1,
+      pageSize: 3
     }).then(res => {
       const {data} = res;
       if (data.code === '0') {
@@ -40,7 +46,7 @@ class MessageCenter extends Component {
     }).catch((err) => {
       message.error(`${err}`);
     });
-  }
+  };
 
   msgInfoMap = () => {
     const {messageInfo} = this.state;
@@ -65,6 +71,12 @@ class MessageCenter extends Component {
       <div>
         <div className="title">消息中心</div>
         <div>{this.msgInfoMap()}</div>
+        <Pagination
+          defaultCurrent={1}
+          defaultPageSize={3}
+          total={total}
+          onChange={this.getMessage}
+        />
       </div>
     );
   }

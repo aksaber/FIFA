@@ -2,8 +2,12 @@ import axios from 'axios';
 import store from './redux';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-urlencoded';
-// axios.defaults.baseURL = 'http://119.23.201.55:9081';
-axios.defaults.baseURL = 'http://192.168.1.115:9081';
+// axios.defaults.baseURL = 'http://192.168.1.115:9081';
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'http://192.168.1.115:9081';
+} else if (process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = window.configurl.BASE_API;
+}
 axios.defaults.timeout = 60000;
 
 //添加请求拦截器(請求回來前)

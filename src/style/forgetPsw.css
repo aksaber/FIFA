@@ -1,7 +1,8 @@
 .forgetPswPage {
   width: 100%;
   height: 100vh;
-  background: url("../assets/img/loginBg.jpg") no-repeat; }
+  background: url("../assets/img/loginBg.jpg") no-repeat;
+  background-size: cover; }
   .forgetPswPage .forgetPswModule {
     width: 700px;
     position: absolute;

@@ -12,6 +12,11 @@
 }
 .show{ display: block!important; }
 .hidden{ display: none!important; }
+.ellipsis{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .dashedLine{
   width:100%;
   height:0px;

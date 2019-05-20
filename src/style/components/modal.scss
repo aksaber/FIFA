@@ -1,6 +1,6 @@
 .modalFrame{
   width: 470px;
-  padding: 40px 115px;
+  padding: 40px 85px;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -9,11 +9,20 @@
   background: #fff;
   border-radius: 10px;
   color: #1f1f1f;
+  z-index: 999;
   .title{
     text-align: center;
-    font-size: 40px!important;
+    font-size: 33px!important;
     color: #1f1f1f!important;
     border-bottom: unset!important;
-    padding-bottom: 59px!important;
+  }
+  p{
+    margin: 15px 0;
+  }
+  button{
+    width: 100%;
+    background: #1F1F1F!important;
+    color: #fff!important;
+    padding: 6px;
   }
 }

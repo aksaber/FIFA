@@ -47,6 +47,7 @@ class Details extends Component {
     super(props);
     this.state = {
       urlParams: this.formatSearch(props.location.search),
+      id: '',
       tagArray: [],
       content: '',
       tagInfo: [],
@@ -62,8 +63,10 @@ class Details extends Component {
     const {changeRoute} = this.props;
     changeRoute('details');
     this.getDetail();
-    //获取文章一级评论
-    this.getMessage();
+  }
+
+  componentWillUnmount() {
+    document.title = '非凡网';
   }
 
   //点击不可错过内容重新渲染页面数据
@@ -74,8 +77,6 @@ class Details extends Component {
       }, () => {
         //获取文章详情
         this.getDetail();
-        //获取文章一级评论
-        this.getMessage();
       });
     }
   }
@@ -87,6 +88,7 @@ class Details extends Component {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
+          id: data.data.info.id,
           tagArray: data.data.tags,
           content: data.data.info.content,
           tagInfo: data.data.tagInfo,
@@ -94,6 +96,8 @@ class Details extends Component {
         }, () => {
           document.body.scrollTop = 0;
           document.documentElement.scrollTop = 0;
+          //获取文章一级评论
+          this.getMessage();
         });
         //设置网页title
         document.title = data.data.info.title;
@@ -109,11 +113,10 @@ class Details extends Component {
 
   //获取当篇文章的一级评论
   getMessage = () => {
-    const {urlParams, pageNo} = this.state;
     axios.post('/news/member/messageList', {
       asc: true,
-      map: {id: urlParams.id},
-      nowPage: pageNo,
+      map: {id: this.state.id},
+      nowPage: this.state.pageNo,
       pageSize: 9,
       sort: 'string'
     }).then((res) => {
@@ -132,7 +135,7 @@ class Details extends Component {
 
   //发布留言（一级评论）
   postMessage = () => {
-    const {words, urlParams} = this.state;
+    const {words} = this.state;
     const {home: {userInfo}} = this.props;
     if (Object.keys(userInfo).length === 0) {
       message.warning('请先登录再回复');
@@ -145,7 +148,7 @@ class Details extends Component {
     axios.post('/news/member/save', {
       content: words,
       memId: userInfo.id,
-      infoId: urlParams.id
+      infoId: this.state.id
     }).then((res) => {
       const {data} = res;
       if (data.code === '0') {
@@ -190,11 +193,10 @@ class Details extends Component {
 
   //加载更多
   loadMore = async () => {
-    const {urlParams} = this.state;
     await this.setState({pageNo: this.state.pageNo + 1});
     axios.post('/news/member/messageList', {
       asc: true,
-      map: {id: urlParams.id},
+      map: {id: this.state.id},
       nowPage: this.state.pageNo,
       pageSize: 9,
       sort: 'string'
@@ -212,6 +214,12 @@ class Details extends Component {
     });
   };
 
+  //点击标签跳转标签列表
+  gotoTagList = (id) => {
+    const {history} = this.props;
+    history.push(`/tagList?id=${id}`);
+  };
+
   render() {
     const {
       tagArray,
@@ -224,9 +232,23 @@ class Details extends Component {
       data
     } = this.state;
     const {TextArea} = Input;
-    const {home: {userInfo}} = this.props;
+    const {home: {userInfo, screenW}} = this.props;
     return (
       <div className="detailDiv container">
+        <div
+          style={{
+            margin: '-7px -15px 15px',
+            position: 'relative',
+            marginBottom: 15,
+            display: screenW < 768 ? 'block' : 'none'
+          }}
+        >
+          <img src={data.coverUrl} style={{width: '100%'}} />
+          <div className="detailTopMask">
+            <p>{data.newsCategoryName}</p>
+            <p className="ellipsis title">{data.title}</p>
+          </div>
+        </div>
         <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
         <div className="dashedLine" />
         <div className="flex" style={{padding: '28px 0 68px 0'}}>
@@ -235,6 +257,7 @@ class Details extends Component {
               className="tagColor"
               style={{display: item.name !== '' ? 'inline' : 'none'}}
               key={item.id}
+              onClick={() => this.gotoTagList(item.id)}
             >{item.name}</Tag>)) : ''}
           </div>
           <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
@@ -283,7 +306,8 @@ class Details extends Component {
         </div>
         <div>
           <Row>{tagInfo ? tagInfo.map(item => (<Col
-            span={8}
+            md={12}
+            xl={8}
             key={item.id}
           ><CommonCard data={item} history={this.props.history} location="details" /></Col>)) : ''}
           </Row>

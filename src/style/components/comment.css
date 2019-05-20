@@ -8,8 +8,7 @@
     flex: 1; }
     .comment .comment_right .titleInfo {
       color: #2F2F2F;
-      margin-bottom: 36px;
-      width: 400px; }
+      margin-bottom: 36px; }
     .comment .comment_right .commentContent {
       position: relative;
       color: #999;

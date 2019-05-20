@@ -26,7 +26,9 @@ import UserInformation from '../containers/userInformation';
 import AccountManagement from '../containers/accountManagement';
 import MessageCenter from '../containers/messageCenter';
 import Search from '../containers/search';
+import TagList from '../containers/tagList';
 import Clause from '../containers/clause';
+import MaintainableText from '../containers/maintainableText';
 
 const history = createHistory();
 
@@ -52,6 +54,7 @@ const Root = () => (
           <Router path="/forgetPsw" component={ForgetPsw} />
           <Router path="/resetPsw" component={ResetPsw} />
           <Router path="/clause" component={Clause} />
+          <Router path="/maintainableText" component={MaintainableText} />
           <Router path="/" component={App} >
             {/* exact要求路径与location.pathname必须完全匹配 */}
             <Router exact path="/home" component={Home} />
@@ -61,6 +64,7 @@ const Root = () => (
             <Router exact path="/matchDetails" component={MatchDetails} />
             <Router exact path="/guidanceDetails" component={GuidanceDetails} />
             <Router exact path="/search" component={Search} />
+            <Router exact path="/tagList" component={TagList} />
             <Router path="/userInfo" component={UserInfo}>
               <Router path="/userInfo/userInformation" component={UserInformation} />
               <Router path="/userInfo/accountManagement" component={AccountManagement} />

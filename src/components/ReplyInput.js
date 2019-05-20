@@ -50,7 +50,7 @@ class ReplyInput extends Component {
       replyContent: this.state.reply,
       replyType: this.props.type,
       fromUid: userInfo.id,
-      toUid: this.props.type === 2 ? this.props.userId : null
+      toUid: this.props.userId
     }).then((res) => {
       if (res.data.code === '0') {
         //关闭回复框

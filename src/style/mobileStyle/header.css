@@ -1,0 +1,43 @@
+.mobileHeader {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #333333;
+  color: #fff;
+  z-index: 11; }
+  .mobileHeader .logo {
+    vertical-align: -2px !important;
+    margin-right: 11px; }
+  .mobileHeader .iconBar {
+    display: inline-block;
+    position: absolute;
+    top: 25px;
+    right: 17px; }
+    .mobileHeader .iconBar .icon-bar {
+      background: #fff;
+      display: block;
+      width: 22px;
+      height: 2px;
+      border-radius: 1px;
+      margin-top: 4px; }
+      .mobileHeader .iconBar .icon-bar:first-child {
+        margin-top: 0; }
+  .mobileHeader .menu {
+    background: #333;
+    color: #fff;
+    opacity: 0.89;
+    padding: 12px 17px 23px 17px;
+    overflow: auto;
+    height: 95vh; }
+    .mobileHeader .menu input {
+      border-radius: 100px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      color: #fff; }
+    .mobileHeader .menu .title {
+      margin: 17px 0;
+      padding: 0 8px;
+      font-weight: bold; }
+
+/*# sourceMappingURL=header.css.map */

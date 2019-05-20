@@ -3,8 +3,10 @@ import {Row, Col, message} from 'antd';
 import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import Swiper from 'swiper';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
+import MobileAdvert from '../components/mobile-advert';
 import axios from '../axios';
 
 
@@ -20,12 +22,19 @@ class Informations extends Component {
       data: [],
       pageNo: 1,
       total: 0,
+      infoAdvert: []
     };
   }
 
   componentDidMount() {
     const {urlParams, pageNo} = this.state;
+    const {changeRoute, home: {screenW}} = this.props;
+    changeRoute('informations');
     this.fetchData(pageNo, parseInt(urlParams.id, 10));
+    //获取置顶轮播
+    if (screenW < 768) {
+      this.getInfoSetTop();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,9 +44,41 @@ class Informations extends Component {
         urlParams: this.formatSearch(nextProps.location.search)
       }, () => {
         this.fetchData(this.state.pageNo, parseInt(this.state.urlParams.id, 10));
+        if (nextProps.home.screenW < 768) {
+          this.getInfoSetTop();
+        }
       });
     }
   }
+
+  //FIFA资讯置顶轮播
+  getInfoSetTop = () => {
+    axios.get(`/news/news/newsTopList?type=0&typeId=${this.state.urlParams.id}`).then((res) => {
+      const {data} = res;
+      if (data.code === '0') {
+        this.setState({infoAdvert: data.data}, () => {
+          this.swiper = new Swiper('.infoSwiper', {
+            pagination: '.swiper-pagination'
+          });
+        });
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  infoSetTopList = () => {
+    const {infoAdvert} = this.state;
+    const list = [];
+    infoAdvert.map((item) => {
+      list.push(<div className="swiper-slide">
+        <MobileAdvert data={item} history={this.props.history} location="details" />
+      </div>);
+    });
+    return list;
+  };
 
   fetchData = (pageNo, urlId) => {
     axios.post(
@@ -103,7 +144,7 @@ class Informations extends Component {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
-      list.push(<Col span={8} key={item.id}>
+      list.push(<Col md={12} xl={8} key={item.id}>
         <CommonCard data={item} history={this.props.history} location="details" />
       </Col>);
     });
@@ -112,8 +153,13 @@ class Informations extends Component {
 
   render() {
     const {data, total} = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div style={{padding: '60px 0 93px 0'}} className="container">
+        {screenW < 768 ? <div className="swiper-container infoSwiper">
+          <div className="swiper-wrapper">{this.infoSetTopList()}</div>
+          <div className="swiper-pagination" />
+        </div> : ''}
         <Row style={{marginBottom: 80}}>
           {this.renderList()}
         </Row>

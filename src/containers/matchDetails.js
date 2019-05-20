@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
 import axios from '../axios';
+import CommentList from '../components/CommentList';
 
 const stylesheet = {
   words: {
@@ -52,36 +53,113 @@ class MatchDetails extends Component {
     super(props);
     this.state = {
       urlParams: this.formatSearch(props.location.search),
+      id: '',
       tagArray: [],
-      comment: '',
       content: '',
       tagInfo: [],
-      data: ''
+      data: '',
+      words: '',
+      messageData: [],
+      pageNo: 1,
+      total: 0,
     };
   }
 
   componentDidMount() {
-    const {changeRoute, getDetailData} = this.props;
+    const {changeRoute} = this.props;
     changeRoute('details');
+    this.getDetail();
+  }
+
+  componentWillUnmount() {
+    document.title = '非凡网';
+  }
+
+  //获取文章详情
+  getDetail = () => {
+    const {getDetailData, history} = this.props;
     axios.get(`/news/news/${this.state.urlParams.majorKey}`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
+          id: data.data.info.id,
           tagArray: data.data.tags,
           content: data.data.info.content,
           tagInfo: data.data.tagInfo,
           data: data.data.info
+        }, () => {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          //获取文章一级评论
+          this.getMessage();
         });
         //设置网页title
         document.title = data.data.info.title;
         getDetailData(data.data.info);
       } else {
         message.warning(data.msg);
+        history.goBack();
       }
     }).catch((err) => {
       message.error(`${err}`);
     });
-  }
+  };
+
+  //获取当篇文章的一级评论
+  getMessage = () => {
+    axios.post('/news/member/messageList', {
+      asc: true,
+      map: {id: this.state.id},
+      nowPage: this.state.pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({
+          messageData: res.data.data.records,
+          total: res.data.data.total
+        });
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  //发布留言（一级评论）
+  postMessage = () => {
+    const {words} = this.state;
+    const {home: {userInfo}} = this.props;
+    if (Object.keys(userInfo).length === 0) {
+      message.warning('请先登录再回复');
+      return false;
+    }
+    if (words === '') {
+      message.warning('请输入内容');
+      return false;
+    }
+    axios.post('/news/member/save', {
+      content: words,
+      memId: userInfo.id,
+      infoId: this.state.id
+    }).then((res) => {
+      const {data} = res;
+      if (data.code === '0') {
+        //更新一级评论并清空输入框，将分页重置为1
+        this.setState({
+          words: '',
+          pageNo: 1
+        }, () => {
+          this.getMessage();
+        });
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
 
   formatSearch = (url) => {
     if (typeof url !== 'undefined') {
@@ -100,15 +178,55 @@ class MatchDetails extends Component {
     }
   };
 
+  //绑定input值
+  _changeValue = (event) => {
+    const o = {};
+    o[event.target.name] = event.target.value;
+    this.setState(o);
+  };
+
+  //加载更多
+  loadMore = async () => {
+    await this.setState({pageNo: this.state.pageNo + 1});
+    axios.post('/news/member/messageList', {
+      asc: true,
+      map: {id: this.state.id},
+      nowPage: this.state.pageNo,
+      pageSize: 9,
+      sort: 'string'
+    }).then((res) => {
+      if (res.data.code === '0') {
+        this.setState({
+          messageData: this.state.messageData.concat(res.data.data.records),
+          total: res.data.data.total
+        });
+      } else {
+        message.warning(res.data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+  };
+
+  //点击标签跳转标签列表
+  gotoTagList = (id) => {
+    const {history} = this.props;
+    history.push(`/tagList?id=${id}`);
+  };
+
   render() {
     const {
       tagArray,
       tagInfo,
-      comment,
       content,
+      words,
+      urlParams,
+      messageData,
+      total,
       data
     } = this.state;
     const {TextArea} = Input;
+    const {home: {userInfo}} = this.props;
     return (
       <div className="detailDiv container">
         <div className="detailContent" dangerouslySetInnerHTML={{__html: content}} />
@@ -119,6 +237,7 @@ class MatchDetails extends Component {
               className="tagColor"
               style={{display: item.name !== '' ? 'inline' : 'none'}}
               key={item.id}
+              onClick={() => this.gotoTagList(item.id)}
             >{item.name}</Tag>)) : ''}
           </div>
           <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
@@ -133,25 +252,43 @@ class MatchDetails extends Component {
         </div>
         <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
           <div style={{position: 'relative'}}>
-            <Avatar size={48} icon="user" style={stylesheet.avater} />
-            <TextArea rows={3} placeholder="发布您的留言" style={stylesheet.textarea} />
+            <Avatar
+              size={48}
+              icon={userInfo.headPortraitUrl ? '' : 'user'}
+              src={userInfo.headPortraitUrl}
+              style={stylesheet.avater}
+            />
+            <TextArea
+              rows={3}
+              value={words}
+              placeholder="发布您的留言"
+              onChange={this._changeValue}
+              name="words"
+              style={stylesheet.textarea}
+            />
           </div>
           <div style={stylesheet.textFooter}>
-            <Icon type="smile" style={{fontSize: 20, marginRight: 41}} />
-            <button style={stylesheet.btn}>发布</button>
+            <button className="submitComment" onClick={this.postMessage}>发布</button>
           </div>
         </div>
-        <div className="flex" style={{marginBottom: 38}}>
+        <CommentList data={messageData} openComment={data.openComment} />
+        {messageData.length < total ?
+          <div style={{textAlign: 'center', marginTop: 20}}>
+            <button className="loadMoreBtn" onClick={this.loadMore}>查看更多评论</button>
+          </div>
+          : <div style={{textAlign: 'center', marginTop: 20}}>
+            <button className="loadMoreBtn" >没有更多评论</button>
+          </div>}
+        <div className="flex" style={{margin: '129px 0 38px 0'}}>
           <div className="dashedLine flex_1" />
           <div style={stylesheet.words}>不能错过的内容</div>
           <div className="dashedLine flex_1" />
         </div>
         <div>
-          <Row>
-            {tagInfo ? tagInfo.map((item) => (<Col
-              span={8}
-              key={item.id}
-            ><CommonCard data={item} history={this.props.history} /></Col>)) : ''}
+          <Row>{tagInfo ? tagInfo.map(item => (<Col
+            span={8}
+            key={item.id}
+          ><CommonCard data={item} history={this.props.history} location="details" /></Col>)) : ''}
           </Row>
         </div>
       </div>

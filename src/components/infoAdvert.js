@@ -25,10 +25,8 @@ class InfoAdvert extends Component {
   gotoDetails = (customizeUrl) => {
     const {
       history,
-      changeRoute,
       location: {pathname}
     } = this.props;
-    changeRoute('details');
     //判断是资讯还是赛事
     if (pathname.indexOf('information') > -1) {
       history.push(`/details?id=${customizeUrl}&state=${customizeUrl}&majorKey=${customizeUrl}`);

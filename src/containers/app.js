@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {message} from 'antd';
 import * as homeActions from '../redux/reduces/home';
 import Fifaheader from '../components/Fifaheader';
+import MobileFifaheader from '../components/mobile-Fifaheader';
 import Fifafooter from '../components/Fifafooter';
 import axios from '../axios';
 /*
@@ -23,25 +24,26 @@ class App extends Component {
   componentWillMount() {
     const {
       history,
-      changeRoute,
       getToken,
       isFixFun,
+      screenWidth,
       home: {currentRoute}
     } = this.props;
     //根据cookie获取token
     getToken();
+    //获取屏幕宽度
+    screenWidth(window.screen.width);
     //监听滚动条高度
     window.addEventListener('scroll', (e) => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop > 90) {
+      if (scrollTop >= 90) {
         isFixFun(true);
       } else {
         isFixFun(false);
       }
     });
     //当前路由为'/'时跳转到home首页
-    if (currentRoute === '#/') {
-      changeRoute('home');
+    if (!currentRoute || currentRoute === '#/') {
       history.push('/home');
     }
   }
@@ -64,10 +66,20 @@ class App extends Component {
   }
 
   render() {
-    const {home: {isFixed}} = this.props;
+    const {home: {screenW}} = this.props;
     return (
       <div className="home">
-        <Fifaheader history={this.props.history} location={this.props.location} />
+        {screenW > 768 ?
+          <Fifaheader
+            history={this.props.history}
+            location={this.props.location}
+          />
+          :
+          <MobileFifaheader
+            history={this.props.history}
+            location={this.props.location}
+          />
+        }
         <div>
           {this.props.children}
         </div>

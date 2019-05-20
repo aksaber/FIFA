@@ -55,7 +55,7 @@
 .rightheader .ant-input-suffix{
   right: 15px;
 }
-.rightheader .ant-input-search-icon{
+.ant-input-search-icon{
   color: #fff!important;
 }
 .rightheader input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {

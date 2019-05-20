@@ -39,18 +39,15 @@ class Fifaheader extends Component {
 
   //banner切换路由
   gotoNav = (type) => {
-    const {history, changeRoute} = this.props;
+    const {history} = this.props;
     switch (type) {
       case 'home':
-        changeRoute('home');
         history.push('/home');
         break;
       case 'information':
-        changeRoute('informations');
         history.push('/informations');
         break;
       case 'match':
-        changeRoute('match');
         history.push('/match');
         break;
       default:
@@ -60,9 +57,11 @@ class Fifaheader extends Component {
 
   //搜索框输入
   searchInfo = () => {
-    const {history, changeRoute} = this.props;
+    const {history} = this.props;
     const {content} = this.state;
-    changeRoute('search');
+    if (content === '') {
+      return false;
+    }
     history.push(`/search?content=${content}`);
   };
 
@@ -116,10 +115,15 @@ class Fifaheader extends Component {
     //   }
     // });
     const {home: {currentRoute}} = this.props;
-    if (currentRoute.indexOf('home') > -1) {
+    if (currentRoute.indexOf('home') > -1
+      || currentRoute.indexOf('#/') > -1
+      || !currentRoute
+      || currentRoute.indexOf('login') > -1) {
       //首页置顶广告
       this.getHomeSetTop();
-    } else if (currentRoute.indexOf('informations') > -1 || currentRoute.indexOf('match') > -1) {
+    } else if (this.state.urlParams.id
+      && (currentRoute.indexOf('informations') > -1
+      || currentRoute.indexOf('match') > -1)) {
       //FIFA资讯置顶轮播
       this.getInfoSetTop();
     }
@@ -138,8 +142,8 @@ class Fifaheader extends Component {
         if (currentRoute.indexOf('home') > -1) {
           //首页置顶广告
           this.getHomeSetTop();
-        } else if (currentRoute.indexOf('informations') > -1
-          || currentRoute.indexOf('match') > -1) {
+        } else if (this.state.urlParams.id && (currentRoute.indexOf('informations') > -1
+          || currentRoute.indexOf('match') > -1)) {
           //FIFA资讯置顶轮播
           this.getInfoSetTop();
         }
@@ -215,8 +219,15 @@ class Fifaheader extends Component {
 
   //跳转登录页面
   gotoLogin = () => {
-    const {history, changeRoute} = this.props;
-    changeRoute('login');
+    const {history} = this.props;
+    if (document.cookie) {
+      const cookieArr = document.cookie.split(';');
+      for (let i = 0; i < cookieArr.length; i++) {
+        if (cookieArr[i].split('=')[0].trim() === 'fifaToken') {
+          document.cookie = `fifaToken=;expires=${(new Date(0)).toGMTString()}`;
+        }
+      }
+    }
     history.push('/login');
   };
 
@@ -229,8 +240,7 @@ class Fifaheader extends Component {
 
   //跳转用户中心
   gotoUserInfo = (router) => {
-    const {history, changeRoute} = this.props;
-    changeRoute(router);
+    const {history} = this.props;
     history.push(`/userInfo/${router}`);
   };
 

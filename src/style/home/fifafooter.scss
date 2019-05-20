@@ -3,9 +3,14 @@
   height: 397px;
   color: #fff;
   background: #191919;
+  position: relative;
   .footer_top{
     height: 313px;
     padding-top: 57px;
+    @media (max-width: 768px){
+      padding-left: 22px!important;
+      padding-right: 22px!important;
+    }
     .flex_1{
       p{
         margin-bottom: 25px!important;
@@ -19,5 +24,24 @@
     background: #333;
     font-size: 16px;
     padding: 0 10%;
+    position: relative;
+    @media (max-width: 768px){
+      height: unset;
+      line-height: 40px;
+      padding-top: 63px;
+      text-align: center;
+    }
+  }
+  .moblieShareFooter{
+    position: absolute;
+    top: 17px;
+    left: 50%;
+    margin-left: -60px;
+  }
+  .moblieLogoFooter{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -22.5px;
   }
 }
