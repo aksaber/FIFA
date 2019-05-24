@@ -10,6 +10,7 @@ import CommonCard from '../components/CommonCard';
 import MultiComment from '../components/MultiComment';
 import axios from '../axios';
 import CommentList from '../components/CommentList';
+import InfoAdvert from '../components/infoAdvert';
 
 const stylesheet = {
   words: {
@@ -101,7 +102,7 @@ class Details extends Component {
         });
         //设置网页title
         document.title = data.data.info.title;
-        getDetailData(data.data.info);
+        // getDetailData(data.data.info);
       } else {
         message.warning(data.msg);
         history.goBack();
@@ -234,83 +235,86 @@ class Details extends Component {
     const {TextArea} = Input;
     const {home: {userInfo, screenW}} = this.props;
     return (
-      <div className="detailDiv container">
-        <div
-          style={{
-            margin: '-7px -15px 15px',
-            position: 'relative',
-            marginBottom: 15,
-            display: screenW < 768 ? 'block' : 'none'
-          }}
-        >
-          <img src={data.coverUrl} style={{width: '100%'}} />
-          <div className="detailTopMask">
-            <p>{data.newsCategoryName}</p>
-            <p className="ellipsis title">{data.title}</p>
+      <div>
+        <InfoAdvert data={data} location={this.props.location} type="details" />
+        <div className="detailDiv container">
+          <div
+            style={{
+              margin: '-7px -15px 15px',
+              position: 'relative',
+              marginBottom: 15,
+              display: screenW < 768 ? 'block' : 'none'
+            }}
+          >
+            <img src={data.coverUrl} style={{width: '100%'}} />
+            <div className="detailTopMask">
+              <p>{data.newsCategoryName}</p>
+              <p className="ellipsis title">{data.title}</p>
+            </div>
           </div>
-        </div>
-        <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
-        <div className="dashedLine" />
-        <div className="flex" style={{padding: '28px 0 68px 0'}}>
-          <div className="flex_1">
-            {tagArray ? tagArray.map((item) => (<Tag
-              className="tagColor"
-              style={{display: item.name !== '' ? 'inline' : 'none'}}
+          <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
+          <div className="dashedLine" />
+          <div className="flex" style={{padding: '28px 0 68px 0'}}>
+            <div className="flex_1">
+              {tagArray ? tagArray.map((item) => (<Tag
+                className="tagColor"
+                style={{display: item.name !== '' ? 'inline' : 'none'}}
+                key={item.id}
+                onClick={() => this.gotoTagList(item.id)}
+              >{item.name}</Tag>)) : ''}
+            </div>
+            <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
+              <img src={sina} width={29} height={24} style={{'margin-right': '30px'}} />
+              <img src={wechat} width={29} height={24} />
+            </div>
+          </div>
+          <div className="flex" style={{marginBottom: 83}}>
+            <div className="dashedLine flex_1" />
+            <div style={stylesheet.words}>评论</div>
+            <div className="dashedLine flex_1" />
+          </div>
+          <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
+            <div style={{position: 'relative'}}>
+              <Avatar
+                size={48}
+                icon={userInfo.headPortraitUrl ? '' : 'user'}
+                src={userInfo.headPortraitUrl}
+                style={stylesheet.avater}
+              />
+              <TextArea
+                rows={3}
+                value={words}
+                placeholder="发布您的留言"
+                onChange={this._changeValue}
+                name="words"
+                style={stylesheet.textarea}
+              />
+            </div>
+            <div style={stylesheet.textFooter}>
+              <button className="submitComment" onClick={this.postMessage}>发布</button>
+            </div>
+          </div>
+          <CommentList data={messageData} openComment={data.openComment} />
+          {messageData.length < total ?
+            <div style={{textAlign: 'center', marginTop: 20}}>
+              <button className="loadMoreBtn" onClick={this.loadMore}>查看更多评论</button>
+            </div>
+            : <div style={{textAlign: 'center', marginTop: 20}}>
+              <button className="loadMoreBtn" >没有更多评论</button>
+            </div>}
+          <div className="flex" style={{margin: '129px 0 38px 0'}}>
+            <div className="dashedLine flex_1" />
+            <div style={stylesheet.words}>不能错过的内容</div>
+            <div className="dashedLine flex_1" />
+          </div>
+          <div>
+            <Row>{tagInfo ? tagInfo.map(item => (<Col
+              md={12}
+              xl={8}
               key={item.id}
-              onClick={() => this.gotoTagList(item.id)}
-            >{item.name}</Tag>)) : ''}
+            ><CommonCard data={item} history={this.props.history} location="details" /></Col>)) : ''}
+            </Row>
           </div>
-          <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
-            <img src={sina} width={29} height={24} style={{'margin-right': '30px'}} />
-            <img src={wechat} width={29} height={24} />
-          </div>
-        </div>
-        <div className="flex" style={{marginBottom: 83}}>
-          <div className="dashedLine flex_1" />
-          <div style={stylesheet.words}>评论</div>
-          <div className="dashedLine flex_1" />
-        </div>
-        <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
-          <div style={{position: 'relative'}}>
-            <Avatar
-              size={48}
-              icon={userInfo.headPortraitUrl ? '' : 'user'}
-              src={userInfo.headPortraitUrl}
-              style={stylesheet.avater}
-            />
-            <TextArea
-              rows={3}
-              value={words}
-              placeholder="发布您的留言"
-              onChange={this._changeValue}
-              name="words"
-              style={stylesheet.textarea}
-            />
-          </div>
-          <div style={stylesheet.textFooter}>
-            <button className="submitComment" onClick={this.postMessage}>发布</button>
-          </div>
-        </div>
-        <CommentList data={messageData} openComment={data.openComment} />
-        {messageData.length < total ?
-          <div style={{textAlign: 'center', marginTop: 20}}>
-            <button className="loadMoreBtn" onClick={this.loadMore}>查看更多评论</button>
-          </div>
-          : <div style={{textAlign: 'center', marginTop: 20}}>
-            <button className="loadMoreBtn" >没有更多评论</button>
-          </div>}
-        <div className="flex" style={{margin: '129px 0 38px 0'}}>
-          <div className="dashedLine flex_1" />
-          <div style={stylesheet.words}>不能错过的内容</div>
-          <div className="dashedLine flex_1" />
-        </div>
-        <div>
-          <Row>{tagInfo ? tagInfo.map(item => (<Col
-            md={12}
-            xl={8}
-            key={item.id}
-          ><CommonCard data={item} history={this.props.history} location="details" /></Col>)) : ''}
-          </Row>
         </div>
       </div>
     );

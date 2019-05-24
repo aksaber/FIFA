@@ -14,6 +14,15 @@
     color: #1F1F1F;
     padding: 30px 40px;
     border-radius: 5px; }
+    @media (max-width: 768px) {
+      .registerPage .registerModule {
+        position: unset;
+        width: 100%;
+        height: 100%;
+        margin-left: unset;
+        margin-top: unset;
+        border-radius: 0;
+        padding: 50px 35px; } }
     .registerPage .registerModule .title {
       text-align: center;
       width: 100%;
@@ -23,7 +32,7 @@
       color: #fff; }
     .registerPage .registerModule .ant-row > div {
       margin: 5px 0; }
-    .registerPage .registerModule .ant-row > .ant-col-12 {
+    .registerPage .registerModule .ant-row > .ant-col-12, .registerPage .registerModule .ant-row > .ant-col-xl-12 {
       padding: 0 15px; }
     .registerPage .registerModule .registerFooter {
       text-align: center;
@@ -32,6 +41,9 @@
         margin-top: 48px;
         padding: 8px 109px;
         height: unset; }
+        @media (max-width: 768px) {
+          .registerPage .registerModule .registerFooter .registerBtn {
+            width: 100%; } }
     .registerPage .registerModule .liStyle {
       padding-bottom: 10px;
       border-bottom: 2px solid #414141; }

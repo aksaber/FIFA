@@ -1,0 +1,24 @@
+.userBasicTop{
+  margin-top: 60px;
+  background: url("../../assets/img/userTopBg.png");
+  background-size: cover;
+  text-align: center;
+  color: #fff;
+  img{
+    border-radius: 50%;
+    margin-top: 30px;
+  }
+  .userName{
+    margin: 21px 25px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .userBasicTag{
+    display: inline-block;
+    padding: 16px 34px;
+    border-radius: 13px 13px 0 0;
+  }
+  .selected{
+    background: rgba(255, 255, 255, 0.2);
+  }
+}

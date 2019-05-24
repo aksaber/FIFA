@@ -28,7 +28,9 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const {changeRoute} = this.props;
+    const {changeRoute, screenWidth} = this.props;
+    //获取屏幕宽度
+    screenWidth(window.screen.width);
     changeRoute('login');
     //获取图片验证码
     this.getCode();
@@ -126,10 +128,11 @@ class Login extends Component {
       cToken,
       adLogin
     } = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div className="loginPage">
         <div className="loginModule">
-          <div className="titleBox">
+          <div className="titleBox" style={{display: screenW < 768 ? 'none' : 'block'}}>
             <div onClick={this.gotoLogin}>
               <img
                 src={logo}
@@ -159,7 +162,9 @@ class Login extends Component {
             </div>
           </div>
           <div className="loginFrame">
-            <div className="title">用户登录</div>
+            <div className="title">
+              {screenW < 768 ? <img src={logo} width={58} height={45} /> : <span>用户登录</span>}
+            </div>
             <ul className="flex">
               <div className="flex_1" onClick={() => this.toggleLogin(0)}>
                 <li className={loginWay === 0 ? 'liStyle' : ''}>手机号码登录</li>

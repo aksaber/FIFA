@@ -113,10 +113,9 @@ class childList extends Component {
               src={item.coverUrl}
               width={320}
               height={130}
-              style={{'margin-bottom': '11px'}}
-              className="commonCardImg"
+              className="childListImg"
             />
-          </div><div>{item.name}</div></div>);
+          </div><div style={{marginTop: 11}}>{item.name}</div></div>);
       });
       return list;
     };

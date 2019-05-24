@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Row, Col, message} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
-import axios from '../axios';
 import UserBasicLeft from '../components/userBasicLeft';
+import UserBasicTop from '../components/userBasicTop';
 import '../style/userInfo.scss';
 
 @connect(
@@ -19,10 +18,12 @@ class UserInfo extends Component {
   // }
 
   render() {
-    const {home: {isFixed}} = this.props;
+    const {home: {isFixed, screenW}} = this.props;
     return (
       <div className="userInfo clearAfter" style={{marginTop: isFixed ? 90 : 0}}>
-        <UserBasicLeft history={this.props.history} />
+        {screenW < 768
+          ? <UserBasicTop history={this.props.history} />
+          : <UserBasicLeft history={this.props.history} />}
         <div className="rightContent">
           {this.props.children}
         </div>

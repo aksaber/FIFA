@@ -14,6 +14,7 @@ import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import '../style/register.scss';
 import axios from '../axios';
+import logo from '../assets/img/logo.svg';
 
 @connect(
   state => ({home: state.home}),
@@ -191,10 +192,13 @@ class Register extends Component {
       count,
       cToken
     } = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div className="registerPage">
         <div className="registerModule">
-          <div className="title">注册用户</div>
+          <div className="title">
+            {screenW < 768 ? <img src={logo} width={58} height={45} /> : <span>注册用户</span>}
+          </div>
           <Icon type="swap-left" className="goBackLogin" onClick={this.goBack} />
           <div className="clearAfter" style={{width: 200, margin: '15px auto 10px'}}>
             <div className="left" onClick={() => this.toggleLogin(0)}>
@@ -205,7 +209,7 @@ class Register extends Component {
             </div>
           </div>
           <Row>
-            <Col span={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
               <p>请输入注册邮箱</p>
               <Input
                 value={email}
@@ -213,7 +217,12 @@ class Register extends Component {
                 name="email"
               />
             </Col>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col
+              className="clearAfter"
+              md={24}
+              xl={12}
+              style={{display: (loginWay === 1) ? 'none' : 'block'}}
+            >
               <Col span={24}>
                 <Col span={liked ? 16 : 14}>
                   <p>手机号码</p>
@@ -233,7 +242,7 @@ class Register extends Component {
                 </Col>
               </Col>
             </Col>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>手机验证码</p>
               <Input
                 value={phoneCode}
@@ -241,7 +250,7 @@ class Register extends Component {
                 name="phoneCode"
               />
             </Col>
-            <Col span={12}>
+            <Col md={24} xl={12}>
               <p>密码</p>
               <Password
                 value={password}
@@ -250,7 +259,7 @@ class Register extends Component {
                 placeholder="您的密码"
               />
             </Col>
-            <Col span={12}>
+            <Col md={24} xl={12}>
               <p>确认密码</p>
               <Password
                 value={rePassword}
@@ -258,7 +267,7 @@ class Register extends Component {
                 name="rePassword"
               />
             </Col>
-            <Col span={12}>
+            <Col md={24} xl={12}>
               <Col span={12}>
                 <p>验证码</p>
                 <Input

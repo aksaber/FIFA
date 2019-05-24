@@ -31,9 +31,10 @@
     background: #333;
     color: #fff;
     opacity: 0.89;
-    padding: 12px 17px 23px 17px;
+    //padding: 12px 17px 23px 17px;
     overflow: auto;
     height: 95vh;
+    transition: all 0.4s ease;
     input{
       border-radius: 100px;
       border: 2px solid rgba(255,255,255,0.3);

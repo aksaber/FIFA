@@ -1,16 +1,25 @@
-.homes {
-  padding-top: 83px; }
-  .homes .swiperGuidance {
-    padding-right: 15px;
-    padding-left: 15px; }
-    @media (min-width: 768px) {
-      .homes .swiperGuidance {
-        width: 750px; } }
-    @media (min-width: 992px) {
-      .homes .swiperGuidance {
-        width: 970px; } }
-    @media (min-width: 1200px) {
-      .homes .swiperGuidance {
-        width: 1170px; } }
+.homes .homeTitle {
+  color: #1a47b0;
+  font-size: 46px;
+  margin-top: -37px;
+  padding: 0px 10px;
+  margin-bottom: 29px; }
+  @media (max-width: 768px) {
+    .homes .homeTitle {
+      font-size: 26px;
+      margin-top: -20px;
+      margin-bottom: unset; } }
+.homes .swiperGuidance {
+  padding-right: 15px;
+  padding-left: 15px; }
+  @media (min-width: 768px) {
+    .homes .swiperGuidance {
+      width: 750px; } }
+  @media (min-width: 992px) {
+    .homes .swiperGuidance {
+      width: 970px; } }
+  @media (min-width: 1200px) {
+    .homes .swiperGuidance {
+      width: 1170px; } }
 
 /*# sourceMappingURL=home.css.map */

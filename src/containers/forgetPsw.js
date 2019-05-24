@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import '../style/forgetPsw.scss';
 import axios from '../axios';
+import logo from '../assets/img/logo.svg';
 
 @connect(
   state => ({home: state.home}),
@@ -175,10 +176,13 @@ class ForgetPsw extends Component {
       count,
       cToken
     } = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div className="forgetPswPage">
         <div className="forgetPswModule">
-          <div className="title">忘记密码</div>
+          <div className="title">
+            {screenW < 768 ? <img src={logo} width={58} height={45} /> : <span>忘记密码</span>}
+          </div>
           <Icon type="swap-left" className="goBackLogin" onClick={this.goBack} />
           <div className="clearAfter" style={{width: 200, margin: '15px auto 10px'}}>
             <div className="left" onClick={() => this.toggleLogin(0)}>
@@ -189,7 +193,12 @@ class ForgetPsw extends Component {
             </div>
           </div>
           <Row>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col
+              className="clearAfter"
+              md={24}
+              xl={12}
+              style={{display: (loginWay === 1) ? 'none' : 'block'}}
+            >
               <Col span={24}>
                 <Col span={liked ? 16 : 14}>
                   <p>手机号码</p>
@@ -203,13 +212,13 @@ class ForgetPsw extends Component {
                 <Col span={liked ? 8 : 10}>
                   <p>&nbsp;</p>
                   <Button
-                    style={{float: 'right', fontSize: 10}}
+                    style={{float: 'right', fontSize: 10, width: 'unset'}}
                     onClick={this.getPhoneCode}
                   >{liked ? <span>发送验证码</span> : <span>{`${count}s后重新发送`}</span>}</Button>
                 </Col>
               </Col>
             </Col>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>手机验证码</p>
               <Input
                 value={phoneCode}
@@ -217,7 +226,7 @@ class ForgetPsw extends Component {
                 name="phoneCode"
               />
             </Col>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>密码</p>
               <Password
                 value={password}
@@ -226,7 +235,7 @@ class ForgetPsw extends Component {
                 placeholder="您的密码"
               />
             </Col>
-            <Col span={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
               <p>确认密码</p>
               <Password
                 value={rePassword}
@@ -234,7 +243,7 @@ class ForgetPsw extends Component {
                 name="rePassword"
               />
             </Col>
-            <Col span={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
+            <Col md={24} xl={12} style={{display: (loginWay === 0) ? 'none' : 'block'}}>
               <p>请输入注册邮箱</p>
               <Input
                 value={email}
@@ -242,7 +251,7 @@ class ForgetPsw extends Component {
                 name="email"
               />
             </Col>
-            <Col span={12}>
+            <Col md={24} xl={12}>
               <Col span={12}>
                 <p>验证码</p>
                 <Input

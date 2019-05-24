@@ -6,17 +6,9 @@ import Swiper from 'swiper/dist/js/swiper.js';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
 import HomeMatchs from '../components/HomeMatchs';
+import HomeAdvert from '../components/homeAdvert';
 import axios from '../axios';
 import '../style/home/home.scss';
-
-const stylesheet = {
-  title: {
-    color: 'rgb(26, 71, 176)',
-    fontSize: 46,
-    marginTop: -37,
-    padding: '0px 10px'
-  }
-};
 
 @connect(
   state => ({home: state.home}),
@@ -30,7 +22,8 @@ class Home extends Component {
     total: 0,
     guidance: [],
     matchData: [],
-    advert: {}
+    advert: {},
+    homeList: []
   };
 
   componentDidMount() {
@@ -41,6 +34,18 @@ class Home extends Component {
       const {data} = res;
       if (data.code === '0') {
         this.setState({advert: data.data.adMid});
+      } else {
+        message.warning(data.msg);
+      }
+    }).catch((err) => {
+      message.error(`${err}`);
+    });
+
+    //首页置顶广告
+    axios.get('/news/news/firstNews').then((res) => {
+      const {data} = res;
+      if (data.code === '0') {
+        this.setState({homeList: data.data.firstNews});
       } else {
         message.warning(data.msg);
       }
@@ -160,15 +165,17 @@ class Home extends Component {
       data,
       total,
       matchData,
-      advert
+      advert,
+      homeList
     } = this.state;
     const {home: {screenW}} = this.props;
     return (
       <div className="homes">
-        <div className="container">
-          <div className="flex" style={{marginBottom: 29}}>
+        <HomeAdvert data={homeList} />
+        <div className="container" style={{marginTop: 60}}>
+          <div className="flex">
             <div className="dashedLine flex_1" />
-            <div style={stylesheet.title}>热门资讯</div>
+            <div className="homeTitle">热门资讯</div>
             <div className="dashedLine flex_1" />
           </div>
           <Row>{data.map((item) =>
@@ -189,7 +196,7 @@ class Home extends Component {
         <div className="container">
           <div className="flex" style={{marginBottom: 49}}>
             <div className="dashedLine flex_1" />
-            <div style={stylesheet.title}>电竞赛事</div>
+            <div className="homeTitle">电竞赛事</div>
             <div className="dashedLine flex_1" />
           </div>
           <Row>{matchData ? matchData.map((item) =>
@@ -201,7 +208,7 @@ class Home extends Component {
         <div style={{background: '#F7F8FB', padding: '76px 0 187px 0', position: 'relative'}}>
           <div className="flex container" style={{marginBottom: 49}}>
             <div className="dashedLine flex_1" />
-            <div style={stylesheet.title}>新手入门</div>
+            <div className="homeTitle">新手入门</div>
             <div className="dashedLine flex_1" />
           </div>
           <div className="swiper-container swiperGuidance">

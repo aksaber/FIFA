@@ -9,13 +9,10 @@ import {
   Dropdown
 } from 'antd';
 import $ from 'jquery';
-
 import logo from '~/assets/img/logo.svg';
 import ChildList from '../components/childList';
 import * as homeActions from '../redux/reduces/home';
 import axios from '../axios';
-import InfoAdvert from './infoAdvert';
-import HomeAdvert from './homeAdvert';
 
 @connect(
   state => ({home: state.home}),
@@ -105,27 +102,18 @@ class Fifaheader extends Component {
   };
 
   componentDidMount() {
-    // //监听滚动条高度
-    // window.addEventListener('scroll', (e) => {
-    //   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    //   if (scrollTop > 90) {
-    //     this.setState({isFixed: true});
-    //   } else {
-    //     this.setState({isFixed: false});
-    //   }
-    // });
     const {home: {currentRoute}} = this.props;
     if (currentRoute.indexOf('home') > -1
       || currentRoute.indexOf('#/') > -1
       || !currentRoute
       || currentRoute.indexOf('login') > -1) {
       //首页置顶广告
-      this.getHomeSetTop();
+      // this.getHomeSetTop();
     } else if (this.state.urlParams.id
       && (currentRoute.indexOf('informations') > -1
       || currentRoute.indexOf('match') > -1)) {
       //FIFA资讯置顶轮播
-      this.getInfoSetTop();
+      // this.getInfoSetTop();
     }
     //FIFA资讯分类
     this.getInfoClassify();
@@ -141,11 +129,11 @@ class Fifaheader extends Component {
         const {home: {currentRoute}} = this.props;
         if (currentRoute.indexOf('home') > -1) {
           //首页置顶广告
-          this.getHomeSetTop();
+          // this.getHomeSetTop();
         } else if (this.state.urlParams.id && (currentRoute.indexOf('informations') > -1
           || currentRoute.indexOf('match') > -1)) {
           //FIFA资讯置顶轮播
-          this.getInfoSetTop();
+          // this.getInfoSetTop();
         }
         //FIFA资讯分类
         this.getInfoClassify();
@@ -264,29 +252,6 @@ class Fifaheader extends Component {
       location: {pathname}
     } = this.props;
     const {Search} = Input;
-    //顶部广告轮播
-    const getAdvert = () => {
-      let DOM = '';
-      if (currentRoute.indexOf('home') > -1) {
-        //首页广告轮播图展示
-        DOM = <HomeAdvert data={homeList} />;
-      } else if (pathname.indexOf('userInfo') > -1) {
-        //用户页面无展示
-        DOM = '';
-      } else if (currentRoute.indexOf('detail') > -1 || currentRoute.indexOf('Detail') > -1) {
-        //详情页展示
-        DOM = <InfoAdvert data={detailData} location={this.props.location} />;
-      } else {
-        //资讯、赛事分类的列表展示
-        DOM = (<InfoAdvert
-          data={carouselData}
-          location={this.props.location}
-          history={this.props.history}
-        />);
-      }
-      return DOM;
-    };
-
     const menu = (
       <Menu style={{padding: '19px 19px 1px'}}>
         <div className="flex" style={{paddingBottom: 20, borderBottom: '1px solid #f0f0f0'}}>
@@ -398,7 +363,6 @@ class Fifaheader extends Component {
             />
           </div>
         </div>
-        {getAdvert()}
       </div>
     );
   }

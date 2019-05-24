@@ -1,5 +1,16 @@
 .homes{
-  padding-top: 83px;
+  .homeTitle{
+    color: rgb(26, 71, 176);
+    font-size: 46px;
+    margin-top: -37px;
+    padding: 0px 10px;
+    margin-bottom: 29px;
+    @media (max-width: 768px){
+      font-size: 26px;
+      margin-top: -20px;
+      margin-bottom: unset;
+    }
+  }
   .swiperGuidance{
     padding-right: 15px;
     padding-left: 15px;

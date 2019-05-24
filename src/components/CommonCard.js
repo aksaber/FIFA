@@ -6,7 +6,6 @@ import * as homeActions from '../redux/reduces/home';
 
 const stylesheet = {
   commonCard: {
-    padding: 18,
     margin: '20px',
     height: '437px',
     background: 'rgba(255,255,255,1)',
@@ -14,11 +13,6 @@ const stylesheet = {
     opacity: 1,
     borderRadius: '5px',
     border: '1px solid #fff'
-  },
-  commonCardImg: {
-    width: '100%',
-    height: 220,
-    borderRadius: 5
   },
   commonCardBody: {
     padding: '21px 19px 0 19px',
@@ -38,6 +32,7 @@ class CommonCard extends Component {
       location
     } = this.props;
     history.push(`/${location}?majorKey=${data.customizeUrl}`);
+    // history.push(`/${location}/${data.customizeUrl}`);
     // history.push({pathname: '/details', state: {id: data.id}});
   };
 
@@ -48,14 +43,32 @@ class CommonCard extends Component {
       <Card
         hoverable
         style={stylesheet.commonCard}
-        cover={<img
-          src={data.coverUrl}
-          style={stylesheet.commonCardImg}
-          className="commonCardImg"
-        />}
         onClick={this.gotoDetails}
-        bodyStyle={stylesheet.commonCardBody}
+        // cover={<img
+        //   src={data.coverUrl}
+        //   className="commonCardImg"
+        // />}
+        // bodyStyle={stylesheet.commonCardBody}
       >
+        <div className="commonCardImgDiv">
+          <img
+            src={data.coverUrl}
+            className="commonCardImg"
+          />
+          <div className="commonCardMask">
+            <div style={{marginTop: 47}}>
+              <p style={{fontSize: 20, fontWeight: 'bold'}}>
+                {data.author ? data.author : 'admin'}
+              </p>
+              <p style={{fontSize: 16}}>{data.createTime}</p>
+              <div style={{width: '80%', margin: '0 auto'}}>
+                {data.tagRelationName ? data.tagRelationName.slice(0, 2).map(item => (
+                  <span className="tag ellipsis">{item}</span>
+                )) : ''}
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           style={{
             color: '#595F6F',

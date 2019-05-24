@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Row, Col, message} from 'antd';
-import Documentation from '~/components/documentation';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Swiper from 'swiper';
 import * as homeActions from '../redux/reduces/home';
 import CommonCard from '../components/CommonCard';
 import MobileAdvert from '../components/mobile-advert';
+import InfoAdvert from '../components/infoAdvert';
 import axios from '../axios';
 
 
@@ -22,7 +22,8 @@ class Informations extends Component {
       data: [],
       pageNo: 1,
       total: 0,
-      infoAdvert: []
+      infoAdvert: [],
+      carouselData: []
     };
   }
 
@@ -32,9 +33,7 @@ class Informations extends Component {
     changeRoute('informations');
     this.fetchData(pageNo, parseInt(urlParams.id, 10));
     //获取置顶轮播
-    if (screenW < 768) {
-      this.getInfoSetTop();
-    }
+    this.getInfoSetTop();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,9 +43,7 @@ class Informations extends Component {
         urlParams: this.formatSearch(nextProps.location.search)
       }, () => {
         this.fetchData(this.state.pageNo, parseInt(this.state.urlParams.id, 10));
-        if (nextProps.home.screenW < 768) {
-          this.getInfoSetTop();
-        }
+        this.getInfoSetTop();
       });
     }
   }
@@ -56,7 +53,10 @@ class Informations extends Component {
     axios.get(`/news/news/newsTopList?type=0&typeId=${this.state.urlParams.id}`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
-        this.setState({infoAdvert: data.data}, () => {
+        this.setState({
+          infoAdvert: data.data,
+          carouselData: data.data
+        }, () => {
           this.swiper = new Swiper('.infoSwiper', {
             pagination: '.swiper-pagination'
           });
@@ -152,24 +152,31 @@ class Informations extends Component {
   };
 
   render() {
-    const {data, total} = this.state;
+    const {data, total, carouselData} = this.state;
     const {home: {screenW}} = this.props;
     return (
-      <div style={{padding: '60px 0 93px 0'}} className="container">
-        {screenW < 768 ? <div className="swiper-container infoSwiper">
-          <div className="swiper-wrapper">{this.infoSetTopList()}</div>
-          <div className="swiper-pagination" />
-        </div> : ''}
-        <Row style={{marginBottom: 80}}>
-          {this.renderList()}
-        </Row>
-        {data.length < total ?
-          <div style={{textAlign: 'center'}}>
-            <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>
-          </div>
-          : <div style={{textAlign: 'center'}}>
-            <button className="loadMoreBtn" >没有更多</button>
-          </div>}
+      <div>
+        <InfoAdvert
+          data={carouselData}
+          location={this.props.location}
+          history={this.props.history}
+        />
+        <div style={{padding: '60px 0 93px 0'}} className="container">
+          {screenW < 768 ? <div className="swiper-container infoSwiper">
+            <div className="swiper-wrapper">{this.infoSetTopList()}</div>
+            <div className="swiper-pagination" />
+          </div> : ''}
+          <Row style={{marginBottom: 80}}>
+            {this.renderList()}
+          </Row>
+          {data.length < total ?
+            <div style={{textAlign: 'center'}}>
+              <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>
+            </div>
+            : <div style={{textAlign: 'center'}}>
+              <button className="loadMoreBtn" >没有更多</button>
+            </div>}
+        </div>
       </div>
     );
   }

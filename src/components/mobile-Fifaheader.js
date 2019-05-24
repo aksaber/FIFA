@@ -143,8 +143,13 @@ class MobileFifaheader extends Component {
 
   //跳转页面
   gotoTarget = (router) => {
-    const {history} = this.props;
+    const {history, home: {userInfo}} = this.props;
     this.setState({showMenu: false});
+    //如果已登录则进入用户中心
+    if (Object.keys(userInfo).length !== 0) {
+      history.push('/userInfo');
+      return false;
+    }
     history.push(`/${router}`);
   };
 
@@ -192,47 +197,49 @@ class MobileFifaheader extends Component {
             <span className="icon-bar" />
           </div>
         </div>
-        {showMenu ? <div className="menu">
-          <div className="flex">
-            <Search
-              value={content}
-              onChange={this._changeValue}
-              name="content"
-              placeholder="搜索"
-              onPressEnter={this.searchInfo}
-              onSearch={this.searchInfo}
-              className="flex_1"
-              style={{marginRight: 15}}
-            />
-            <Avatar
-              onClick={() => this.gotoTarget('login')}
-              shape="circle"
-              size="large"
-              icon={userInfo.headPortraitUrl ? '' : 'user'}
-              src={userInfo.headPortraitUrl}
-              className="avator_user"
-            />
+        <div className="menu" style={{height: showMenu ? '95vh' : '0px'}}>
+          <div style={{padding: '12px 17px 23px 17px'}}>
+            <div className="flex">
+              <Search
+                value={content}
+                onChange={this._changeValue}
+                name="content"
+                placeholder="搜索"
+                onPressEnter={this.searchInfo}
+                onSearch={this.searchInfo}
+                className="flex_1"
+                style={{marginRight: 15}}
+              />
+              <Avatar
+                onClick={() => this.gotoTarget('login')}
+                shape="circle"
+                size="large"
+                icon={userInfo.headPortraitUrl ? '' : 'user'}
+                src={userInfo.headPortraitUrl}
+                className="avator_user"
+              />
+            </div>
+            <div className="title" onClick={() => this.gotoTarget('home')}>首页</div>
+            <div className="title">
+              FIFA资讯
+              <Icon
+                type="down"
+                onClick={() => this.getCompleteList(0)}
+                style={{float: 'right'}}
+              />
+            </div>
+            <Row>{this.initInfoList()}</Row>
+            <div className="title">
+              电竞赛事
+              <Icon
+                type="down"
+                onClick={() => this.getCompleteList(1)}
+                style={{float: 'right'}}
+              />
+            </div>
+            <Row>{this.initMatchList()}</Row>
           </div>
-          <div className="title" onClick={() => this.gotoTarget('home')}>首页</div>
-          <div className="title">
-            FIFA资讯
-            <Icon
-              type="down"
-              onClick={() => this.getCompleteList(0)}
-              style={{float: 'right'}}
-            />
-          </div>
-          <Row>{this.initInfoList()}</Row>
-          <div className="title">
-            电竞赛事
-            <Icon
-              type="down"
-              onClick={() => this.getCompleteList(1)}
-              style={{float: 'right'}}
-            />
-          </div>
-          <Row>{this.initMatchList()}</Row>
-        </div> : ''}
+        </div>
       </div>
     );
   }

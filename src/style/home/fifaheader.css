@@ -139,9 +139,13 @@
   overflow: hidden;
   padding: 0 0 29px 15px;
   position: relative;
-  margin-top: 100px;
+  /*margin-top: 100px;*/
   /*top: -1250px;*/
   /*top: -725px;*/
+}
+.detailsSetTop{
+  background: linear-gradient(180deg,rgba(9,32,86,1) 100%,rgba(9,32,86,1) 100%);
+  padding-top: 39px;
 }
 .carouselHeight{
   height: 400px;  /*279px*/
@@ -151,24 +155,54 @@
 }
 .headerContent .title_2{
   font-size: 60px;
-  width: 60%;
   margin-bottom: 20px;
   cursor: pointer;
 }
 .headerContent .title_3{
   font-size: 18px;
   margin-bottom: 49px;
-  width: 40%;
+  width: 80%;
 }
 .headerContent .title_4{
   font-size: 18px;
   color: #709BE7;
-  width: 60%;
 }
 .headerContent .titleFooter{
   margin-right: 30px;
+  overflow: hidden;
+  flex: 1;
 }
 .headerContent .titleFooter::before{
+  content: '';
+  display: block;
+  margin-bottom: 20px;
+  height: 1px;
+  width: 100%;
+  background: #709BE7;
+}
+.carouselTitle .title_1{
+  margin-bottom: 26px;
+}
+.carouselTitle .title_2{
+  font-size: 60px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.carouselTitle .title_3{
+  font-size: 18px;
+  margin-bottom: 49px;
+  width: 80%;
+}
+.carouselTitle .title_4{
+  font-size: 18px;
+  color: #709BE7;
+}
+.carouselTitle .titleFooter{
+  margin-right: 30px;
+  overflow: hidden;
+  flex: 1;
+}
+.carouselTitle .titleFooter::before{
   content: '';
   display: block;
   margin-bottom: 20px;

@@ -46,6 +46,18 @@ const stylesheet = {
     textOverflow: 'ellipsis',
     '-webkit-box-orient': 'vertical',
     '-webkit-line-clamp': '2',
+  },
+  blueMask: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: '#1C4FF9',
+    opacity: 0,
+    transition: 'opacity ease 0.8s',
+    textAlign: 'center',
+    color: '#fff'
   }
 };
 
@@ -82,7 +94,7 @@ class HomeMatchs extends Component {
                 width={340}
                 height={340}
                 style={{cursor: 'pointer'}}
-                className="commonCardImg"
+                className="childListImg"
               />
             </div>
             <div className="flex_1">
@@ -101,7 +113,7 @@ class HomeMatchs extends Component {
                       src={data.infos[0].coverUrl}
                       height={160}
                       style={{width: '100%'}}
-                      className="commonCardImg"
+                      className="childListImg"
                     />
                     <div style={stylesheet.mask}>{data.infos[0].title}</div>
                   </div>
@@ -117,7 +129,7 @@ class HomeMatchs extends Component {
                       src={data.infos.length > 1 ? data.infos[1].coverUrl : null}
                       height={160}
                       style={{width: '100%'}}
-                      className="commonCardImg"
+                      className="childListImg"
                     />
                     <div
                       style={stylesheet.mask}
