@@ -25,6 +25,7 @@ import UserInfo from '../containers/userInfo';
 import UserInformation from '../containers/userInformation';
 import AccountManagement from '../containers/accountManagement';
 import MessageCenter from '../containers/messageCenter';
+import MessageDetail from '../containers/messageDetails';
 import Search from '../containers/search';
 import TagList from '../containers/tagList';
 import Clause from '../containers/clause';
@@ -60,7 +61,7 @@ const Root = () => (
             <Router exact path="/home" component={Home} />
             <Router exact path="/informations" component={Informations} />
             <Router exact path="/match" component={Match} />
-            <Router exact path="/details" component={Details} />
+            <Router exact path="/details/*" component={Details} />
             <Router exact path="/matchDetails" component={MatchDetails} />
             <Router exact path="/guidanceDetails" component={GuidanceDetails} />
             <Router exact path="/search" component={Search} />
@@ -69,6 +70,7 @@ const Root = () => (
               <Router path="/userInfo/userInformation" component={UserInformation} />
               <Router path="/userInfo/accountManagement" component={AccountManagement} />
               <Router path="/userInfo/messageCenter" component={MessageCenter} />
+              <Router path="/userInfo/messageDetail" component={MessageDetail} />
             </Router>
           </Router>
         </Switch>

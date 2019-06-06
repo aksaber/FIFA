@@ -51,7 +51,7 @@ class TagList extends Component {
     const {data} = this.state;
     const list = [];
     data.map((item) => {
-      list.push(<Col span={8} key={item.id}>
+      list.push(<Col xl={8} md={24} key={item.id}>
         <CommonCard data={item} history={this.props.history} location="details" />
       </Col>);
     });
@@ -100,9 +100,12 @@ class TagList extends Component {
 
   render() {
     const {total, data} = this.state;
+    const {home: {screenW}} = this.props;
     return (
       <div className="container" style={{marginBottom: 93}}>
-        <Row style={{marginBottom: 80}}>{this.renderList()}</Row>
+        <Row
+          style={{marginBottom: 80, marginTop: screenW < 768 ? 60 : ''}}
+        >{this.renderList()}</Row>
         {data.length < total ?
           <div style={{textAlign: 'center'}}>
             <button className="loadMoreBtn" onClick={this.loadMore}>加载更多</button>

@@ -31,14 +31,14 @@ class CommonCard extends Component {
       data,
       location
     } = this.props;
-    history.push(`/${location}?majorKey=${data.customizeUrl}`);
+    history.push(`/details/${data.customizeUrl}`);
     // history.push(`/${location}/${data.customizeUrl}`);
     // history.push({pathname: '/details', state: {id: data.id}});
   };
 
   render() {
     const {Meta} = Card;
-    const {data} = this.props;
+    const {data, home: {screenW}} = this.props;
     return (
       <Card
         hoverable
@@ -55,7 +55,7 @@ class CommonCard extends Component {
             src={data.coverUrl}
             className="commonCardImg"
           />
-          <div className="commonCardMask">
+          {screenW < 768 ? '' : <div className="commonCardMask">
             <div style={{marginTop: 47}}>
               <p style={{fontSize: 20, fontWeight: 'bold'}}>
                 {data.author ? data.author : 'admin'}
@@ -67,7 +67,7 @@ class CommonCard extends Component {
                 )) : ''}
               </div>
             </div>
-          </div>
+          </div>}
         </div>
         <div
           style={{

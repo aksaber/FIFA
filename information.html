@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FIFA资讯</title>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+  <div class="information">
+    111
+  </div>
+  <script>
+    window.onload = function() {
+      const url = window.location.hash;
+      location.href = `http://192.168.1.115:8086/#/informations?id=${url}`;
+    }
+  </script>
+</body>
+</html>

@@ -68,19 +68,27 @@ class UserInformation extends Component {
 
   render() {
     const {userName} = this.state;
+    const {home: {screenW}} = this.props;
     const self = this;
+    let actionUrl = '';
+    if (process.env.NODE_ENV === 'development') {
+      actionUrl = 'http://192.168.1.115:9081/user/upload/uploadHeadImg';
+    } else if (process.env.NODE_ENV === 'production') {
+      actionUrl = `${window.configurl.BASE_API}/user/upload/uploadHeadImg`;
+    }
     const props = {
       name: 'file',
-      action: 'http://192.168.1.115:9081/zuul/user/upload/uploadHeadImg',
+      action: actionUrl,
       accept: '.png, .jpg, .jpeg, .gif',
       listType: 'picture',
       headers: {
         authorization: 'authorization-text',
+        // token: this.props.home.token
       },
       beforeUpload(info) {
-        //限制2M以内
-        if (info.size >= 2048000) {
-          message.warning('上传头像应小于2M');
+        //限制1M以内
+        if (info.size >= 1024000) {
+          message.warning('上传头像应在1M以内');
           return false;
         }
       },
@@ -120,28 +128,38 @@ class UserInformation extends Component {
             className="left"
             style={{borderRadius: '50%', marginRight: 50}}
           />
-          <div className="left upload" style={{marginTop: 70}}>
+          <div className="left upload" style={{marginTop: screenW < 768 ? 30 : 70}}>
             <Input
               disabled
-              style={{marginRight: 20, width: 300}}
+              style={{marginRight: 20, width: 300, display: screenW < 768 ? 'none' : 'block'}}
               value={fileLists.length > 0 ? fileLists[0].name : ''}
             />
             <Upload {...props}>
               <Button
                 className="userBtn"
-                style={{display: fileLists.length > 0 ? 'none' : 'block'}}
+                style={{display: fileLists.length > 0 ? 'none' : 'block', marginTop: 15}}
               >浏览</Button>
             </Upload>
           </div>
         </div>
-        <div className="subTitle">昵称</div>
-        <Input
-          style={{width: 400, display: 'block'}}
-          value={userName}
-          name="userName"
-          onChange={this._changeValue}
-        />
-        <Button type="primary" style={{marginTop: 50}} onClick={this.updateUserInfo}>保存</Button>
+        <div className="clearAfter">
+          <div className="subTitle">昵称</div>
+          <Input
+            style={{width: screenW < 768 ? '100%' : 400, display: 'block'}}
+            value={userName}
+            name="userName"
+            onChange={this._changeValue}
+          />
+          <Button
+            type="primary"
+            style={{
+              marginTop: 50,
+              background: '#0065E0',
+              width: screenW < 768 ? '100%' : ''
+            }}
+            onClick={this.updateUserInfo}
+          >保存</Button>
+        </div>
       </div>
     );
   }

@@ -44,7 +44,7 @@ class InfoAdvert extends Component {
       supportsCssVars() || alert('Please view this demo in a modern browser that supports CSS Variables.');
       //加载js
       const script = document.createElement('script');
-      script.src = 'http://192.168.1.115:8086/demo2.js';
+      script.src = 'http://www.loogk.com/demo2.js';
       document.body.appendChild(script);
     }, 1000);
   }
@@ -86,17 +86,18 @@ class InfoAdvert extends Component {
       history,
       location: {pathname}
     } = this.props;
+    history.push(`/details/${customizeUrl}`);
     //判断是资讯还是赛事
-    if (pathname.indexOf('information') > -1) {
-      history.push(`/details?majorKey=${customizeUrl}`);
-    } else {
-      history.push(`/matchDetails?majorKey=${customizeUrl}`);
-    }
+    // if (pathname.indexOf('information') > -1) {
+    //   history.push(`/details?majorKey=${customizeUrl}`);
+    // } else {
+    //   history.push(`/matchDetails?majorKey=${customizeUrl}`);
+    // }
   };
 
   //渲染置顶的轮播图
   infoImg = () => {
-    const {data, home: {isFixed}} = this.props;
+    const {data} = this.props;
     const list = [];
     data.length > 0 ? data.map((item, index) => {
       list.push(<div className={index === 0 ? 'slide slide--current' : 'slide'}>
@@ -104,9 +105,9 @@ class InfoAdvert extends Component {
           key={item.id}
           className="slide__img glitch"
           onClick={() => { window.open(item.jumpUrl); }}
-          style={{backgroundImage: `url(${item.coverUrl})`, height: isFixed ? 810 : 720, cursor: 'pointer'}}
+          style={{backgroundImage: `url(${item.coverUrl})`, height: 720, cursor: 'pointer'}}
         />
-        <div className="carouselTitle" style={{top: isFixed ? 252 : 162}}>
+        <div className="carouselTitle" style={{top: 162}}>
           <div>{item.categoryName}</div>
           <div
             style={stylesheet.title}
@@ -153,16 +154,19 @@ class InfoAdvert extends Component {
       <div>
         {type === 'details' ?
           <div className="detailsSetTop">
-            <div className="headerContent container" style={{position: 'unset', height: 430}}>
-              <img
-                src={data.coverUrl ? data.coverUrl : detailsPhoto}
+            <div className="headerContent container" style={{height: 430, overflow: 'unset'}}>
+              <div
+                // src={data.coverUrl ? data.coverUrl : detailsPhoto}
                 style={{
                   position: 'absolute',
                   opacity: 0.1,
-                  top: 0,
-                  left: '10%',
-                  width: 1500,
-                  height: isFixed ? 458 : 558
+                  top: -125,
+                  left: 0,
+                  width: '100%',
+                  height: 558,
+                  backgroundImage: `url('${data.coverUrl ? data.coverUrl : detailsPhoto}')`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover'
                 }}
               />
               <div
@@ -173,7 +177,7 @@ class InfoAdvert extends Component {
               <div className="title_3">{data.summary}</div>
             </div>
           </div>
-          : <div className="demo-2" style={{height: isFixed ? 810 : 720}}>
+          : <div className="demo-2" style={{height: 720}}>
             <img src={homeAdvertImg} style={stylesheet.homeLeftImg} />
             <div className="slides effect-2">
               {this.infoImg()}

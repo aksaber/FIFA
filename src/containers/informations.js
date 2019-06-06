@@ -156,11 +156,11 @@ class Informations extends Component {
     const {home: {screenW}} = this.props;
     return (
       <div>
-        <InfoAdvert
+        {screenW < 768 ? '' : <InfoAdvert
           data={carouselData}
           location={this.props.location}
           history={this.props.history}
-        />
+        />}
         <div style={{padding: '60px 0 93px 0'}} className="container">
           {screenW < 768 ? <div className="swiper-container infoSwiper">
             <div className="swiper-wrapper">{this.infoSetTopList()}</div>

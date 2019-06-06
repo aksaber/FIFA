@@ -146,8 +146,8 @@ class MobileFifaheader extends Component {
     const {history, home: {userInfo}} = this.props;
     this.setState({showMenu: false});
     //如果已登录则进入用户中心
-    if (Object.keys(userInfo).length !== 0) {
-      history.push('/userInfo');
+    if (Object.keys(userInfo).length !== 0 && router !== 'home') {
+      history.push('/userInfo/userInformation');
       return false;
     }
     history.push(`/${router}`);

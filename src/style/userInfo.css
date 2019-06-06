@@ -1,6 +1,9 @@
 @charset "UTF-8";
 .userInfo {
   height: 800px; }
+  @media (max-width: 768px) {
+    .userInfo {
+      height: unset; } }
   .userInfo .rightContent {
     float: left;
     padding: 60px;
@@ -8,6 +11,11 @@
     position: relative;
     background: url("../assets/img/userInfoBg.jpg") no-repeat right top;
     width: calc(100% - 340px); }
+    @media (max-width: 768px) {
+      .userInfo .rightContent {
+        width: 100%;
+        padding: 28px 17px;
+        float: unset; } }
     .userInfo .rightContent .title {
       color: #1A47B0;
       font-size: 24px;
@@ -17,13 +25,20 @@
       color: #414141;
       font-size: 18px;
       margin: 45px 0; }
+      @media (max-width: 768px) {
+        .userInfo .rightContent .subTitle {
+          margin: 29px 0; } }
     .userInfo .rightContent .upload:after {
-      content: '请选择jpg、gif格式，小于2M的图片（使用高质量图片，可生成高清头像）';
+      content: '请选择jpg、gif格式，小于1M的图片（使用高质量图片，可生成高清头像）';
       display: block;
       margin-top: 19px; }
     .userInfo .rightContent .clearAfter {
       padding-bottom: 45px;
       border-bottom: 1px solid #D6DDF0; }
+    .userInfo .rightContent .clearAfters:after {
+      content: '';
+      display: block;
+      clear: both; }
     .userInfo .rightContent .userBtn {
       background: #414141;
       color: #fff; }
@@ -37,5 +52,11 @@
       margin: 20px 0;
       border-radius: 5px;
       width: 500px; }
+      @media (max-width: 768px) {
+        .userInfo .rightContent .msgFlame {
+          width: 100%; } }
+  @media (max-width: 768px) {
+    .userInfo .ant-upload-list-item {
+      padding: 0 !important; } }
 
 /*# sourceMappingURL=userInfo.css.map */

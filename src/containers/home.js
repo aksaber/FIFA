@@ -9,6 +9,7 @@ import HomeMatchs from '../components/HomeMatchs';
 import HomeAdvert from '../components/homeAdvert';
 import axios from '../axios';
 import '../style/home/home.scss';
+import MobileAdvert from '../components/mobile-advert';
 
 @connect(
   state => ({home: state.home}),
@@ -45,7 +46,11 @@ class Home extends Component {
     axios.get('/news/news/firstNews').then((res) => {
       const {data} = res;
       if (data.code === '0') {
-        this.setState({homeList: data.data.firstNews});
+        this.setState({homeList: data.data.firstNews}, () => {
+          this.swiper = new Swiper('.infoSwiper', {
+            pagination: '.swiper-pagination'
+          });
+        });
       } else {
         message.warning(data.msg);
       }
@@ -160,6 +165,17 @@ class Home extends Component {
     window.open(url, '_blank');
   };
 
+  homeSetTopList = () => {
+    const {homeList} = this.state;
+    const list = [];
+    homeList.map((item) => {
+      list.push(<div className="swiper-slide">
+        <MobileAdvert data={item} history={this.props.history} />
+      </div>);
+    });
+    return list;
+  };
+
   render() {
     const {
       data,
@@ -171,7 +187,10 @@ class Home extends Component {
     const {home: {screenW}} = this.props;
     return (
       <div className="homes">
-        <HomeAdvert data={homeList} />
+        {screenW < 768 ? <div className="swiper-container infoSwiper" style={{marginTop: 60}}>
+          <div className="swiper-wrapper">{this.homeSetTopList()}</div>
+          <div className="swiper-pagination" />
+        </div> : <HomeAdvert data={homeList} />}
         <div className="container" style={{marginTop: 60}}>
           <div className="flex">
             <div className="dashedLine flex_1" />

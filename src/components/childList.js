@@ -98,7 +98,7 @@ class childList extends Component {
       left: 0,
       zIndex: 99999
     };
-    const {type} = this.props;
+    const {type, home: {screenW}} = this.props;
     const renderList = () => {
       const {data} = this.props;
       const list = [];
@@ -108,7 +108,13 @@ class childList extends Component {
           onClick={() => this.gotoDetail(type, item.id)}
           key={item.id}
         >
-          <div style={{overflow: 'hidden', width: 320, height: 130}}>
+          <div style={{
+            overflow: 'hidden',
+            width: '100%',
+            height: 130,
+            'max-width': '320px'
+          }}
+          >
             <img
               src={item.coverUrl}
               width={320}

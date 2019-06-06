@@ -76,7 +76,7 @@ class ReplyInput extends Component {
     const {reply} = this.state;
     const {TextArea} = Input;
     return (
-      <div className="reply">
+      <div className="reply clearAfter">
         <TextArea
           rows={4}
           value={reply}

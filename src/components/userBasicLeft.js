@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {Avatar} from 'antd';
 import * as homeActions from '../redux/reduces/home';
 import axios from '../axios';
 import '../style/components/userBasicLeft.scss';
@@ -57,12 +58,23 @@ class UserBasicLeft extends Component {
     const {hasSel} = this.state;
     return (
       <div className="userBasicLeft">
-        <img
-          src={headPortraitUrl}
-          width={110}
-          height={110}
-          style={{borderRadius: '50%', marginTop: 69}}
-        />
+        {headPortraitUrl !== '' ?
+          <img
+            src={headPortraitUrl}
+            width={110}
+            height={110}
+            style={{borderRadius: '50%', marginTop: 69}}
+          /> : <Avatar
+            shape="circle"
+            icon="user"
+            className="avator_user"
+            style={{
+              marginTop: 69,
+              fontSize: 93,
+              width: 110,
+              height: 110
+            }}
+          />}
         <div style={{margin: '28px auto 55px', fontSize: 18}}>{name}</div>
         <div
           className={hasSel === 0 ? 'userList selList' : 'userList'}

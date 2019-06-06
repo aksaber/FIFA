@@ -48,16 +48,26 @@ class MessageCenter extends Component {
     });
   };
 
+  //跳转消息中心详情
+  msgInfoDetail = (id) => {
+    const {history} = this.props;
+    history.push(`/userInfo/messageDetail/?id=${id}`);
+  };
+
   msgInfoMap = () => {
     const {messageInfo} = this.state;
     const list = [];
     messageInfo.map((item) => {
-      list.push(<div className="msgFlame">
+      list.push(<div
+        className="msgFlame"
+        style={{cursor: 'pointer'}}
+        onClick={() => this.msgInfoDetail(item.id)}
+      >
         <p style={{color: '#1A47B0', fontSize: 18}}>{item.title}</p>
         <p style={{color: '#606060'}}>{item.content}</p>
         <div style={{color: '#414141', fontWeight: 'bold'}}>
           <span style={{marginRight: 20}}>
-            {moment(item.createTime).format('YYYY-MM-DD hh:mm:ss')}
+            {moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
           </span>
         </div>
       </div>);

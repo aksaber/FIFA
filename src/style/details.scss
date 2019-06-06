@@ -2,7 +2,6 @@
   margin: 68px auto 119px auto;
   .detailTopMask{
     width: 100%;
-    height: 33%;
     bottom: 0;
     position: absolute;
     left: 0;
@@ -25,13 +24,26 @@
       padding: unset;
     }
     img{
+      width: unset!important;
+      height: unset!important;
       max-width: 100%;
       margin: 42px 0;
+    }
+  }
+  .detailTitle{
+    color: rgb(26, 71, 176);
+    font-size: 46px;
+    margin-top: -37px;
+    padding: 0px 10px;
+    @media (max-width: 768px){
+      font-size: 26px;
+      margin-top: -20px;
     }
   }
   .tagColor{
     border: 1px solid #1A47B0;
     margin-right: 27px;
+    margin-bottom: 10px;
     padding: 8px 29px;
     color: #1A47B0;
     border-radius: 2px!important;

@@ -50,7 +50,7 @@ class HomeAdvert extends Component {
       supportsCssVars() || alert('Please view this demo in a modern browser that supports CSS Variables.');
       //加载js
       const script = document.createElement('script');
-      script.src = 'http://192.168.1.115:8086/demo2.js';
+      script.src = 'http://www.loogk.com/demo2.js';
       document.body.appendChild(script);
     }, 1000);
     // this.swiper = new Swiper('.swiperHome', {
@@ -112,9 +112,9 @@ class HomeAdvert extends Component {
           key={item.id}
           className="slide__img glitch"
           onClick={() => { window.open(item.jumpUrl); }}
-          style={{backgroundImage: `url(${item.pictureUrl})`, height: isFixed ? 810 : 720, cursor: 'pointer'}}
+          style={{backgroundImage: `url(${item.pictureUrl})`, height: 720, cursor: 'pointer'}}
         />
-        <div className="carouselTitle" style={{top: isFixed ? 352 : 262}}>
+        <div className="carouselTitle" style={{top: 262}}>
           <p style={stylesheet.title}>{item.title}</p>
         </div>
       </div>);
@@ -125,7 +125,7 @@ class HomeAdvert extends Component {
   render() {
     const {data, home: {isFixed}} = this.props;
     return (
-      <div className="demo-2" style={{height: isFixed ? 810 : 720}}>
+      <div className="demo-2" style={{height: 720}}>
         <img src={homeAdvertImg} style={stylesheet.homeLeftImg} />
         <div className="">
           <div className="slides effect-2">

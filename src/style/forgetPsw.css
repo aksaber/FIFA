@@ -35,7 +35,7 @@
           width: 100%; } }
     .forgetPswPage .forgetPswModule .ant-row > div {
       margin: 5px 0; }
-    .forgetPswPage .forgetPswModule .ant-row > .ant-col-12 {
+    .forgetPswPage .forgetPswModule .ant-row > .ant-col-12, .forgetPswPage .forgetPswModule .ant-row > .ant-col-xl-12 {
       padding: 0 15px; }
     .forgetPswPage .forgetPswModule .liStyle {
       padding-bottom: 10px;

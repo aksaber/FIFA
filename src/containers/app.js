@@ -61,7 +61,8 @@ class App extends Component {
         message.warning(data.msg);
       }
     }).catch((err) => {
-      message.error(`${err}`);
+      // message.error(`${err}`);
+      console.log('未登录');
     });
   }
 
@@ -80,7 +81,7 @@ class App extends Component {
             location={this.props.location}
           />
         }
-        <div>
+        <div style={{marginTop: 90}}>
           {this.props.children}
         </div>
         <Fifafooter history={this.props.history} location={this.props.location} />

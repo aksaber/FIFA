@@ -81,6 +81,7 @@ class Register extends Component {
     if (!this.state.liked) {
       return false;
     }
+    this.setState({liked: false});
     axios.get(`/user/member/sendPhoneRegister?phone=${phone}`).then(res => {
       const {data} = res;
       if (data.code === '0') {
@@ -102,9 +103,11 @@ class Register extends Component {
         }, 1000);
       } else {
         message.warning(data.msg);
+        this.setState({liked: true});
       }
     }).catch((err) => {
       message.error(`${err}`);
+      this.setState({liked: true});
     });
   };
 

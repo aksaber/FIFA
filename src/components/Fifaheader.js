@@ -300,7 +300,7 @@ class Fifaheader extends Component {
 
     return (
       <div className="header">
-        <div className={isFixed ? 'fixedFlame' : ''}>
+        <div className={isFixed ? 'fixedFlame fixedBanner' : 'fixedFlame'}>
           <div className="fifaheader container">
             <div className="leftheader">
               <img src={logo} width={45} height={34} style={{'margin-top': '-15px'}} />

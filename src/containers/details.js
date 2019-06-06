@@ -13,12 +13,6 @@ import CommentList from '../components/CommentList';
 import InfoAdvert from '../components/infoAdvert';
 
 const stylesheet = {
-  words: {
-    color: 'rgb(26, 71, 176)',
-    fontSize: 46,
-    marginTop: -37,
-    padding: '0px 10px'
-  },
   avater: {
     position: 'absolute',
     zIndex: 1,
@@ -47,7 +41,8 @@ class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      urlParams: this.formatSearch(props.location.search),
+      // urlParams: this.formatSearch(props.location.search),
+      urlParams: window.location.hash.split('#/details/')[1],
       id: '',
       tagArray: [],
       content: '',
@@ -72,9 +67,10 @@ class Details extends Component {
 
   //点击不可错过内容重新渲染页面数据
   componentWillReceiveProps(nextProps) {
-    if (this.props.location.search !== nextProps.location.search) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
       this.setState({
-        urlParams: this.formatSearch(nextProps.location.search)
+        // urlParams: this.formatSearch(nextProps.location.search)
+        urlParams: window.location.hash.split('#/details/')[1]
       }, () => {
         //获取文章详情
         this.getDetail();
@@ -85,7 +81,8 @@ class Details extends Component {
   //获取文章详情
   getDetail = () => {
     const {getDetailData, history} = this.props;
-    axios.get(`/news/news/${this.state.urlParams.majorKey}`).then((res) => {
+    // const urlParams = window.location.hash.split('#/details/')[1];
+    axios.get(`/news/news/${this.state.urlParams}`).then((res) => {
       const {data} = res;
       if (data.code === '0') {
         this.setState({
@@ -221,6 +218,25 @@ class Details extends Component {
     history.push(`/tagList?id=${id}`);
   };
 
+  //微博分享
+  shareSina = () => {
+    const {data} = this.state;
+    const param = {
+      url: window.location.href,
+      type: '3',
+      count: '1',
+      appkey: '1784017119',
+      title: data.title,
+      pic: data.coverUrl,
+      rnd: new Date().valueOf()
+    };
+    const targetUrl = `http://service.weibo.com/share/share.php?appkey=
+    ${encodeURIComponent(param.appkey)}&title=
+    ${encodeURIComponent(param.title)}&url=
+    ${encodeURIComponent(param.url)}&pic=${encodeURIComponent(param.pic)}`;
+    window.open(targetUrl);
+  };
+
   render() {
     const {
       tagArray,
@@ -236,7 +252,7 @@ class Details extends Component {
     const {home: {userInfo, screenW}} = this.props;
     return (
       <div>
-        <InfoAdvert data={data} location={this.props.location} type="details" />
+        {screenW < 768 ? '' : <InfoAdvert data={data} location={this.props.location} type="details" />}
         <div className="detailDiv container">
           <div
             style={{
@@ -246,31 +262,45 @@ class Details extends Component {
               display: screenW < 768 ? 'block' : 'none'
             }}
           >
-            <img src={data.coverUrl} style={{width: '100%'}} />
+            <img src={data.coverUrl} style={{width: '100%', height: 233}} />
             <div className="detailTopMask">
-              <p>{data.newsCategoryName}</p>
-              <p className="ellipsis title">{data.title}</p>
+              <div>{data.newsCategoryName}</div>
+              <div className="title">{data.title}</div>
             </div>
           </div>
-          <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
+          <div className="detailContent recoveryCss clearAfter" dangerouslySetInnerHTML={{__html: content}} />
           <div className="dashedLine" />
           <div className="flex" style={{padding: '28px 0 68px 0'}}>
             <div className="flex_1">
               {tagArray ? tagArray.map((item) => (<Tag
                 className="tagColor"
-                style={{display: item.name !== '' ? 'inline' : 'none'}}
+                style={{display: item.name !== '' ? 'inline-block' : 'none'}}
                 key={item.id}
                 onClick={() => this.gotoTagList(item.id)}
               >{item.name}</Tag>)) : ''}
             </div>
-            <div className="flex_1" style={{'text-align': 'right', margin: 'auto'}}>
-              <img src={sina} width={29} height={24} style={{'margin-right': '30px'}} />
-              <img src={wechat} width={29} height={24} />
+            <div style={{float: 'right', width: 90}}>
+              <div onClick={this.shareSina} style={{display: 'inline-block'}}>
+                <img
+                  src={sina}
+                  width={29}
+                  height={24}
+                  style={{'margin-right': '30px', cursor: 'pointer'}}
+                  title="分享到新浪微博"
+                />
+              </div>
+              <img
+                src={wechat}
+                width={29}
+                height={24}
+                style={{cursor: 'pointer'}}
+                title="分享到微信"
+              />
             </div>
           </div>
           <div className="flex" style={{marginBottom: 83}}>
             <div className="dashedLine flex_1" />
-            <div style={stylesheet.words}>评论</div>
+            <div className="detailTitle">评论</div>
             <div className="dashedLine flex_1" />
           </div>
           <div style={{marginBottom: 97, display: data.openComment === 0 ? 'none' : 'block'}}>
@@ -304,7 +334,7 @@ class Details extends Component {
             </div>}
           <div className="flex" style={{margin: '129px 0 38px 0'}}>
             <div className="dashedLine flex_1" />
-            <div style={stylesheet.words}>不能错过的内容</div>
+            <div className="detailTitle">不能错过的内容</div>
             <div className="dashedLine flex_1" />
           </div>
           <div>
