@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {Icon} from 'antd';
 import logo from '~/assets/img/logo.svg';
 import sina from '~/assets/img/sina.svg';
 import wechat from '~/assets/img/wechat.svg';
@@ -13,6 +14,14 @@ import * as homeActions from '../redux/reduces/home';
 )
 
 class Fifafooter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isWechats: false,
+      isQQ: false
+    };
+  }
+
   //跳转到fifa资讯或赛事
   gotoDetails = (type, id) => {
     //跳转到相应资讯/赛事列表
@@ -25,15 +34,27 @@ class Fifafooter extends Component {
   };
   //跳转新手入门锚点
   gotoGuidance = () => {
-    document.body.scrollTop -= 350;
-    document.documentElement.scrollTop -= 350;
+    const {history} = this.props;
+    if (window.location.hash.indexOf('#/home?guidance') > -1) {
+      document.getElementById('guidance').scrollIntoView();
+    }
+    history.push('/home?guidance');
   };
   //跳转关于我们
   gotoAboutMe = () => {
     window.open('#/maintainableText', '_blank');
   };
+  //加入QQ群
+  joinQQ = (type) => {
+    if (type === 1) {
+      window.open('https://shang.qq.com/wpa/qunwpa?idkey=0c5bb4e41dae5a5e0bc27fbd32c04cdd10af243d413782fbdaecd75c44750abb');
+    } else if (type === 2) {
+      window.open('https://shang.qq.com/wpa/qunwpa?idkey=a8b938de3fcea1e5b53e8ccc0425ac8f9a9cf6762be36f116a061d80431a47e4');
+    }
+  };
   render() {
     const {home: {infoClassify, matchClassify, screenW}} = this.props;
+    const {isWechats, isQQ} = this.state;
     const grayColor = {
       color: '#9A9A9A'
     };
@@ -64,9 +85,44 @@ class Fifafooter extends Component {
             className={screenW < 768 ? 'moblieShareFooter' : 'flex_1'}
             style={{'text-align': 'right'}}
           >
-            <img src={sina} width={20} height={16} style={{'margin-right': '30px'}} />
-            <img src={wechat} width={20} height={16} style={{'margin-right': '30px'}} />
-            <img src={qq} width={20} height={16} />
+            <span
+              onClick={() => { window.open('https://weibo.com/easportsfifa'); }}
+              style={{cursor: 'pointer', marginRight: 30}}
+            >
+              <img src={sina} width={20} height={16} />
+            </span>
+            <span
+              style={{cursor: 'pointer', marginRight: 30, position: 'relative'}}
+              onMouseEnter={() => { this.setState({isWechats: true}); }}
+              onMouseLeave={() => { this.setState({isWechats: false}); }}
+            >
+              <img src={wechat} width={20} height={16} />
+              <img
+                src="https://17fifa.com/wp-content/uploads/2016/05/qrcode_for_gh_e4e915d9d5bc_258.jpg"
+                style={{
+                  display: isWechats ? 'block' : 'none',
+                  position: 'absolute',
+                  top: 27,
+                  left: 0,
+                  zIndex: 99
+                }}
+              />
+            </span>
+            <span
+              onMouseEnter={() => { this.setState({isQQ: true}); }}
+              onMouseLeave={() => { this.setState({isQQ: false}); }}
+              style={{position: 'relative'}}
+            >
+              <img src={qq} width={20} height={16} />
+              <ul style={{display: isQQ ? 'block' : 'none'}} className="qqGroup">
+                <span onClick={() => this.joinQQ(1)}>
+                  <li><Icon type="qq" /> 非凡网FIFA交流群1</li>
+                </span>
+                <span onClick={() => this.joinQQ(2)}>
+                  <li><Icon type="qq" /> 非凡网FIFA交流群2</li>
+                </span>
+              </ul>
+            </span>
           </div>
         </div>
         <div className={screenW < 768 ? 'footer-bottom' : 'footer-bottom flex'}>

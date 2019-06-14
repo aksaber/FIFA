@@ -28,6 +28,12 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    //跳转到新手入门锚点
+    if (window.location.hash.indexOf('guidance') > -1) {
+      const timer = setTimeout(() => {
+        document.getElementById('guidance').scrollIntoView();
+      }, 1000);
+    }
     const {changeRoute} = this.props;
     changeRoute('home');
     //中间广告图
@@ -227,7 +233,7 @@ class Home extends Component {
         <div style={{background: '#F7F8FB', padding: '76px 0 187px 0', position: 'relative'}}>
           <div className="flex container" style={{marginBottom: 49}}>
             <div className="dashedLine flex_1" />
-            <div className="homeTitle">新手入门</div>
+            <div className="homeTitle" id="guidance">新手入门</div>
             <div className="dashedLine flex_1" />
           </div>
           <div className="swiper-container swiperGuidance">

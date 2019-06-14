@@ -81,7 +81,7 @@ class App extends Component {
             location={this.props.location}
           />
         }
-        <div style={{marginTop: 90}}>
+        <div style={{marginTop: screenW < 768 ? 60 : 90}}>
           {this.props.children}
         </div>
         <Fifafooter history={this.props.history} location={this.props.location} />

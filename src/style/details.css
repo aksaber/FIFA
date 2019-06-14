@@ -55,5 +55,8 @@
       background: #0065E0;
       border: 2px solid #0065E0;
       color: #fff; }
+  .detailDiv .wechatShare {
+    padding: 15px;
+    position: absolute; }
 
 /*# sourceMappingURL=details.css.map */

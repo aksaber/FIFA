@@ -31,6 +31,10 @@ class CommonCard extends Component {
       data,
       location
     } = this.props;
+    if ((data.newsType && data.newsType === 2) || location === 'guidanceDetails') {
+      history.push(`/guidanceDetails?id=${data.id}`);
+      return false;
+    }
     history.push(`/details/${data.customizeUrl}`);
     // history.push(`/${location}/${data.customizeUrl}`);
     // history.push({pathname: '/details', state: {id: data.id}});
@@ -51,8 +55,12 @@ class CommonCard extends Component {
         // bodyStyle={stylesheet.commonCardBody}
       >
         <div className="commonCardImgDiv">
-          <img
-            src={data.coverUrl}
+          <div
+            style={{
+              backgroundImage: `url('${data.coverUrl}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
             className="commonCardImg"
           />
           {screenW < 768 ? '' : <div className="commonCardMask">

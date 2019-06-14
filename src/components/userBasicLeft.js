@@ -58,7 +58,7 @@ class UserBasicLeft extends Component {
     const {hasSel} = this.state;
     return (
       <div className="userBasicLeft">
-        {headPortraitUrl !== '' ?
+        {headPortraitUrl ?
           <img
             src={headPortraitUrl}
             width={110}

@@ -78,6 +78,10 @@ class Register extends Component {
       message.warning('请输入手机号');
       return false;
     }
+    if (phone.length !== 11) {
+      message.warning('请输入正确的手机号');
+      return false;
+    }
     if (!this.state.liked) {
       return false;
     }
@@ -122,11 +126,17 @@ class Register extends Component {
   registerFun = () => {
     const {history} = this.props;
     const {
+      email,
       password,
       rePassword,
       isAllow,
       loginWay
     } = this.state;
+    const emailReg = /@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    if (loginWay !== 0 && !emailReg.test(email)) {
+      message.warning('请输入正确的邮箱');
+      return false;
+    }
     if (password.length < 6) {
       message.warning('密码长度不应小于6位');
       return false;
@@ -152,8 +162,10 @@ class Register extends Component {
       if (data.code === '0') {
         if (loginWay === 0) {
           message.success('注册成功');
+          history.push('/login');
+        } else {
+          message.success('请登录邮箱进行验证');
         }
-        history.push('/login');
       } else {
         message.warning(data.msg);
         this.getCode();

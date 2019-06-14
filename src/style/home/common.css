@@ -147,3 +147,13 @@
   z-index: 1;
   color: #fff;
 }
+/*--------移动端ant-card样式-------*/
+@media (max-width: 768px){
+  .ant-card{
+    box-shadow: unset!important;
+    margin: 10px!important;
+  }
+  .ant-card-body{
+    padding: 0!important;
+  }
+}

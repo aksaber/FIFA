@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import axios from '../axios';
+import InfoAdvert from '../components/infoAdvert';
 
 @connect(
   state => ({home: state.home}),
@@ -16,6 +17,7 @@ class GuidanceDetails extends Component {
     this.state = {
       urlParams: this.formatSearch(props.location.search),
       content: '',
+      data: ''
     };
   }
 
@@ -66,9 +68,13 @@ class GuidanceDetails extends Component {
 
   render() {
     const {content, data} = this.state;
+    const {home: {screenW}} = this.props;
     return (
-      <div className="detailDiv container">
-        <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
+      <div>
+        {screenW < 768 ? '' : <InfoAdvert data={data} location={this.props.location} type="details" />}
+        <div className="detailDiv container">
+          <div className="detailContent recoveryCss" dangerouslySetInnerHTML={{__html: content}} />
+        </div>
       </div>
     );
   }

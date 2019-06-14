@@ -21,7 +21,7 @@ class ModalUpdatePhone extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 1,
+      type: props.home.userInfo.phone ? 1 : 2,
       phone: '',
       phoneCode: '',
       newPhoneCode: '',
@@ -160,7 +160,7 @@ class ModalUpdatePhone extends Component {
     } = this.state;
     return (
       <div className="modalFrame">
-        <div className="title">修改绑定手机</div>
+        <div className="title">{type === 1 ? '修改绑定手机' : '绑定新手机'}</div>
         <Row>
           <Col span={24} style={{display: type === 1 ? 'block' : 'none'}}>
             <p>旧手机号码</p>

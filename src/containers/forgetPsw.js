@@ -51,6 +51,10 @@ class ForgetPsw extends Component {
       message.warning('请输入手机号');
       return false;
     }
+    if (phone.length !== 11) {
+      message.warning('请输入正确的手机号');
+      return false;
+    }
     if (!this.state.liked) {
       return false;
     }
@@ -110,10 +114,16 @@ class ForgetPsw extends Component {
   saveFun = () => {
     const {history} = this.props;
     const {
+      email,
       loginWay,
       password,
       rePassword
     } = this.state;
+    const emailReg = /@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    if (loginWay !== 0 && !emailReg.test(email)) {
+      message.warning('请输入正确的邮箱');
+      return false;
+    }
     if (loginWay === 0) {
       //手机忘记密码
       if (password.length < 6) {
@@ -230,16 +240,16 @@ class ForgetPsw extends Component {
               />
             </Col>
             <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
-              <p>密码</p>
+              <p>新密码</p>
               <Password
                 value={password}
                 onChange={this._changeValue}
                 name="password"
-                placeholder="您的密码"
+                placeholder="您的新密码"
               />
             </Col>
             <Col md={24} xl={12} style={{display: (loginWay === 1) ? 'none' : 'block'}}>
-              <p>确认密码</p>
+              <p>确认新密码</p>
               <Password
                 value={rePassword}
                 onChange={this._changeValue}

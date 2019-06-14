@@ -1,9 +1,17 @@
 import React, {Component} from 'react';
+import {Avatar} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
 import axios from '../axios';
 import '../style/components/userBasicTop.scss';
+
+const outLogin = {
+  position: 'absolute',
+  right: 10,
+  top: 10,
+  fontSize: 11
+};
 
 @connect(
   state => ({home: state.home}),
@@ -52,12 +60,37 @@ class UserBasicTop extends Component {
     }
   };
 
+  gotoLogin = () => {
+    const {history} = this.props;
+    if (document.cookie) {
+      const cookieArr = document.cookie.split(';');
+      for (let i = 0; i < cookieArr.length; i++) {
+        if (cookieArr[i].split('=')[0].trim() === 'fifaToken') {
+          document.cookie = `fifaToken=;expires=${(new Date(0)).toGMTString()}`;
+        }
+      }
+    }
+    history.push('/login');
+  };
+
   render() {
     const {home: {userInfo}} = this.props;
     const {hasSel} = this.state;
     return (
-      <div className="userBasicTop">
-        <img src={userInfo.headPortraitUrl} width={90} height={90} />
+      <div className="userBasicTop" style={{position: 'relative'}}>
+        <span style={outLogin} onClick={this.gotoLogin}>退出登录</span>
+        {userInfo.headPortraitUrl ? <img src={userInfo.headPortraitUrl} width={90} height={90} />
+          : <Avatar
+            shape="circle"
+            icon="user"
+            className="avator_user"
+            style={{
+              marginTop: 30,
+              fontSize: 93,
+              width: 110,
+              height: 110
+            }}
+          />}
         <div className="userName">{userInfo.name}</div>
         <div>
           <div

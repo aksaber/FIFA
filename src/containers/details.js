@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Avatar, Row, Col, Tag, Input, message} from 'antd';
+import QRCode from 'qrcodejs2';
 import sina from '~/assets/img/sina-blue.svg';
 import wechat from '~/assets/img/wechat-blue.svg';
 import Documentation from '~/components/documentation';
@@ -51,7 +52,8 @@ class Details extends Component {
       messageData: [],
       pageNo: 1,
       total: 0,
-      data: ''
+      data: '',
+      isShowWechat: false
     };
   }
 
@@ -59,6 +61,8 @@ class Details extends Component {
     const {changeRoute} = this.props;
     changeRoute('details');
     this.getDetail();
+    //生成二维码
+    this.shareWechat();
   }
 
   componentWillUnmount() {
@@ -237,6 +241,32 @@ class Details extends Component {
     window.open(targetUrl);
   };
 
+  //微信二维码分享
+  shareWechat = () => {
+    const url = window.location.href;
+    const qrcode = new QRCode('qrcode', {
+      width: 100,
+      height: 100,
+      color: '#000',
+      colorLight: '#fff',
+      typeNumber: 4,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    qrcode.clear();
+    //生成新二维码
+    qrcode.makeCode(url);
+  };
+
+  //展示二维码
+  showWechat = () => {
+    this.setState({isShowWechat: true});
+  };
+
+  //隐藏二维码
+  hideWechat = () => {
+    this.setState({isShowWechat: false});
+  };
+
   render() {
     const {
       tagArray,
@@ -246,7 +276,8 @@ class Details extends Component {
       urlParams,
       messageData,
       total,
-      data
+      data,
+      isShowWechat
     } = this.state;
     const {TextArea} = Input;
     const {home: {userInfo, screenW}} = this.props;
@@ -289,13 +320,22 @@ class Details extends Component {
                   title="分享到新浪微博"
                 />
               </div>
-              <img
-                src={wechat}
-                width={29}
-                height={24}
-                style={{cursor: 'pointer'}}
-                title="分享到微信"
-              />
+              <div
+                onMouseEnter={this.showWechat}
+                onMouseLeave={this.hideWechat}
+                style={{display: 'inline-block', position: 'relative'}}
+              >
+                <img
+                  src={wechat}
+                  width={29}
+                  height={24}
+                  style={{cursor: 'pointer'}}
+                />
+                <div className="wechatShare" style={{display: isShowWechat ? 'block' : 'none'}}>
+                  <div id="qrcode" ref="qrcode" />
+                  <div style={{textAlign: 'center'}}>微信扫一扫</div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex" style={{marginBottom: 83}}>

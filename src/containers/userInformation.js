@@ -4,7 +4,7 @@ import {
   Upload,
   message,
   Button,
-  Input
+  Input, Avatar
 } from 'antd';
 import {bindActionCreators} from 'redux';
 import * as homeActions from '../redux/reduces/home';
@@ -121,13 +121,24 @@ class UserInformation extends Component {
         <div className="title">用户信息</div>
         <div className="subTitle">头像</div>
         <div className="clearAfter">
-          <img
+          {this.props.home.userInfo.headPortraitUrl ? <img
             src={this.props.home.userInfo.headPortraitUrl}
             width={140}
             height={140}
             className="left"
             style={{borderRadius: '50%', marginRight: 50}}
-          />
+          /> : <Avatar
+            shape="circle"
+            icon="user"
+            className="avator_user"
+            style={{
+              fontSize: 93,
+              width: 110,
+              height: 110,
+              float: screenW < 768 ? '' : 'left',
+              marginRight: screenW < 768 ? '' : 50
+            }}
+          />}
           <div className="left upload" style={{marginTop: screenW < 768 ? 30 : 70}}>
             <Input
               disabled

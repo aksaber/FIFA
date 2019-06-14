@@ -75,7 +75,7 @@ class AccountManagement extends Component {
     return (
       <div>
         <div className="title">账号管理</div>
-        <div className="subTitle">您已绑定手机</div>
+        <div className="subTitle">手机号</div>
         <div className="clearAfter">
           <Col span={10} style={{marginRight: screenW < 768 ? '' : 20}}>
             <Input
@@ -89,7 +89,7 @@ class AccountManagement extends Component {
               className="userBtn"
               style={{float: screenW < 768 ? 'right' : 'left'}}
               onClick={() => { this.setState({unbindOld: true}); }}
-            >修改绑定手机</Button>
+            >{userInfo.phone ? '修改绑定手机' : '绑定手机'}</Button>
           </Col>
         </div>
         <div className="subTitle">密码修改</div>

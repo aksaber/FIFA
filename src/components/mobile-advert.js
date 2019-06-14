@@ -29,7 +29,14 @@ class MobileAdvert extends Component {
     const {data} = this.props;
     return (
       <div style={{position: 'relative', color: '#fff'}}>
-        <img src={data.coverUrl || data.pictureUrl} style={{width: '100%', height: 314}} />
+        <div style={{
+          width: '100%',
+          height: 314,
+          backgroundImage: `url('${data.coverUrl || data.pictureUrl}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        />
         <div style={stylesheet.mask} className="ellipsis">
           <p>{data.newsCategoryName}</p>
           <p style={stylesheet.title} className="ellipsis">{data.title}</p>

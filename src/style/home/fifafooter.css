@@ -37,5 +37,18 @@
     top: 0;
     left: 50%;
     margin-left: -22.5px; }
+  .footer .qqGroup {
+    position: absolute;
+    padding: 20px 10px;
+    width: 200px;
+    top: 15px;
+    right: 0; }
+    .footer .qqGroup li {
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #ccc; }
+      .footer .qqGroup li:hover {
+        color: #fff; }
 
 /*# sourceMappingURL=fifafooter.css.map */
